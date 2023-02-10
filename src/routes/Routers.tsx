@@ -1,24 +1,25 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "../components/Dashboard";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-  }, 
-  { 
-    path: "/Dashboard",
-    element: <Dashboard/>
-  }
-]);
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { protectedRoutes, publicRoutes } from "../constants/routes";
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
 
 function AppRoutes() {
-  return <RouterProvider router={routes} />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<ProtectedRoute />}>
+          {protectedRoutes.map((r) => (
+            <Route path={r.path} element={r.element} />
+          ))}
+        </Route>
+        <Route element={<PublicRoute />}>
+          {publicRoutes.map((r) => (
+            <Route path={r.path} element={r.element} />
+          ))}
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default AppRoutes;

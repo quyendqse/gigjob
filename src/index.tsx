@@ -5,6 +5,17 @@ import { store } from "./store";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import App from "./App";
+import { initializeApp } from "@firebase/app";
+import { getAnalytics } from "@firebase/analytics";
+import { getAuth } from "@firebase/auth";
+import { firebaseConfig } from "./constants/firebaseConfig";
+
+//Initializing Firebase
+const app = initializeApp(firebaseConfig);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const analytics = getAnalytics(app);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const auth = getAuth(app);
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
