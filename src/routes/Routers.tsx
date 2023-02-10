@@ -17,6 +17,16 @@ function AppRoutes() {
             <Route path={r.path} element={r.element} />
           ))}
         </Route>
+        <Route
+          path="*"
+          //this jsx is just temporary. This will be update with complete UI later.
+          //TODO: update this error page to complete UI
+          element={
+            <div>
+              Something went wrong. <a href="/">Go back</a>
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
