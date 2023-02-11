@@ -16,15 +16,19 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const auth = getAuth(app);
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme/theme";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
