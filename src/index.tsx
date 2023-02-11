@@ -6,18 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import App from "./App";
 import firebase from "firebase/compat/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+import "firebase/compat/analytics";
+import "firebase/compat/auth";
+// import { getAnalytics } from "firebase/analytics";
+// import { getAuth } from "firebase/auth";
 import { firebaseConfig } from "./constants/firebaseConfig";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
 
-//Initializing Firebase
 const app = firebase.initializeApp(firebaseConfig);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const analytics = getAnalytics(app);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const auth = getAuth(app);
+const analytics = firebase.analytics(app);
+const auth = firebase.auth(app);
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

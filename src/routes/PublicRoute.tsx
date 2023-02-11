@@ -1,9 +1,10 @@
-import { getAuth } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 import { Navigate, Outlet } from "react-router";
 import { protectedRoutes } from "../constants/routes";
 
 function PublicRoute() {
-  const auth = getAuth();
+  const auth = firebase.auth();
   const user = auth.currentUser;
   return user == null ? <Outlet /> : <Navigate to={protectedRoutes[0].path} />;
 }

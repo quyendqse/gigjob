@@ -8,13 +8,13 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoute />}>
-          {protectedRoutes.map((r) => (
-            <Route path={r.path} element={r.element} />
+          {protectedRoutes.map((r, index) => (
+            <Route key={`proRoute${index}`} path={r.path} element={r.element} />
           ))}
         </Route>
         <Route element={<PublicRoute />}>
-          {publicRoutes.map((r) => (
-            <Route path={r.path} element={r.element} />
+          {publicRoutes.map((r, index) => (
+            <Route key={`pubRoute${index}`} path={r.path} element={r.element} />
           ))}
         </Route>
         <Route
