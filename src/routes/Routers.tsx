@@ -1,20 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "../components/Dashboard";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
+import Home from "../views/Home";
+import SignIn from "../views/SignIn/SignIn";
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <SignIn />,
   },
   {
     path: "/home",
     element: <Home />,
-  }, 
-  { 
-    path: "/Dashboard",
-    element: <Dashboard/>
-  }
+  },
 ]);
 
 function AppRoutes() {
