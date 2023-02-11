@@ -5,7 +5,7 @@ import { store } from "./store";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import App from "./App";
-import { initializeApp } from "firebase/app";
+import firebase from "firebase/compat/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { firebaseConfig } from "./constants/firebaseConfig";
@@ -13,7 +13,7 @@ import { ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
 
 //Initializing Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const analytics = getAnalytics(app);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
