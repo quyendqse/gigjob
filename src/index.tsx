@@ -9,6 +9,8 @@ import { initializeApp } from "@firebase/app";
 import { getAnalytics } from "@firebase/analytics";
 import { getAuth } from "@firebase/auth";
 import { firebaseConfig } from "./constants/firebaseConfig";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme/theme";
 
 //Initializing Firebase
 const app = initializeApp(firebaseConfig);
@@ -16,8 +18,6 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const auth = getAuth(app);
-import { ThemeProvider } from "@mui/material";
-import theme from "./theme/theme";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
