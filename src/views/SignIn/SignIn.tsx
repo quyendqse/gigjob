@@ -18,12 +18,17 @@ import GoogleIcon from "../../components/GoogleIcon";
 function SignIn() {
   return (
     <Grid container sx={{ backgroundColor: "#fafbfc" }}>
-      <Box display={{ xs: "none", lg: "block" }} lg={7} component={Grid}>
+      <Box
+        display={{ xs: "none", lg: "block" }}
+        lg={7}
+        xs={12}
+        item
+        component={Grid}>
         <Grid>
           <SideImage src="/side-image.png" alt="" />
         </Grid>
       </Box>
-      <Grid lg={5} xs={12}>
+      <Grid item lg={5} xs={12}>
         <FormContainer>
           <Box maxWidth={500} sx={{ margin: "0 auto" }}>
             <Typography variant="h3">Sign in</Typography>
@@ -44,12 +49,12 @@ function SignIn() {
               variant="outlined"
             />
             <Grid container sx={{ margin: "1rem auto" }}>
-              <Grid xs={6}>
+              <Grid item xs={6}>
                 <FormGroup>
                   <FormControlLabel control={<Switch />} label="Remember me" />
                 </FormGroup>
               </Grid>
-              <Grid xs={6} sx={{ textAlign: "right" }}>
+              <Grid item xs={6} sx={{ textAlign: "right" }}>
                 <Button variant="text">Forgot Password?</Button>
               </Grid>
             </Grid>

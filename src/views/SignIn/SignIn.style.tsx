@@ -2,9 +2,12 @@ import { Container } from "@mui/material";
 import styled from "styled-components";
 
 export const SideImage = styled.img`
-  height: 100vh;
+  height: 99.6vh;
   object-fit: cover;
   width: 100%;
+  border: none;
+  margin: 0;
+  padding: 0;
 `;
 
 export const FormContainer = styled(Container)`
@@ -17,9 +20,7 @@ export const FormContainer = styled(Container)`
 export const secondaryStyle = {
   backgroundColor: "#f5f7fd",
   color: "black",
-  boxShadow: "none",
   ":hover": {
-    boxShadow: "none",
     backgroundColor: "#e3e8ef",
   },
 };
