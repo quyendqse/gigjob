@@ -1,5 +1,7 @@
+import { config } from "process";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { protectedRoutes, publicRoutes } from "../constants/routes";
+import Home from "../views/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 
@@ -7,11 +9,11 @@ function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<ProtectedRoute />}>
+        {/* <Route element={<ProtectedRoute />}>
           {protectedRoutes.map((r, index) => (
             <Route key={`proRoute${index}`} path={r.path} element={r.element} />
           ))}
-        </Route>
+        </Route> */}
         <Route element={<PublicRoute />}>
           {publicRoutes.map((r, index) => (
             <Route key={`pubRoute${index}`} path={r.path} element={r.element} />
@@ -27,9 +29,13 @@ function AppRoutes() {
             </div>
           }
         />
+        <Route> <Route path="/home" element={<Home />}/>  </Route> 
+
       </Routes>
     </BrowserRouter>
+
   );
-}
+} 
+
 
 export default AppRoutes;
