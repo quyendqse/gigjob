@@ -5,18 +5,9 @@ import { store } from "./store";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import App from "./App";
-import firebase from "firebase/compat/app";
-import "firebase/compat/analytics";
-import "firebase/compat/auth";
-// import { getAnalytics } from "firebase/analytics";
-// import { getAuth } from "firebase/auth";
-import { firebaseConfig } from "./constants/firebaseConfig";
+
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
-
-const app = firebase.initializeApp(firebaseConfig);
-const analytics = firebase.analytics(app);
-const auth = firebase.auth(app);
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
