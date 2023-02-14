@@ -30,13 +30,6 @@ function SignIn() {
   const navigate = useNavigate();
 
   const handleSignIn = async (values: SignInForm) => {
-    // login(value.email, value.password)?.then((user) => {
-    //   if (user != null) {
-    //     navigate("/home");
-    //   } else {
-    //     alert("Email or password is incorrect");
-    //   }
-    // });
     login(
       values.email,
       values.password,

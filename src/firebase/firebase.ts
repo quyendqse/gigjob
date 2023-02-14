@@ -7,11 +7,14 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { firebaseConfig } from "../constants/firebaseConfig";
-const app = initializeApp(firebaseConfig);
+
+let app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 auth.useDeviceLanguage();
 
-const googleProvider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider().setCustomParameters({
+  prompt: "select_account",
+});
 
 export function login(
   email: string,
