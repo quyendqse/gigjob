@@ -1,16 +1,6 @@
 import { Box } from "@mui/system";
-import { useNavigate } from "react-router-dom";
 import { logOut } from "../../firebase/firebase";
-import SideBar from "../../components/Sidebar/SideBar";
-// import { Main } from "./SignIn/Main";
-
 function Home() {
-  const navigate = useNavigate();
-
-  // const logout = () => {
-  //   logOut().then(() => navigate("/"));
-  // };
-
   return (
     <Box
       sx={{
@@ -25,9 +15,9 @@ function Home() {
         height: "100px",
       }}>
       Homepage
-      {/* <button type="button" onClick={logout}>
+      <button type="button" onClick={() => logOut}>
         Log out
-      </button> */}
+      </button>
     </Box>
   );
 }
