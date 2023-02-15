@@ -1,7 +1,7 @@
 import { Box } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../firebase/firebase";
-import SideBar from "./SignIn/SideBar";
+import { logOut } from "../../firebase/firebase";
+import SideBar from "../../components/Sidebar/SideBar";
 // import { Main } from "./SignIn/Main";
 
 function Home() {
@@ -20,11 +20,10 @@ function Home() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        color:'white',
-        fontSize:'20px',
-        height:'100px'
-      }}
-    >
+        color: "white",
+        fontSize: "20px",
+        height: "100px",
+      }}>
       Homepage
       {/* <button type="button" onClick={logout}>
         Log out
