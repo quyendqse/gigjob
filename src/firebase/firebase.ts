@@ -24,7 +24,17 @@ export function login(
 ): Promise<void> {
   return signInWithEmailAndPassword(auth, email, password).then(
     onSuccess,
-    onReject
+    (reason) => {
+      var msg: string = "";
+      switch (reason.code) {
+        case "auth/wrong-password":
+          msg = "Incorrect email or password";
+          break;
+        default:
+          msg = "Something went wrong please try again later.";
+      }
+      onReject(msg);
+    }
   );
 }
 
