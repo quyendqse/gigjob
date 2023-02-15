@@ -1,3 +1,4 @@
+import { Box } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../firebase/firebase";
 import SideBar from "./SignIn/SideBar";
@@ -11,15 +12,24 @@ function Home() {
   // };
 
   return (
-    <div>
-       <SideBar/>
+    <Box
+      sx={{
+        backgroundColor: "gray",
+        width: "1000px",
+        ml: "300px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color:'white',
+        fontSize:'20px',
+        height:'100px'
+      }}
+    >
+      Homepage
       {/* <button type="button" onClick={logout}>
         Log out
       </button> */}
-    </div> 
-
-
-
+    </Box>
   );
 }
 

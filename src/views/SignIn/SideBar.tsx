@@ -5,22 +5,27 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import WorkIcon from '@mui/icons-material/Work';
+import WorkIcon from "@mui/icons-material/Work";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import MarkAsUnreadIcon from '@mui/icons-material/MarkAsUnread';
-import PaymentIcon from '@mui/icons-material/Payment';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MarkAsUnreadIcon from "@mui/icons-material/MarkAsUnread";
+import PaymentIcon from "@mui/icons-material/Payment";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { protectedRoutes } from "../../constants/routes";
+import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { Button, Card, CardMedia } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Image } from "@mui/icons-material";
+import { fontSize } from "@mui/system";
 const drawerWidth = 240;
-
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -29,8 +34,7 @@ interface Props {
   window?: () => Window;
 }
 
-
-export default function  SideBar(props: Props) {
+export default function SideBar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -40,47 +44,57 @@ export default function  SideBar(props: Props) {
 
   const menu = [
     {
-        lable: 'Dashboard',
-        icon: <HomeIcon/>, 
-        path: '/home'
-    }, 
-    {
-        lable: 'Job Management',
-        icon: <WorkIcon/>
-    }, 
-    {
-        lable: 'Apply Management',
-        icon: <MarkAsUnreadIcon/>
+      lable: "Dashboard",
+      icon: <HomeIcon />,
+      path: "/home",
     },
     {
-        lable: 'Pay wage',
-        icon: <PaymentIcon/>
+      lable: "Job Management",
+      icon: <WorkIcon />,
+      path: "/job-management",
     },
     {
-        lable: 'Profile',
-        icon: <AccountCircleIcon/>
+      lable: "Apply Management",
+      icon: <MarkAsUnreadIcon />,
+      path: "/apply-management",
     },
-  ]
-
+    {
+      lable: "Pay wage",
+      icon: <PaymentIcon />,
+      path: "/pay-wage",
+    },
+    {
+      lable: "Profile",
+      icon: <AccountCircleIcon />,
+      path: "/profile",
+    },
+  ];
   const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-      {menu.map((menu) => {
-              return (
+    <Box>
+      <img style={{ width: "260px", height: "100px", marginLeft:'-20px', }} src="/assets/logo.png" />
 
-               <ListItem > 
-              <ListItemButton> 
-              <ListItemIcon> {menu.icon} </ListItemIcon>   
-                {menu.lable} 
-                </ListItemButton>
-                 </ListItem> 
-              );
-            })}
+      <List>
+        {menu.map((menu) => {
+          return (
+            <ListItem>
+              <ListItemButton>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  type="button"
+                  to={menu.path}
+                >
+                  <Box sx={{ display: "flex" }}>
+                    <ListItemIcon> {menu.icon} </ListItemIcon>
+                    <Typography>{menu.lable}</Typography>
+                  </Box>
+                </Link>
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
       <Divider />
-    </div>
+    </Box>
   );
 
   const container =
@@ -93,23 +107,10 @@ export default function  SideBar(props: Props) {
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` }
+          ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Home Page
-          </Typography>
-        </Toolbar>
+        
       </AppBar>
       <Box
         component="nav"
@@ -123,14 +124,14 @@ export default function  SideBar(props: Props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true // Better open performance on mobile.
+            keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
-              width: drawerWidth
-            }
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -141,8 +142,8 @@ export default function  SideBar(props: Props) {
             display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
-              width: drawerWidth
-            }
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -154,7 +155,7 @@ export default function  SideBar(props: Props) {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` }
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
         <Toolbar />
