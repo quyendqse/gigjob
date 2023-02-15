@@ -7,11 +7,14 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { firebaseConfig } from "../constants/firebaseConfig";
-const app = initializeApp(firebaseConfig);
+
+let app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 auth.useDeviceLanguage();
 
-const googleProvider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider().setCustomParameters({
+  prompt: "select_account",
+});
 
 export function login(
   email: string,
@@ -21,7 +24,17 @@ export function login(
 ): Promise<void> {
   return signInWithEmailAndPassword(auth, email, password).then(
     onSuccess,
-    onReject
+    (reason) => {
+      var msg: string = "";
+      switch (reason.code) {
+        case "auth/wrong-password":
+          msg = "Incorrect email or password";
+          break;
+        default:
+          msg = "Something went wrong please try again later.";
+      }
+      onReject(msg);
+    }
   );
 }
 

@@ -2,6 +2,7 @@ import { Container } from "@mui/material";
 import styled from "styled-components";
 
 export const SideImage = styled.img`
+  min-height: 800px;
   height: 99.6vh;
   object-fit: cover;
   width: 100%;
@@ -10,8 +11,14 @@ export const SideImage = styled.img`
   padding: 0;
 `;
 
+export const FormBox = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 800px;
+`;
+
 export const FormContainer = styled(Container)`
-  margin-top: 17rem;
   display: flex;
   align-items: center;
   justify-content: center;
