@@ -28,7 +28,6 @@ export default function SideBar(props: Props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
   const drawer = (
     <Box>
       <img
@@ -45,7 +44,8 @@ export default function SideBar(props: Props) {
                 <Link
                   style={{ textDecoration: "none" }}
                   type="button"
-                  to={menu.path}>
+                  to={menu.path}
+                >
                   <Box sx={{ display: "flex" }}>
                     <ListItemIcon> {menu.icon} </ListItemIcon>
                     <Typography>{menu.label}</Typography>
@@ -71,11 +71,13 @@ export default function SideBar(props: Props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-        }}></AppBar>
+        }}
+      ></AppBar>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders">
+        aria-label="mailbox folders"
+      >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
@@ -91,7 +93,8 @@ export default function SideBar(props: Props) {
               boxSizing: "border-box",
               width: drawerWidth,
             },
-          }}>
+          }}
+        >
           {drawer}
         </Drawer>
         <Drawer
@@ -103,7 +106,8 @@ export default function SideBar(props: Props) {
               width: drawerWidth,
             },
           }}
-          open>
+          open
+        >
           {drawer}
         </Drawer>
       </Box>
@@ -113,7 +117,8 @@ export default function SideBar(props: Props) {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}>
+        }}
+      >
         <Toolbar />
         <Outlet />
       </Box>
