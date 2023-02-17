@@ -5,20 +5,21 @@ import {
   IconButton,
   TextareaAutosize,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
-export const EditProfile = () => {
+import { useNavigate } from "react-router-dom";
+export const EditProfile = () => { 
+  const navigate = useNavigate()
+
   return (
     <Box>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Box>
             <Typography sx={{ fontSize: "28px" }} variant="h1">
-              Profile
-            </Typography>
-            <Typography variant="h5" sx={{ mt: "20px", fontSize: "20px" }}>
               Edit Profile
             </Typography>
             <Typography
@@ -101,14 +102,27 @@ export const EditProfile = () => {
               <AddIcon sx={{ fontSize: "40px", color: "white" }} />
             </IconButton>
           </Box>
+          <Box sx={{display:'flex'}}> 
+          <Tooltip title='Back To Page Profile'> 
           <Button
             variant="contained"
             component="label"
-            sx={{ display: "flex", width: "80px", ml: "700px" }}
+            sx={{  width: "100px", ml: "700px" }}
+            onClick={()=>{navigate("/profile")}}
+          >  
+            Cancle
+          </Button>
+          </Tooltip>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{  width: "80px", ml:'20px' }}
           >
             Save
           </Button>
+          </Box>
         </Grid>
+        
         <Grid item xs={4}>
           <img
             src="/assets/logo2.png"

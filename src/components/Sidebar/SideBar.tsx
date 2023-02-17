@@ -12,6 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Link, Outlet } from "react-router-dom";
 import { menu } from "../../constants/menu_sidebar";
+import { Grid } from "@mui/material";
 const drawerWidth = 240;
 interface Props {
   /**
@@ -122,6 +123,7 @@ export default function SideBar(props: Props) {
         <Toolbar />
         <Outlet />
       </Box>
+  
     </Box>
   );
 }

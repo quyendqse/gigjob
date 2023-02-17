@@ -4,6 +4,7 @@ import { PayWage } from "../pages/PayWage/PayWage";
 import Home from "../pages/Home/Home";
 import SignIn from "../pages/SignIn/SignIn";
 import { EditProfile} from "../pages/Profiles/EditProfile";
+import Profile from "../pages/Profiles/Profile";
 
 // the first path will be chosen when router redirect
 export const publicRoutes = [
@@ -32,6 +33,10 @@ export const protectedRoutes = [
   },
   {
     path: "/profile",
+    element: <Profile/>,
+  },
+  {
+    path: "/edit-profile",
     element: <EditProfile/>,
   },
 ];
