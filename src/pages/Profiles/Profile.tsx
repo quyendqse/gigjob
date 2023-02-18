@@ -1,4 +1,7 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Avatar,
   Button,
   Divider,
@@ -19,6 +22,7 @@ export default function Profile() {
   };
 
   return (
+    <> 
     <Box>
       <Grid container spacing={2}>
         <Grid item xs={8}>
@@ -36,7 +40,8 @@ export default function Profile() {
               variant="contained"
               component="label"
               sx={{ width: "50px", ml: "820px", mt: "-350px" }}
-              onClick={click}>
+              onClick={click}
+            >
               Edit
             </Button>
           </Tooltip>
@@ -47,7 +52,8 @@ export default function Profile() {
             />
             <Typography
               variant="h1"
-              sx={{ fontSize: "25px", ml: "30px", mt: "-20px" }}>
+              sx={{ fontSize: "25px", ml: "30px", mt: "-20px" }}
+            >
               NAB Innovation Center
             </Typography>
           </Box>
@@ -120,47 +126,60 @@ export default function Profile() {
             alt="logo"
             style={{ marginLeft: "200px", marginTop: "-50px" }}
           />
+
+        <Accordion sx={{mt:'200px'}}> 
+            <AccordionSummary sx={{height:'30px', mt:'220px', backgroundColor:'primary.main'}}> 
           <Typography
             variant="h4"
-            sx={{ mt: "225px", ml: "-40px", fontSize: "20p" }}>
-            {" "}
-            Detail Information{" "}
+            sx={{  fontSize: "20p", color:'white' }}
+          >
+            Detail Information
           </Typography>
-
+          </AccordionSummary>
+          <AccordionDetails> 
           <Typography variant="h4" sx={{ mt: "20px" }}>
-            {" "}
-            Website{" "}
+            Website
           </Typography>
           <Typography sx={{ mt: "10px" }}>
-            {" "}
-            https://nab-vietnam.apac.positivethinking{" "}
+            https://nab-vietnam.apac.positivethinking
           </Typography>
-          <Box sx={{ mt: "15px" }}>
-            <Typography variant="h4"> Location </Typography>
+
+          <Typography variant="h4" sx={{ }}>
+                Location
+              </Typography>
             <List>
+          
               {DataProfile.map((data) => {
                 return (
                   <Typography sx={{ padding: "10px" }}>
-                    {" "}
-                    {data.location}{" "}
+                    {data.location}
                   </Typography>
                 );
               })}
-              <Typography variant="h4"> Images </Typography>
-              <img
-                alt=""
-                style={{ marginTop: "20px" }}
-                src="/assets/logo2.png"
-              />
-              <img
-                alt=""
-                style={{ marginTop: "20px" }}
-                src="/assets/logo2.png"
-              />
-            </List>
-          </Box>
+                 </List>
+                 </AccordionDetails>
+                 </Accordion>
+            
+
+
+              <Box sx={{ mt: "30px" }}>
+                <Typography variant="h4"> Images </Typography>
+                <img
+                  alt=""
+                  style={{ marginTop: "20px" }}
+                  src="/assets/logo2.png"
+                />
+                <img
+                  alt=""
+                  style={{ marginTop: "20px" }}
+                  src="/assets/logo2.png"
+                />
+              </Box>
+        
+         
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 }
