@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { protectedRoutes, publicRoutes } from "../constants/routes";
+import { protectedRoutes } from "../constants/routes";
 import ProtectedRoute from "./ProtectedRoute";
-import PublicRoute from "./PublicRoute";
 
 function AppRoutes() {
   return (
@@ -10,11 +9,6 @@ function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           {protectedRoutes.map((r, index) => (
             <Route key={`proRoute${index}`} path={r.path} element={r.element} />
-          ))}
-        </Route>
-        <Route element={<PublicRoute />}>
-          {publicRoutes.map((r, index) => (
-            <Route key={`pubRoute${index}`} path={r.path} element={r.element} />
           ))}
         </Route>
         <Route

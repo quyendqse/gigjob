@@ -14,7 +14,7 @@ function Home() {
         height: "100px",
       }}>
       Homepage
-      <button type="button" onClick={() => logOut}>
+      <button type="button" onClick={() => logOut()}>
         Log out
       </button>
     </Box>

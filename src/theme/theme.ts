@@ -54,19 +54,19 @@ const theme = createTheme({
     h1: {
       fontSize: 40,
       lineHeight: "42.19px",
-      fontWeight: 800,
+      fontWeight: 700,
     },
     h2: {
       fontStyle: "normal",
       fontSize: 24,
       lineHeight: "29px",
-      letterSpacing: "0.2em",
+      fontWeight: 600,
     },
     h3: {
       fontStyle: "normal",
       fontSize: 16,
       lineHeight: "17px",
-      fontWeight: 700,
+      fontWeight: 500,
     },
     h4: {
       fontSize: "16px",

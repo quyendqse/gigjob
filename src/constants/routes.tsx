@@ -3,7 +3,7 @@ import { JobManagement } from "../pages/JobManagement/JobManagement";
 import { PayWage } from "../pages/PayWage/PayWage";
 import Home from "../pages/Home/Home";
 import SignIn from "../pages/SignIn/SignIn";
-import { EditProfile} from "../pages/Profiles/EditProfile";
+import { EditProfile } from "../pages/Profiles/EditProfile";
 import Profile from "../pages/Profiles/Profile";
 
 // the first path will be chosen when router redirect
@@ -16,7 +16,7 @@ export const publicRoutes = [
 // the first path will be chosen when router redirect
 export const protectedRoutes = [
   {
-    path: "/home",
+    path: "/",
     element: <Home />,
   },
   {
@@ -33,10 +33,10 @@ export const protectedRoutes = [
   },
   {
     path: "/profile",
-    element: <Profile/>,
+    element: <Profile />,
   },
   {
-    path: "/edit-profile",
-    element: <EditProfile/>,
+    path: "/profile/edit",
+    element: <EditProfile />,
   },
 ];

@@ -1,9 +1,9 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import tagReducer from "./tag/tagSlice";
+import shopReducer from "./shop/shopSlice";
 
 export const store = configureStore({
   reducer: {
-    tag: tagReducer,
+    shop: shopReducer,
   },
 });
 
