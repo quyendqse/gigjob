@@ -29,14 +29,14 @@ export default function Profile() {
           <img
             src="/assets/logo3.png"
             style={{ width: "900px", height: "200px", marginTop: "20px" }}
+            alt=""
           />
           <Tooltip title="Edit Profile">
             <Button
               variant="contained"
               component="label"
               sx={{ width: "50px", ml: "820px", mt: "-350px" }}
-              onClick={click}
-            >
+              onClick={click}>
               Edit
             </Button>
           </Tooltip>
@@ -47,8 +47,7 @@ export default function Profile() {
             />
             <Typography
               variant="h1"
-              sx={{ fontSize: "25px", ml: "30px", mt: "-20px" }}
-            >
+              sx={{ fontSize: "25px", ml: "30px", mt: "-20px" }}>
               NAB Innovation Center
             </Typography>
           </Box>
@@ -101,8 +100,7 @@ export default function Profile() {
                 (Build Operate Transfer).
               </Typography>
             </Grid>
-            <Grid item xs={3} sx={{display:'flex'}}>
-            
+            <Grid item xs={3} sx={{ display: "flex" }}>
               <Divider
                 orientation="vertical"
                 sx={{
@@ -111,9 +109,8 @@ export default function Profile() {
                   mt: "-500px",
                   ml: "720px",
                 }}
-              /> 
-                <Box sx={{ml:'20px', mt:'-450px'}}>
-              </Box>
+              />
+              <Box sx={{ ml: "20px", mt: "-450px" }}></Box>
             </Grid>
           </Grid>
         </Grid>
@@ -123,24 +120,45 @@ export default function Profile() {
             alt="logo"
             style={{ marginLeft: "200px", marginTop: "-50px" }}
           />
-             <Typography variant="h4" sx={{mt:'225px', ml:'-40px', fontSize:'20p'}}> Detail Information  </Typography> 
+          <Typography
+            variant="h4"
+            sx={{ mt: "225px", ml: "-40px", fontSize: "20p" }}>
+            {" "}
+            Detail Information{" "}
+          </Typography>
 
-             <Typography variant="h4" sx={{mt:'20px',}}> Website  </Typography> 
-       <Typography sx={{mt:'10px'}}>  https://nab-vietnam.apac.positivethinking </Typography>
-       <Box sx={{mt:'15px'}}> 
+          <Typography variant="h4" sx={{ mt: "20px" }}>
+            {" "}
+            Website{" "}
+          </Typography>
+          <Typography sx={{ mt: "10px" }}>
+            {" "}
+            https://nab-vietnam.apac.positivethinking{" "}
+          </Typography>
+          <Box sx={{ mt: "15px" }}>
             <Typography variant="h4"> Location </Typography>
-             <List> 
-                  {DataProfile.map((data)=>{ 
-                       return ( 
-                    <Typography sx={{padding:'10px'}}> {data.location} </Typography>
-                       )
-             })}  
-             <Typography variant="h4"> Images </Typography> 
-             <img style={{marginTop:'20px'}} src="/assets/logo2.png"/> 
-             <img style={{marginTop:'20px'}} src="/assets/logo2.png"/> 
-             </List> 
-        
-             </Box> 
+            <List>
+              {DataProfile.map((data) => {
+                return (
+                  <Typography sx={{ padding: "10px" }}>
+                    {" "}
+                    {data.location}{" "}
+                  </Typography>
+                );
+              })}
+              <Typography variant="h4"> Images </Typography>
+              <img
+                alt=""
+                style={{ marginTop: "20px" }}
+                src="/assets/logo2.png"
+              />
+              <img
+                alt=""
+                style={{ marginTop: "20px" }}
+                src="/assets/logo2.png"
+              />
+            </List>
+          </Box>
         </Grid>
       </Grid>
     </Box>
