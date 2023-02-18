@@ -45,17 +45,21 @@ export default function Profile() {
               style={{ width: "130%", height: "60%", marginTop: "20px" }}
               src="/assets/logo3.png"
             />
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                height: "20%",
-                color: "white",
-                ml: "-100px",
-                mt: "30px",
-              }}
-            >
-              EDIT
-            </Button>
+            <Tooltip title="edit profile">
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  height: "20%",
+                  color: "white",
+                  ml: "-100px",
+                  mt: "30px",
+                }}
+                component="label"
+                onClick={click}
+              >
+                EDIT
+              </Button>
+            </Tooltip>
           </Box>
           <Box sx={{ display: "flex", width: "100%" }}>
             <Avatar
@@ -110,7 +114,7 @@ export default function Profile() {
               digital workplace. In Vietnam and the APAC region, we specialize
               in developing mobile, web, and enterprise apps with our Apps &
               Platforms service and bootstrapping software development centers
-              in Vietnam with our unique B.O.T Model (Build Operate Transfer).{" "}
+              in Vietnam with our unique B.O.T Model (Build Operate Transfer).
             </Typography>
           </Box>
         </Grid>
@@ -123,45 +127,47 @@ export default function Profile() {
                 height: "550px",
               }}
             />
-            <Box sx={{ ml:'20px' }}>
-            <Accordion sx={{width:'100%'}}> 
-            <AccordionSummary sx={{height:'30px', backgroundColor:'primary.main'}}> 
-          <Typography
-            variant="h4"
-            sx={{  fontSize: "20p", color:'white', margin:'auto' }}
-          >
-            Detail Information
-          </Typography>
-          </AccordionSummary>
-          <AccordionDetails> 
-          <Typography variant="h4">
-            Website
-          </Typography>
-          <Typography sx={{ mt: "10px" }}>
-            https://nab-vietnam.apac.positivethinking
-          </Typography>
-
-          <Typography variant="h4" sx={{ mt:'10px' }}>
-                Location
-              </Typography>
-            <List>
-          
-              {DataProfile.map((data) => {
-                return (
-                  <Typography sx={{ padding: "10px" }}>
-                    {data.location}
+            <Box sx={{ ml: "20px" }}>
+              <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary
+                  sx={{ height: "30px", backgroundColor: "primary.main" }}
+                >
+                  <Typography
+                    variant="h4"
+                    sx={{ fontSize: "20p", color: "white", margin: "auto" }}
+                  >
+                    Detail Information
                   </Typography>
-                );
-              })}
-                 </List>
-                 </AccordionDetails>
-                 </Accordion>
-                 <Typography variant="h1" sx={{fontSize:'20px'}}> Images </Typography>
-                 <img src="/assets/logo2.png"/>
-                 <img src="/assets/logo2.png"/>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography variant="h4">Website</Typography>
+                  <Typography sx={{ mt: "10px" }}>
+                    https://nab-vietnam.apac.positivethinking
+                  </Typography>
+
+                  <Typography variant="h4" sx={{ mt: "10px" }}>
+                    Location
+                  </Typography>
+                  <List>
+                    {DataProfile.map((data) => {
+                      return (
+                        <Typography sx={{ padding: "10px" }}>
+                          {data.location}
+                        </Typography>
+                      );
+                    })}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+              <Box>
+                <Typography variant="h1" sx={{ fontSize: "20px" }}>
+                  Images
+                </Typography>
+                <img src="/assets/logo2.png" />
+                <img src="/assets/logo2.png" />
+              </Box>
             </Box>
           </Box>
-       
         </Grid>
       </Grid>
     </Box>
