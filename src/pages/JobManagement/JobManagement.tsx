@@ -7,7 +7,6 @@ export const JobManagement = () => {
     sx={{
       backgroundColor: "gray",
       width: "1000px",
-      ml: "300px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

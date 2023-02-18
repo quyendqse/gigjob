@@ -28,7 +28,6 @@ export default function SideBar(props: Props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
   const drawer = (
     <Box>
       <img
