@@ -124,11 +124,13 @@ export const EditProfile = () => {
         </Grid>
         
         <Grid item xs={4}>
+          <Box sx={{display:'flex', justifyContent:'flex-end', mt:'-70px'}}> 
           <img
             src="/assets/logo2.png"
             alt="logo"
-            style={{ marginLeft: "200px", marginTop: "-50px" }}
+            style={{ width: "69px", height: "69px" }}
           />
+          </Box>
         </Grid>
       </Grid>
     </Box>

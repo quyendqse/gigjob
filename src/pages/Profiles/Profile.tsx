@@ -54,6 +54,7 @@ export default function Profile() {
                   ml: "-100px",
                   mt: "30px",
                 }}
+                variant="contained"
                 component="label"
                 onClick={click}
               >
