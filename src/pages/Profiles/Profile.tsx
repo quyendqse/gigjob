@@ -123,25 +123,45 @@ export default function Profile() {
                 height: "550px",
               }}
             />
-            <Box sx={{ mt: "30px" }}>
-              <Accordion sx={{ height: "30px" }}>
-                <AccordionSummary>
-                  <Typography>Detail Information</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  
-                  <Typography>
-                    
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget. Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Suspendisse malesuada lacus ex, sit amet
-                    blandit leo lobortis eget.
+            <Box sx={{ ml:'20px' }}>
+            <Accordion sx={{width:'100%'}}> 
+            <AccordionSummary sx={{height:'30px', backgroundColor:'primary.main'}}> 
+          <Typography
+            variant="h4"
+            sx={{  fontSize: "20p", color:'white', margin:'auto' }}
+          >
+            Detail Information
+          </Typography>
+          </AccordionSummary>
+          <AccordionDetails> 
+          <Typography variant="h4">
+            Website
+          </Typography>
+          <Typography sx={{ mt: "10px" }}>
+            https://nab-vietnam.apac.positivethinking
+          </Typography>
+
+          <Typography variant="h4" sx={{ mt:'10px' }}>
+                Location
+              </Typography>
+            <List>
+          
+              {DataProfile.map((data) => {
+                return (
+                  <Typography sx={{ padding: "10px" }}>
+                    {data.location}
                   </Typography>
-                </AccordionDetails>
-              </Accordion>
+                );
+              })}
+                 </List>
+                 </AccordionDetails>
+                 </Accordion>
+                 <Typography variant="h1" sx={{fontSize:'20px'}}> Images </Typography>
+                 <img src="/assets/logo2.png"/>
+                 <img src="/assets/logo2.png"/>
             </Box>
           </Box>
+       
         </Grid>
       </Grid>
     </Box>
