@@ -7,11 +7,10 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { menu } from "../../constants/menu_sidebar";
+import { IconContext } from "react-icons/lib";
+import Header from "../Header/Header";
 const drawerWidth = 240;
 interface Props {
   /**
@@ -22,45 +21,33 @@ interface Props {
 }
 
 export default function SideBar(props: Props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const logoAsset = "/assets/logo.png";
   const drawer = (
-    <Box>
+    <Box style={{ borderRight: "none" }}>
       <img
-        style={{ width: "260px", height: "100px", marginLeft: "-20px" }}
-        src="/assets/logo.png"
+        style={{ width: drawerWidth, height: "130px", objectFit: "cover" }}
+        src={logoAsset}
         alt="logo"
       />
 
-      <List>
-        {menu.map((menu) => {
-          return (
-            <ListItem>
-              <ListItemButton>
-                <Link
-                  style={{ textDecoration: "none" }}
-                  type="button"
-                  to={menu.path}>
-                  <Box sx={{ display: "flex" }}>
-                    <ListItemIcon> {menu.icon} </ListItemIcon>
-                    <Typography>{menu.label}</Typography>
-                  </Box>
-                </Link>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
+      <IconContext.Provider value={{ color: "black", size: "1.4rem" }}>
+        <List>
+          {menu.map((menu, index) => {
+            return (
+              <ListItem key={index}>
+                <ListItemButton href={menu.path}>
+                  <div style={{ marginRight: "8px" }}>{menu.icon}</div>
+                  {menu.label}
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </IconContext.Provider>
+
       <Divider />
     </Box>
   );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -75,30 +62,12 @@ export default function SideBar(props: Props) {
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}>
-          {drawer}
-        </Drawer>
         <Drawer
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
+              boxSizing: "unset",
               width: drawerWidth,
             },
           }}
@@ -111,9 +80,9 @@ export default function SideBar(props: Props) {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          width: { sm: `calc(100vw - ${drawerWidth}px)` },
         }}>
-        <Toolbar />
+        <Header />
         <Outlet />
       </Box>
     </Box>

@@ -1,136 +1,116 @@
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  TextareaAutosize,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-export const EditProfile = () => { 
-  const navigate = useNavigate()
+import { TextField } from "../../components/TextField";
+import { IoAddOutline } from "react-icons/io5";
+import { Container } from "@mui/system";
+
+const labelStyle = {
+  fontSize: "1rem",
+  marginTop: "1rem",
+  marginBottom: "-0.5rem",
+  marginLeft: "0.25rem",
+};
+
+export const EditProfile = () => {
+  const navigate = useNavigate();
 
   return (
-    <Box>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <Box>
-            <Typography sx={{ fontSize: "28px" }} variant="h1">
-              Edit Profile
-            </Typography>
-            <Typography
-              variant="h5"
-              sx={{ mt: "10px", fontSize: "13px", ml: "10px" }}
-            >
-              Name
-            </Typography>
-            <TextField sx={{ width: "800px", ml: "10px" }} />
-            <Typography variant="h5" sx={{ mt: "10px", fontSize: "13px" }}>
-              Description
-            </Typography>
-            <TextareaAutosize
-              style={{
-                height: 300,
-                width: 800,
-                marginLeft: "10px",
-
-                borderRadius: "8px",
-              }}
-            />
-            <Typography
-              variant="h5"
-              sx={{ mt: "10px", fontSize: "13px", ml: "10px" }}
-            >
-              Website
-            </Typography>
-            <TextField sx={{ width: "800px", ml: "10px" }} />
-            <Typography
-              variant="h5"
-              sx={{ mt: "10px", fontSize: "13px", ml: "10px" }}
-            >
-              Address
-            </Typography>
-            <TextField sx={{ width: "800px", ml: "10px" }} />
-          </Box>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+      }}>
+      <Box>
+        <Typography variant="h2">Edit shop profile</Typography>
+        <Typography variant="h5" sx={labelStyle}>
+          Name
+        </Typography>
+        <TextField
+          hiddenLabel
+          fullWidth
+          id="name"
+          required
+          type={"text"}
+          margin="normal"
+          variant="outlined"
+        />
+        <Typography variant="h5" sx={labelStyle}>
+          Description
+        </Typography>
+        <TextField
+          hiddenLabel
+          multiline
+          fullWidth
+          id="description"
+          required
+          type={"text"}
+          margin="normal"
+          minRows={10}
+          variant="outlined"
+        />
+        <Typography variant="h5" sx={labelStyle}>
+          Website
+        </Typography>
+        <TextField
+          hiddenLabel
+          fullWidth
+          id="website"
+          type={"text"}
+          margin="normal"
+          variant="outlined"
+        />
+        <Typography variant="h5" sx={labelStyle}>
+          Address
+        </Typography>
+        <TextField
+          hiddenLabel
+          fullWidth
+          id="address"
+          type={"text"}
+          margin="normal"
+          variant="outlined"
+        />
+      </Box>
+      <Typography variant="h5" sx={labelStyle}>
+        Images
+      </Typography>
+      <Box>
+        <IconButton
+          sx={{
+            height: "120px",
+            width: "120px",
+            borderRadius: "16px",
+            margin: "1rem 0",
+          }}
+          color="primary"
+          aria-label="upload picture"
+          component="label">
+          <IoAddOutline />
+          <input hidden accept="image/*" type="file" />
+        </IconButton>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          margin: "2rem 1rem",
+        }}>
+        <Tooltip title="Back To Page Profile">
           <Button
             variant="contained"
             component="label"
-            sx={{ mt: "10px", ml: "20px", height: "40px", width: "100px" }}
-          >
-            <AddIcon />
-            <Typography variant="h1" sx={{ fontSize: "10px", ml: "5px" }}>
-              Address
-            </Typography>
+            sx={{ width: "100px" }}
+            onClick={() => {
+              navigate("/profile");
+            }}>
+            Cancel
           </Button>
-          <Typography
-            variant="h5"
-            sx={{ mt: "20px", fontSize: "20px", ml: "10px" }}
-          >
-            Images
-          </Typography>
-          <Box sx={{ mt: "15px" }}>
-            <IconButton
-              sx={{
-                backgroundColor: "grey",
-                ml: "20px",
-                width: "120px",
-                height: "120px",
-              }}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            >
-              <input hidden accept="image/*" type="file" />
-              <AddIcon sx={{ fontSize: "40px", color: "white" }} />
-            </IconButton>
-            <IconButton
-              sx={{
-                backgroundColor: "grey",
-                ml: "20px",
-                width: "120px",
-                height: "120px",
-              }}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            >
-              <input hidden accept="image/*" type="file" />
-              <AddIcon sx={{ fontSize: "40px", color: "white" }} />
-            </IconButton>
-          </Box>
-          <Box sx={{display:'flex'}}> 
-          <Tooltip title='Back To Page Profile'> 
-          <Button
-            variant="contained"
-            component="label"
-            sx={{  width: "100px", ml: "700px" }}
-            onClick={()=>{navigate("/profile")}}
-          >  
-            Cancle
-          </Button>
-          </Tooltip>
-          <Button
-            variant="contained"
-            component="label"
-            sx={{  width: "80px", ml:'20px' }}
-          >
-            Save
-          </Button>
-          </Box>
-        </Grid>
-        
-        <Grid item xs={4}>
-          <img
-            src="/assets/logo2.png"
-            alt="logo"
-            style={{ marginLeft: "200px", marginTop: "-50px" }}
-          />
-        </Grid>
-      </Grid>
-    </Box>
+        </Tooltip>
+        <Button variant="contained" component="label" sx={{ width: "80px" }}>
+          Save
+        </Button>
+      </Box>
+    </Container>
   );
 };

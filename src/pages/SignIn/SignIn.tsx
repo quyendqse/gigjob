@@ -41,13 +41,7 @@ function SignIn() {
     login(
       values.email,
       values.password,
-      (u) => {
-        if (u) {
-          navigate("/home");
-        } else {
-          alert("Email or password is incorrect");
-        }
-      },
+      (u) => {},
       (reason) => setErrorMessage(reason)
     );
   };

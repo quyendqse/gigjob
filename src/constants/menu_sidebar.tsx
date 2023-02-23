@@ -1,32 +1,35 @@
-import HomeIcon from "@mui/icons-material/Home";
-import WorkIcon from "@mui/icons-material/Work";
-import MarkAsUnreadIcon from "@mui/icons-material/MarkAsUnread";
-import PaymentIcon from "@mui/icons-material/Payment";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import {
+  IoCardOutline,
+  IoCubeOutline,
+  IoFileTrayFullOutline,
+  IoHomeOutline,
+  IoStorefrontOutline,
+} from "react-icons/io5";
+
 export const menu = [
   {
     label: "Dashboard",
-    icon: <HomeIcon />,
-    path: "/home",
+    icon: <IoHomeOutline />,
+    path: "/",
   },
   {
     label: "Job Management",
-    icon: <WorkIcon />,
+    icon: <IoCubeOutline />,
     path: "/job-management",
   },
   {
     label: "Apply Management",
-    icon: <MarkAsUnreadIcon />,
+    icon: <IoFileTrayFullOutline />,
     path: "/apply-management",
   },
   {
     label: "Pay wage",
-    icon: <PaymentIcon />,
+    icon: <IoCardOutline />,
     path: "/pay-wage",
   },
   {
     label: "Profile",
-    icon: <AccountCircleIcon />,
+    icon: <IoStorefrontOutline />,
     path: "/profile",
   },
 ];

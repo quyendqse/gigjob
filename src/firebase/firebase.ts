@@ -8,8 +8,8 @@ import {
 } from "firebase/auth";
 import { firebaseConfig } from "../constants/firebaseConfig";
 
-let app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 auth.useDeviceLanguage();
 
 const googleProvider = new GoogleAuthProvider().setCustomParameters({
@@ -37,10 +37,6 @@ export function login(
     }
   );
 }
-
-export const currentUser = () => {
-  return auth.currentUser;
-};
 
 export function loginWithGoogle(
   onSuccess: (u: UserCredential) => void,
