@@ -24,6 +24,7 @@ import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { login, loginWithGoogle } from "../../firebase/firebase";
 import { useState } from "react";
+import { routes } from "../../constants/routes";
 
 interface SignInForm {
   email: string;
@@ -50,7 +51,7 @@ function SignIn() {
     loginWithGoogle(
       (user) => {
         if (user) {
-          navigate("/home");
+          navigate(routes[0].path);
         } else {
           alert("Something went wrong. Please try again later.");
         }
@@ -83,9 +84,7 @@ function SignIn() {
                   {errorMessage}
                 </Alert>
               )}
-              <Typography variant="h1" color={"#1f2632"}>
-                Sign in
-              </Typography>
+              <Typography variant="h3">Sign in</Typography>
               <Formik initialValues={initFormValue} onSubmit={handleSignIn}>
                 {({
                   values,

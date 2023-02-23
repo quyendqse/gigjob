@@ -1,35 +1,35 @@
 import {
-  IoCardOutline,
-  IoCubeOutline,
-  IoFileTrayFullOutline,
-  IoHomeOutline,
-  IoStorefrontOutline,
+  IoBriefcase,
+  IoCalendar,
+  IoHome,
+  IoStorefront,
+  IoWallet,
 } from "react-icons/io5";
 
 export const menu = [
   {
-    label: "Dashboard",
-    icon: <IoHomeOutline />,
+    label: "Home",
+    icon: <IoHome />,
     path: "/",
   },
   {
-    label: "Job Management",
-    icon: <IoCubeOutline />,
-    path: "/job-management",
+    label: "Schedule",
+    icon: <IoCalendar />,
+    path: "/schedule",
   },
   {
-    label: "Apply Management",
-    icon: <IoFileTrayFullOutline />,
-    path: "/apply-management",
+    label: "Job post",
+    icon: <IoBriefcase />,
+    path: "/job",
   },
   {
-    label: "Pay wage",
-    icon: <IoCardOutline />,
-    path: "/pay-wage",
+    label: "Payment",
+    icon: <IoWallet />,
+    path: "/payment",
   },
   {
     label: "Profile",
-    icon: <IoStorefrontOutline />,
+    icon: <IoStorefront />,
     path: "/profile",
   },
 ];
