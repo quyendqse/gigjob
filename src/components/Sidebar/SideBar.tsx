@@ -7,8 +7,6 @@ import { menu } from "../../constants/menu_sidebar";
 import { IconContext } from "react-icons/lib";
 import Header from "../Header/Header";
 import { ListItemIcon, ListItemText } from "@mui/material";
-import { logOut } from "../../firebase/firebase";
-import { IoLogOut } from "react-icons/io5";
 import { Outlet, useLocation } from "react-router-dom";
 const drawerWidth = 320;
 const mainLayoutStyle = {

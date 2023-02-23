@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Icon,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { Avatar, Button, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import { IoCreate, IoLogOut, IoSettings } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
