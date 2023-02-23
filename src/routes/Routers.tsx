@@ -1,5 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { protectedRoutes } from "../constants/routes";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { routes } from "../constants/routes";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
@@ -7,8 +7,8 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoute />}>
-          {protectedRoutes.map((r, index) => (
-            <Route key={`proRoute${index}`} path={r.path} element={r.element} />
+          {routes.map((r, index) => (
+            <Route key={index} path={r.path} element={r.element} />
           ))}
         </Route>
         <Route
@@ -17,7 +17,7 @@ function AppRoutes() {
           //TODO: update this error page to complete UI
           element={
             <div>
-              Something went wrong. <a href="/">Go back</a>
+              Something went wrong. <a href={routes[0].path}>Go back</a>
             </div>
           }
         />

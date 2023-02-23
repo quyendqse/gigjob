@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import App from "./App";
 
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
 
 const container = document.getElementById("root")!;
@@ -15,6 +15,7 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Provider store={store}>
         <App />
       </Provider>

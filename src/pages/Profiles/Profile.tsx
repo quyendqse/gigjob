@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import Stack from "../../components/Stack/Stack";
 import { useAppSelector } from "../../store/hooks";
 import { selectShop } from "../../store/shop/shopSlice";
-import Thumbnail from "./components/Thumbnail";
 import { DataProfile } from "./DataProfile";
 
 export default function Profile() {
@@ -29,7 +28,7 @@ export default function Profile() {
   return (
     <Box>
       <Stack>
-        <Thumbnail image="/assets/logo3.png" />
+        {/* <Thumbnail image="/assets/logo3.png" /> */}
         <Tooltip
           title="Edit Profile"
           sx={{ position: "absolute", right: "16px", top: "16px" }}>

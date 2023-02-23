@@ -1,42 +1,27 @@
-import { ApplyManagement } from "../pages/ApplyManagement/ApplyManagement";
-import { JobManagement } from "../pages/JobManagement/JobManagement";
-import { PayWage } from "../pages/PayWage/PayWage";
 import Home from "../pages/Home/Home";
-import SignIn from "../pages/SignIn/SignIn";
-import { EditProfile } from "../pages/Profiles/EditProfile";
 import Profile from "../pages/Profiles/Profile";
-
 // the first path will be chosen when router redirect
-export const publicRoutes = [
-  {
-    path: "/",
-    element: <SignIn />,
-  },
-];
-// the first path will be chosen when router redirect
-export const protectedRoutes = [
+export const routes = [
   {
     path: "/",
     element: <Home />,
   },
   {
-    path: "/job-management",
-    element: <JobManagement />,
+    path: "/schedule",
+    //TODO: replace
+    element: <div>Schedule</div>,
   },
   {
-    path: "/apply-management",
-    element: <ApplyManagement />,
+    path: "/job",
+    //TODO: replace
+    element: <div>Job post</div>,
   },
   {
-    path: "/pay-wage",
-    element: <PayWage />,
+    path: "/payment",
+    element: <div>Payment</div>,
   },
   {
     path: "/profile",
     element: <Profile />,
-  },
-  {
-    path: "/profile/edit",
-    element: <EditProfile />,
   },
 ];

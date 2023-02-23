@@ -1,87 +1,78 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import { Outlet } from "react-router-dom";
 import { menu } from "../../constants/menu_sidebar";
 import { IconContext } from "react-icons/lib";
 import Header from "../Header/Header";
-const drawerWidth = 240;
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
+import { ListItemIcon, ListItemText } from "@mui/material";
+import { logOut } from "../../firebase/firebase";
+import { IoLogOut } from "react-icons/io5";
+import { Outlet, useLocation } from "react-router-dom";
+const drawerWidth = 320;
+const mainLayoutStyle = {
+  flexGrow: 1,
+  width: { sm: `calc(100vw - ${drawerWidth}px)` },
+};
+const drawerStyle = {
+  display: { xs: "none", sm: "block" },
+  "& .Mui-selected": {
+    "& .MuiListItemIcon-root": {
+      color: "#A23F00",
+    },
+    "& .MuiListItemText-primary": {
+      color: "#A23F00",
+      fontFamily: "Open Sans",
+      fontWeight: "700",
+      fontSize: "18px",
+    },
+  },
+};
 
-export default function SideBar(props: Props) {
+export default function SideBar() {
   const logoAsset = "/assets/logo.png";
+  const location = useLocation();
+  console.log(location.hash);
+
+  const getSelectedItem = (path: string, num: number) => {
+    return (
+      (num === 0 && location.pathname === "/") ||
+      (num !== 0 && location.pathname === path)
+    );
+  };
   const drawer = (
     <Box style={{ borderRight: "none" }}>
-      <img
-        style={{ width: drawerWidth, height: "130px", objectFit: "cover" }}
-        src={logoAsset}
-        alt="logo"
-      />
-
-      <IconContext.Provider value={{ color: "black", size: "1.4rem" }}>
+      <img className="logoBrandStyle" src={logoAsset} alt="logo" />
+      <IconContext.Provider value={{ size: "1.6rem" }}>
         <List>
           {menu.map((menu, index) => {
             return (
               <ListItem key={index}>
-                <ListItemButton href={menu.path}>
-                  <div style={{ marginRight: "8px" }}>{menu.icon}</div>
-                  {menu.label}
+                <ListItemButton
+                  selected={getSelectedItem(menu.path, index)}
+                  href={menu.path}>
+                  <ListItemIcon>{menu.icon}</ListItemIcon>
+                  <ListItemText>{menu.label}</ListItemText>
                 </ListItemButton>
               </ListItem>
             );
           })}
         </List>
       </IconContext.Provider>
-
-      <Divider />
     </Box>
   );
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}></AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders">
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "unset",
-              width: drawerWidth,
-            },
-          }}
-          open>
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
+        <Drawer variant="permanent" sx={drawerStyle} open>
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100vw - ${drawerWidth}px)` },
-        }}>
+      <Box component="main" sx={mainLayoutStyle}>
         <Header />
         <Outlet />
       </Box>
