@@ -69,10 +69,12 @@ const theme = createTheme({
     h5: {
       fontWeight: "600",
       lineHeight: "22px",
+      color: "#351000",
     },
     h6: {},
     body1: {
       lineHeight: "24px",
+      color: "#351000",
     },
     body2: {},
     caption: {

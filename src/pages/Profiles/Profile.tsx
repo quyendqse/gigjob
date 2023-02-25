@@ -1,102 +1,129 @@
+import { Grid, Link, Typography } from "@mui/material";
 import {
-  Avatar,
-  Button,
-  Divider,
-  Grid,
-  Link,
-  List,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import Stack from "../../components/Stack/Stack";
+  IoCall,
+  IoFileTray,
+  IoGlobe,
+  IoLocation,
+  IoMailOpen,
+} from "react-icons/io5";
+import { IconContext } from "react-icons/lib";
+import { account } from "../../mockData/shopProfile";
 import { useAppSelector } from "../../store/hooks";
 import { selectShop } from "../../store/shop/shopSlice";
-import { DataProfile } from "./DataProfile";
+import {
+  Card,
+  CenterColumn,
+  FlexCenterContainer,
+  Image,
+  ShopInfoLabel,
+  ShopInfoValue,
+  EquallyRow,
+  Row,
+} from "./Profile.style";
 
-export default function Profile() {
-  const navigate = useNavigate();
+function Profile() {
+  const shopProfile = useAppSelector(selectShop);
 
-  const shop = useAppSelector(selectShop);
-
-  const click = () => {
-    navigate("/profile/edit");
-  };
-
+  const card2RemTop = { margin: "2rem 0 0 0" };
   return (
-    <Box>
-      <Stack>
-        {/* <Thumbnail image="/assets/logo3.png" /> */}
-        <Tooltip
-          title="Edit Profile"
-          sx={{ position: "absolute", right: "16px", top: "16px" }}>
-          <Button variant="contained" component="label" onClick={click}>
-            Edit
-          </Button>
-        </Tooltip>
-        <Box
-          sx={{
-            display: "flex",
-            left: "30px",
-            position: "absolute",
-            bottom: "-60px",
-            alignItems: "end",
-          }}>
-          <Avatar
-            draggable={"false"}
-            sx={{ width: 120, height: 120, marginRight: "20px" }}
-            src="/assets/logo2.png"
-          />
-          <Typography variant="h1">{shop.name}</Typography>
-        </Box>
-      </Stack>
-      <Grid container spacing={2} sx={{ marginTop: "4rem" }}>
-        <Grid item lg={8} xs={12}>
-          <Typography
-            variant="h4"
-            sx={{
-              fontSize: "24px",
-              marginBottom: "1rem",
-            }}>
-            About Company
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              textAlign: "justify",
-            }}>
-            {shop.description}
-          </Typography>
-        </Grid>
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{ margin: "0 2rem", display: { xs: "none", lg: "inherit" } }}
-        />
-        <Grid item lg={3} xs={12}>
-          <Typography
-            variant="h4"
-            sx={{ fontSize: "24px", marginBottom: "1rem" }}>
+    <Grid container spacing={4}>
+      <Grid item xl={5} xs={12}>
+        <Card>
+          <FlexCenterContainer>
+            <Image src={account.image_url} />
+            <Typography variant="h5" className="primaryColor">
+              {shopProfile.name}
+            </Typography>
+            <EquallyRow>
+              <CenterColumn>
+                <ShopInfoValue>23</ShopInfoValue>
+                <ShopInfoLabel>Posts</ShopInfoLabel>
+              </CenterColumn>
+              <CenterColumn>
+                <ShopInfoValue>N/A</ShopInfoValue>
+                <ShopInfoLabel>Reviews</ShopInfoLabel>
+              </CenterColumn>
+              <CenterColumn>
+                <ShopInfoValue>140</ShopInfoValue>
+                <ShopInfoLabel>Applicants</ShopInfoLabel>
+              </CenterColumn>
+            </EquallyRow>
+          </FlexCenterContainer>
+        </Card>
+        <Card style={card2RemTop}>
+          <Typography variant="h5" sx={{ margin: "1rem" }}>
             Detail Information
           </Typography>
-
-          <Typography variant="h4"> Website </Typography>
-          <Link href="https://nab-vietnam.apac.positivethinking">
-            https://nab-vietnam.apac.positivethinking
-          </Link>
-          <Box>
-            <Typography variant="h4"> Location </Typography>
-            <List>
-              {DataProfile.map((data) => {
-                return <Typography> {data.location} </Typography>;
-              })}
-              <Typography variant="h4"> Images </Typography>
-            </List>
-          </Box>
-        </Grid>
+          <IconContext.Provider value={{ size: "32px" }}>
+            <Row>
+              <div style={{ margin: "0 0.5rem 0 1rem" }}>
+                <IoLocation className="primaryColor" />
+              </div>
+              <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
+                {shopProfile.address?.map((a) => (
+                  <Typography>{a.location}</Typography>
+                )) ?? "None"}
+              </div>
+            </Row>
+            <Row>
+              <div style={{ margin: "0 0.5rem 0 1rem" }}>
+                <IoMailOpen className="primaryColor" />
+              </div>
+              <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
+                {[account.email]?.map((m) => <Typography>{m}</Typography>) ??
+                  "None"}
+              </div>
+            </Row>
+            <Row>
+              <div style={{ margin: "0 0.5rem 0 1rem" }}>
+                <IoCall className="primaryColor" />
+              </div>
+              <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
+                <Typography>+84 12 345 6789</Typography>
+              </div>
+            </Row>
+            <Row>
+              <div style={{ margin: "0 0.5rem 0 1rem" }}>
+                <IoGlobe className="primaryColor" />
+              </div>
+              <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
+                {[shopProfile.website].map((w) => (
+                  <Link href={w} underline="hover">
+                    {w}
+                  </Link>
+                ))}
+              </div>
+            </Row>
+          </IconContext.Provider>
+        </Card>
+        <Card style={{ margin: "2rem 0" }}>
+          <Typography variant="h5" sx={{ margin: "1rem" }}>
+            Images
+          </Typography>
+          <CenterColumn>
+            <IoFileTray size={"32px"} color="#a23f00" />
+            <Typography>
+              You haven't add any images to your profile yet
+            </Typography>
+          </CenterColumn>
+        </Card>
       </Grid>
-    </Box>
+      <Grid item xl={7} xs={12}>
+        <Card>
+          <Typography variant="h5" sx={{ margin: "1rem" }}>
+            About Company
+          </Typography>
+          <div style={{ margin: "0 1rem" }}>
+            {shopProfile.description.split("\n").map((p) => (
+              <Typography variant="body1" sx={{ textAlign: "justify" }}>
+                {p}
+              </Typography>
+            ))}
+          </div>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }
+
+export default Profile;
