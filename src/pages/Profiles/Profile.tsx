@@ -7,6 +7,7 @@ import {
   IoMailOpen,
 } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
+import { Outlet, useLocation } from "react-router-dom";
 import { account } from "../../mockData/shopProfile";
 import { useAppSelector } from "../../store/hooks";
 import { selectShop } from "../../store/shop/shopSlice";
@@ -22,12 +23,20 @@ import {
 } from "./Profile.style";
 
 function Profile() {
+  const location = useLocation();
   const shopProfile = useAppSelector(selectShop);
-
-  const card2RemTop = { margin: "2rem 0 0 0" };
+  const marginVertical2rem = { margin: "2rem 0" };
+  console.log(location.pathname);
+  if (location.pathname !== "/profile") {
+    return <Outlet />;
+  }
   return (
     <Grid container spacing={4}>
-      <Grid item xl={5} xs={12}>
+      <Grid
+        item
+        xl={5}
+        xs={12}
+        sx={{ paddingBottom: { xl: "2rem", xs: "none" } }}>
         <Card>
           <FlexCenterContainer>
             <Image src={account.image_url} />
@@ -50,7 +59,7 @@ function Profile() {
             </EquallyRow>
           </FlexCenterContainer>
         </Card>
-        <Card style={card2RemTop}>
+        <Card style={marginVertical2rem}>
           <Typography variant="h5" sx={{ margin: "1rem" }}>
             Detail Information
           </Typography>
@@ -60,9 +69,7 @@ function Profile() {
                 <IoLocation className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                {shopProfile.address?.map((a) => (
-                  <Typography>{a.location}</Typography>
-                )) ?? "None"}
+                <Typography>{shopProfile.address}</Typography>
               </div>
             </Row>
             <Row>
@@ -70,8 +77,9 @@ function Profile() {
                 <IoMailOpen className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                {[account.email]?.map((m) => <Typography>{m}</Typography>) ??
-                  "None"}
+                {[account.email]?.map((m, ind) => (
+                  <Typography key={ind}>{m}</Typography>
+                )) ?? "None"}
               </div>
             </Row>
             <Row>
@@ -79,7 +87,7 @@ function Profile() {
                 <IoCall className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                <Typography>+84 12 345 6789</Typography>
+                <Typography>{shopProfile.phone}</Typography>
               </div>
             </Row>
             <Row>
@@ -87,8 +95,8 @@ function Profile() {
                 <IoGlobe className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                {[shopProfile.website].map((w) => (
-                  <Link href={w} underline="hover">
+                {[shopProfile.website].map((w, li) => (
+                  <Link key={li} href={w} underline="hover">
                     {w}
                   </Link>
                 ))}
@@ -96,7 +104,7 @@ function Profile() {
             </Row>
           </IconContext.Provider>
         </Card>
-        <Card style={{ margin: "2rem 0" }}>
+        <Card>
           <Typography variant="h5" sx={{ margin: "1rem" }}>
             Images
           </Typography>
@@ -109,13 +117,16 @@ function Profile() {
         </Card>
       </Grid>
       <Grid item xl={7} xs={12}>
-        <Card>
+        <Card style={{ marginBottom: "2rem" }}>
           <Typography variant="h5" sx={{ margin: "1rem" }}>
             About Company
           </Typography>
           <div style={{ margin: "0 1rem" }}>
-            {shopProfile.description.split("\n").map((p) => (
-              <Typography variant="body1" sx={{ textAlign: "justify" }}>
+            {shopProfile.description.split("\n").map((p, pi) => (
+              <Typography
+                key={pi}
+                variant="body1"
+                sx={{ textAlign: "justify" }}>
                 {p}
               </Typography>
             ))}

@@ -21,18 +21,7 @@ export const shop: Shop = {
   name: "The Company",
   account_id: "999",
   website: "https://Company-vietnam.apac.positivethinking",
-  address: [
-    {
-      location:
-        "7th Floor, Etown 5, Cong Hoa Str., Tan Binh Dist., Ho Chi Minh City, Vietnam",
-    },
-    // {
-    //   location:
-    //     "7th Floor, Etown 5, Cong Hoa Str., Tan Binh Dist., Ho Chi Minh City, Vietnam",
-    // },
-    // {
-    //   location:
-    //     "7th Floor, Etown 5, Cong Hoa Str., Tan Binh Dist., Ho Chi Minh City, Vietnam",
-    // },
-  ],
+  address:
+    "7th Floor, Etown 5, Cong Hoa Str., Tan Binh Dist., Ho Chi Minh City, Vietnam",
+  phone: "+84 12 345 6789",
 };

@@ -130,12 +130,12 @@ const theme = createTheme({
           height: "3rem",
           margin: "0.25rem 0",
           borderRadius: "8px",
-        },
-        selected: {
-          borderRadius: "8px",
-          backgroundColor: "#f9dcce",
-          ":hover": {
-            backgroundColor: "#transparent",
+          "&.Mui-selected": {
+            borderRadius: "8px",
+            backgroundColor: "#f9dcce",
+            ":hover": {
+              backgroundColor: "#transparent",
+            },
           },
         },
       },
