@@ -69,10 +69,12 @@ const theme = createTheme({
     h5: {
       fontWeight: "600",
       lineHeight: "22px",
+      color: "#351000",
     },
     h6: {},
     body1: {
       lineHeight: "24px",
+      color: "#351000",
     },
     body2: {},
     caption: {
@@ -128,12 +130,12 @@ const theme = createTheme({
           height: "3rem",
           margin: "0.25rem 0",
           borderRadius: "8px",
-        },
-        selected: {
-          borderRadius: "8px",
-          backgroundColor: "#f9dcce",
-          ":hover": {
-            backgroundColor: "#transparent",
+          "&.Mui-selected": {
+            borderRadius: "8px",
+            backgroundColor: "#f9dcce",
+            ":hover": {
+              backgroundColor: "#transparent",
+            },
           },
         },
       },

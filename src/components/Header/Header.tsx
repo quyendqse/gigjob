@@ -2,13 +2,14 @@ import { Avatar, Button, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import { IoCreate, IoLogOut, IoSettings } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { menu } from "../../constants/menu_sidebar";
 import { logOut } from "../../firebase/firebase";
 import { FlexHeader, HeaderName } from "./Header.style";
 
 function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -19,6 +20,11 @@ function Header() {
     setAnchorEl(null);
   };
 
+  const moveToEditProfile = () => {
+    navigate("/profile/edit");
+    handleClose();
+  };
+
   return (
     <FlexHeader>
       <HeaderName variant="h3">
@@ -26,7 +32,7 @@ function Header() {
           menu.filter((m) => {
             return (
               (m.path === "/home" && location.pathname === "/") ||
-              m.path === location.pathname
+              m.path.split(/\//g)[1] === location.pathname.split(/\//g)[1]
             );
           })[0].label
         }
@@ -49,7 +55,7 @@ function Header() {
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={moveToEditProfile}>
             <ListItemIcon>
               <IoCreate />
             </ListItemIcon>

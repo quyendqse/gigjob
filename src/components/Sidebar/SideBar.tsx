@@ -8,6 +8,7 @@ import { IconContext } from "react-icons/lib";
 import Header from "../Header/Header";
 import { ListItemIcon, ListItemText } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
+import { Padding } from "./Sidebar.style";
 const drawerWidth = 320;
 const mainLayoutStyle = {
   flexGrow: 1,
@@ -72,7 +73,9 @@ export default function SideBar() {
       </Box>
       <Box component="main" sx={mainLayoutStyle}>
         <Header />
-        <Outlet />
+        <Padding>
+          <Outlet />
+        </Padding>
       </Box>
     </Box>
   );

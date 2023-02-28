@@ -18,3 +18,7 @@ code {
   height: 115px;
   object-fit: cover;
 }
+
+.primaryColor {
+  color: #a23f00;
+}

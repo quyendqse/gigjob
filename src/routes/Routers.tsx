@@ -8,14 +8,22 @@ function AppRoutes() {
       <Routes>
         <Route element={<ProtectedRoute />}>
           {routes.map((r, index) => (
-            <Route key={index} path={r.path} element={r.element} />
+            <Route key={index} path={r.path} element={r.element}>
+              {r.children?.map((e, i) => (
+                <Route
+                  key={`${index}-${i}`}
+                  path={r.path + e.path.replace(".", "")}
+                  element={e.element}
+                />
+              ))}
+            </Route>
           ))}
         </Route>
         <Route
           path="*"
           //this jsx is just temporary. This will be update with complete UI later.
           //TODO: update this error page to complete UI
-          element={
+          errorElement={
             <div>
               Something went wrong. <a href={routes[0].path}>Go back</a>
             </div>

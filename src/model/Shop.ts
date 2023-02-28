@@ -5,7 +5,6 @@ export interface Shop {
   account_id: string;
   website?: string;
   images?: Array<string>;
-  address?: Array<{
-    location: string;
-  }>;
+  address?: string;
+  phone: string;
 }

@@ -1,4 +1,5 @@
 import Home from "../pages/Home/Home";
+import { EditProfile } from "../pages/Profiles/EditProfile";
 import Profile from "../pages/Profiles/Profile";
 // the first path will be chosen when router redirect
 export const routes = [
@@ -23,5 +24,11 @@ export const routes = [
   {
     path: "/profile",
     element: <Profile />,
+    children: [
+      {
+        path: "./edit",
+        element: <EditProfile />,
+      },
+    ],
   },
 ];

@@ -1,11 +1,22 @@
-import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "../../components/TextField";
-import { IoAddOutline } from "react-icons/io5";
+import { IoAddCircle, IoAddOutline } from "react-icons/io5";
 import { Container } from "@mui/system";
+import { Formik } from "formik";
+import { useAppSelector } from "../../store/hooks";
+import { selectShop } from "../../store/shop/shopSlice";
+import { Card, CenterColumn, Image } from "./Profile.style";
+import { account } from "../../mockData/shopProfile";
 
 const labelStyle = {
-  fontSize: "1rem",
   marginTop: "1rem",
   marginBottom: "-0.5rem",
   marginLeft: "0.25rem",
@@ -14,63 +25,134 @@ const labelStyle = {
 export const EditProfile = () => {
   const navigate = useNavigate();
 
+  window.onbeforeunload = () => {
+    return window.confirm("Changes you made may not be saved.");
+  };
+  // useBeforeUnload(
+  //   React.useCallback(() => {
+  //     window.confirm("Changes you made may not be saved.");
+  //   }, [])
+  // );
+
+  const shopProfile = useAppSelector(selectShop);
+
   return (
     <Container
       sx={{
         display: "flex",
         flexDirection: "column",
       }}>
-      <Box>
-        <Typography variant="h2">Edit shop profile</Typography>
-        <Typography variant="h5" sx={labelStyle}>
-          Name
-        </Typography>
-        <TextField
-          hiddenLabel
-          fullWidth
-          id="name"
-          required
-          type={"text"}
-          margin="normal"
-          variant="outlined"
-        />
-        <Typography variant="h5" sx={labelStyle}>
-          Description
-        </Typography>
-        <TextField
-          hiddenLabel
-          multiline
-          fullWidth
-          id="description"
-          required
-          type={"text"}
-          margin="normal"
-          minRows={10}
-          variant="outlined"
-        />
-        <Typography variant="h5" sx={labelStyle}>
-          Website
-        </Typography>
-        <TextField
-          hiddenLabel
-          fullWidth
-          id="website"
-          type={"text"}
-          margin="normal"
-          variant="outlined"
-        />
-        <Typography variant="h5" sx={labelStyle}>
-          Address
-        </Typography>
-        <TextField
-          hiddenLabel
-          fullWidth
-          id="address"
-          type={"text"}
-          margin="normal"
-          variant="outlined"
-        />
-      </Box>
+      <Formik
+        initialValues={shopProfile}
+        onSubmit={() => console.log("Submitting")}>
+        {({ values, handleBlur, handleChange, handleSubmit }) => {
+          return (
+            <>
+              <Typography variant="h2">Edit shop profile</Typography>
+              <Grid container spacing={5}>
+                <Grid item xl={8} xs={12}>
+                  <Typography variant="h5" sx={labelStyle}>
+                    Name
+                  </Typography>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    id="name"
+                    required
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.name}
+                  />
+                  <Typography variant="h5" sx={labelStyle}>
+                    Website
+                  </Typography>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    id="website"
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.website}
+                  />
+                  <Typography variant="h5" sx={labelStyle}>
+                    Phone Number
+                  </Typography>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    id="phone"
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.phone}
+                  />
+                </Grid>
+                <Grid item xl={4} xs={12}>
+                  <Typography variant="h5" sx={labelStyle}>
+                    Logo
+                  </Typography>
+                  <Card
+                    style={{
+                      marginTop: "2rem",
+                      height: "80%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onClick={() => {}}>
+                    {account.image_url ? (
+                      <Image src={account.image_url} />
+                    ) : (
+                      <CenterColumn>
+                        <IoAddCircle size={50} />
+                      </CenterColumn>
+                    )}
+                  </Card>
+                </Grid>
+              </Grid>
+              <Typography variant="h5" sx={labelStyle}>
+                Address
+              </Typography>
+              <TextField
+                hiddenLabel
+                fullWidth
+                id="address"
+                type={"text"}
+                margin="normal"
+                variant="outlined"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.address}
+              />
+              <Typography variant="h5" sx={labelStyle}>
+                Description
+              </Typography>
+              <TextField
+                hiddenLabel
+                multiline
+                fullWidth
+                id="description"
+                required
+                type={"text"}
+                margin="normal"
+                minRows={10}
+                variant="outlined"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.description}
+              />
+            </>
+          );
+        }}
+      </Formik>
       <Typography variant="h5" sx={labelStyle}>
         Images
       </Typography>
@@ -102,12 +184,19 @@ export const EditProfile = () => {
             component="label"
             sx={{ width: "100px" }}
             onClick={() => {
-              navigate("/profile");
+              window.location.href = "/profile";
             }}>
             Cancel
           </Button>
         </Tooltip>
-        <Button variant="contained" component="label" sx={{ width: "80px" }}>
+        <Button
+          onClick={() => {
+            window.onbeforeunload = null;
+            navigate("/profile");
+          }}
+          variant="contained"
+          component="label"
+          sx={{ width: "80px" }}>
           Save
         </Button>
       </Box>
