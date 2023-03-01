@@ -1,12 +1,17 @@
-export interface Account {
+import Address from "./Address";
+import Wallet from "./Wallet";
+
+export default interface Account {
   id: string;
-  created_date: Date;
-  email: string;
-  image_url: string;
-  is_disable: boolean;
-  is_locked: boolean;
-  password: string;
-  role: number;
-  updated_date: Date;
   username: string;
+  email: string;
+  phone: string;
+  createdDate: Date;
+  updatedDate: Date;
+  isLocked: boolean;
+  isDisable: boolean;
+  imageUrl: string;
+  role: "ADMIN" | "WORKER";
+  wallet: Wallet;
+  addresses: Array<Address>;
 }

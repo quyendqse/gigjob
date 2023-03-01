@@ -1,10 +1,10 @@
-export interface Shop {
+import Account from "./Account";
+import Job from "./Job";
+
+export default interface Shop {
   id: string;
-  description: string;
   name: string;
-  account_id: string;
-  website?: string;
-  images?: Array<string>;
-  address?: string;
-  phone: string;
+  description: string;
+  account: Account;
+  jobs: Array<Job>;
 }

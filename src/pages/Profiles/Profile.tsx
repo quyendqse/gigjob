@@ -1,14 +1,8 @@
-import { Grid, Link, Typography } from "@mui/material";
-import {
-  IoCall,
-  IoFileTray,
-  IoGlobe,
-  IoLocation,
-  IoMailOpen,
-} from "react-icons/io5";
+import { Grid, Typography } from "@mui/material";
+import { IoCall, IoFileTray, IoLocation, IoMailOpen } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { Outlet, useLocation } from "react-router-dom";
-import { account } from "../../mockData/shopProfile";
+import { shopAccount } from "../../mockData/accountData";
 import { useAppSelector } from "../../store/hooks";
 import { selectShop } from "../../store/shop/shopSlice";
 import {
@@ -39,7 +33,7 @@ function Profile() {
         sx={{ paddingBottom: { xl: "2rem", xs: "none" } }}>
         <Card>
           <FlexCenterContainer>
-            <Image src={account.image_url} />
+            <Image src={shopAccount.imageUrl} />
             <Typography variant="h5" className="primaryColor">
               {shopProfile.name}
             </Typography>
@@ -69,7 +63,20 @@ function Profile() {
                 <IoLocation className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                <Typography>{shopProfile.address}</Typography>
+                {shopProfile.account.addresses?.map(
+                  ({ street, district, country, province, city }) => (
+                    <Typography>
+                      {street +
+                        ", " +
+                        district +
+                        ", " +
+                        city +
+                        ", " +
+                        (province ? `${province}, ` : "") +
+                        country}
+                    </Typography>
+                  )
+                )}
               </div>
             </Row>
             <Row>
@@ -77,7 +84,7 @@ function Profile() {
                 <IoMailOpen className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                {[account.email]?.map((m, ind) => (
+                {[shopAccount.email]?.map((m, ind) => (
                   <Typography key={ind}>{m}</Typography>
                 )) ?? "None"}
               </div>
@@ -87,10 +94,10 @@ function Profile() {
                 <IoCall className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                <Typography>{shopProfile.phone}</Typography>
+                <Typography>{shopProfile.account.phone}</Typography>
               </div>
             </Row>
-            <Row>
+            {/* <Row>
               <div style={{ margin: "0 0.5rem 0 1rem" }}>
                 <IoGlobe className="primaryColor" />
               </div>
@@ -101,7 +108,7 @@ function Profile() {
                   </Link>
                 ))}
               </div>
-            </Row>
+            </Row> */}
           </IconContext.Provider>
         </Card>
         <Card>
