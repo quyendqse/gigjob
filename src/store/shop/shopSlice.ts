@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import { shop } from "../../mockData/shopProfile";
-import { Shop } from "../../model/Shop";
+import Shop from "../../model/Shop";
 
 const initialState: Shop = shop;
 

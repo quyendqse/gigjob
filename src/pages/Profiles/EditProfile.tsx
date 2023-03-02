@@ -14,7 +14,7 @@ import { Formik } from "formik";
 import { useAppSelector } from "../../store/hooks";
 import { selectShop } from "../../store/shop/shopSlice";
 import { Card, CenterColumn, Image } from "./Profile.style";
-import { account } from "../../mockData/shopProfile";
+import { shopAccount } from "../../mockData/accountData";
 
 const labelStyle = {
   marginTop: "1rem",
@@ -66,7 +66,7 @@ export const EditProfile = () => {
                     onChange={handleChange}
                     value={values.name}
                   />
-                  <Typography variant="h5" sx={labelStyle}>
+                  {/* <Typography variant="h5" sx={labelStyle}>
                     Website
                   </Typography>
                   <TextField
@@ -78,8 +78,8 @@ export const EditProfile = () => {
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.website}
-                  />
+                    value={values.account}
+                  /> */}
                   <Typography variant="h5" sx={labelStyle}>
                     Phone Number
                   </Typography>
@@ -92,7 +92,7 @@ export const EditProfile = () => {
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.phone}
+                    value={values.account.phone}
                   />
                 </Grid>
                 <Grid item xl={4} xs={12}>
@@ -108,8 +108,8 @@ export const EditProfile = () => {
                       justifyContent: "center",
                     }}
                     onClick={() => {}}>
-                    {account.image_url ? (
-                      <Image src={account.image_url} />
+                    {shopAccount.imageUrl ? (
+                      <Image src={shopAccount.imageUrl} />
                     ) : (
                       <CenterColumn>
                         <IoAddCircle size={50} />
@@ -130,7 +130,7 @@ export const EditProfile = () => {
                 variant="outlined"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address}
+                value={values.account.addresses[0]}
               />
               <Typography variant="h5" sx={labelStyle}>
                 Description

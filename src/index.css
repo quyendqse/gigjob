@@ -22,3 +22,7 @@ code {
 .primaryColor {
   color: #a23f00;
 }
+
+.tableHeader * {
+  font-weight: bold !important;
+}
