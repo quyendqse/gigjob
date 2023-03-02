@@ -5,6 +5,8 @@ import Home from "../pages/Home/Home";
 import SignIn from "../pages/SignIn/SignIn";
 import { EditProfile} from "../pages/Profiles/EditProfile";
 import Profile from "../pages/Profiles/Profile";
+import PostManagement from "../pages/PostManagement/PostManagement";
+
 
 // the first path will be chosen when router redirect
 export const publicRoutes = [
@@ -38,5 +40,9 @@ export const protectedRoutes = [
   {
     path: "/edit-profile",
     element: <EditProfile/>,
+  },
+  {
+    path: "/post",
+    element: <PostManagement/>,
   },
 ];

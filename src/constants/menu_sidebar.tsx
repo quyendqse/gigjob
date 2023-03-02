@@ -25,6 +25,11 @@ export const menu = [
     path: "/pay-wage",
   },
   {
+    label: "Post Management",
+    icon: <PaymentIcon />,
+    path: "/post",
+  },
+  {
     label: "Profile",
     icon: <AccountCircleIcon />,
     path: "/profile",

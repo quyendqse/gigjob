@@ -123,16 +123,16 @@ export default function Profile() {
           <Typography
             variant="h4"
             sx={{ mt: "225px", ml: "-40px", fontSize: "20p" }}>
-            {" "}
+      
             Detail Information{" "}
           </Typography>
 
           <Typography variant="h4" sx={{ mt: "20px" }}>
-            {" "}
+      
             Website{" "}
           </Typography>
           <Typography sx={{ mt: "10px" }}>
-            {" "}
+      
             https://nab-vietnam.apac.positivethinking{" "}
           </Typography>
           <Box sx={{ mt: "15px" }}>
