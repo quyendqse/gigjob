@@ -1,4 +1,6 @@
+import { Payment } from "@mui/icons-material";
 import Home from "../pages/Home/Home";
+import PayMent from "../pages/Payment/PayMent";
 import { EditProfile } from "../pages/Profiles/EditProfile";
 import Profile from "../pages/Profiles/Profile";
 import Schedule from "../pages/Schedule/Schedule";
@@ -20,7 +22,7 @@ export const routes = [
   },
   {
     path: "/payment",
-    element: <div>Payment</div>,
+    element: <PayMent/> ,
   },
   {
     path: "/profile",
