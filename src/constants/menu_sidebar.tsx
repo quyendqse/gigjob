@@ -18,7 +18,7 @@ export const menu = [
     path: "/schedule",
   },
   {
-    label: "Job post",
+    label: "Job Management",
     icon: <IoBriefcase />,
     path: "/job",
   },
@@ -26,11 +26,6 @@ export const menu = [
     label: "Payment",
     icon: <IoWallet />,
     path: "/payment",
-  },
-  {
-    label: "Post Management",
-    icon: <PaymentIcon />,
-    path: "/post",
   },
   {
     label: "Profile",

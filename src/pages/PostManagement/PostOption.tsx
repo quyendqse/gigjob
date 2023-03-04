@@ -3,17 +3,18 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Button, ListItem, ListItemButton } from "@mui/material";
+import { Button, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
+import { IoCreate, IoTrashBin } from "react-icons/io5";
+import { IconContext } from "react-icons/lib";
 
 const options = [
   {
-    edit: "Edit",
+    icon: <IoCreate />,
+    label: "Edit",
   },
   {
-    view: "View Application",
-  },
-  {
-    delete: "Delete",
+    icon: <IoTrashBin />,
+    label: "Delete",
   },
 ];
 
@@ -30,41 +31,40 @@ export default function PostOption() {
   };
 
   return (
-    <div>
+    <div style={{ position: "absolute", top: "32px", right: "32px" }}>
       <IconButton
         aria-label="more"
         id="long-button"
         aria-controls={open ? "long-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVertIcon sx={{ color: "white" }} />
+        onClick={handleClick}>
+        <MoreVertIcon />
       </IconButton>
       <Menu
         id="long-menu"
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
         MenuListProps={{
           "aria-labelledby": "long-button",
         }}
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: "20ch",
-          },
-        }}
-      >
-        {options.map((option) => (
-          <MenuItem onClick={handleClose}>
-            {option.edit}
-
-            {option.view}
-
-            {option.delete}
-          </MenuItem>
-        ))}
+        onClose={handleClose}>
+        <IconContext.Provider value={{ size: "1.4rem" }}>
+          {options.map((option) => (
+            <MenuItem onClick={() => {}}>
+              <ListItemIcon>{option.icon}</ListItemIcon>
+              {option.label}
+            </MenuItem>
+          ))}
+        </IconContext.Provider>
       </Menu>
     </div>
   );

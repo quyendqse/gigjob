@@ -1,107 +1,81 @@
-import { Button, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Grid,
+  List,
+  ListItemButton,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
-import DataContent from "./DataContent";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { useState } from "react";
+import JobDescriptionContainer from "./DataContent";
+import { IoAddCircle } from "react-icons/io5";
+import { IconContext } from "react-icons/lib";
+import {
+  BoxContainer,
+  ListHead,
+  ListItemPadding,
+} from "./PostManagement.style";
+import { jobData, jobList } from "../../mockData/jobData";
+import Job from "../../model/Job";
 
-export interface ListItem {
-  title: string;
-  company:string;
-  city:string;
-  createDate :string;
-  closeDate: String;
-  salary: string
-}
+const JobManagement = () => {
+  const [dataView, setDataview] = useState<Job>(jobData);
 
-const listItem: ListItem[] = [
-  {
-    title: 'Remote senior java...',
-    company: 'The company',
-    city: 'Ho chi minh',
-    createDate: 'Opened on Jan 15th, 2023',
-    closeDate: 'Close on mar 15th, 2023', 
-    salary: 'Salary:30000/hour',
-
-  },
-  {
-    title: 'Remote senior Python...',
-    company: 'The company',
-    city: 'Hai Phong',
-    createDate: 'Opened on Jan 15th, 2023',
-    closeDate: 'Close on mar 15th, 2023',
-    salary: 'Salary:25000/hour',
-  },
-  {
-    title: 'Remote senior C#...',
-    company: 'The company',
-    city: 'Da nang',
-    createDate: 'Opened on Jan 15th, 2023',
-    closeDate: 'Close on mar 15th, 2023',
-    salary: 'Salary:50000/hour',
-  },
-
-];
-
-const PostManagement = () => {
-  const [dataView, setDataview] = useState()
-
-  const handleOnclick = (id: string) => {
-    const r: any  = listItem.filter((i) => i.title === id)
-    if(r.length > 0){
-      setDataview(r[0])
+  const handleOnclick = (job: Job) => {
+    const index = jobList.indexOf(job);
+    if (index >= 0 && index < jobList.length) {
+      setDataview(job);
     }
-  }
+  };
   return (
-    <Grid container spacing={2} >
-      <Grid item xs={11}>
-        <Typography variant="h2"> Job post </Typography>
+    <Grid container spacing={4}>
+      <Grid item xs={5}>
+        <BoxContainer sx={{ backgroundColor: "white" }}>
+          <Box>
+            <ListHead>
+              <Typography variant="h5"> All post </Typography>
+              <IconContext.Provider value={{ size: "2rem" }}>
+                <Button>
+                  <IoAddCircle /> New Post
+                </Button>
+              </IconContext.Provider>
+            </ListHead>
+            <Divider
+              orientation="horizontal"
+              sx={{ margin: "1rem -2rem 0 -2rem" }}
+            />
+            <List>
+              {jobList.map((ite) => (
+                <>
+                  <ListItemButton onClick={() => handleOnclick(ite)}>
+                    <ListItemPadding style={{ overflow: "hidden" }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontWeight: "bold" }}
+                        overflow={"hidden"}
+                        textOverflow={"ellipsis"}
+                        noWrap>
+                        {ite.title}
+                      </Typography>
+                      <Typography>{`Created on: ${ite.createdDate.toDateString()}`}</Typography>
+                      <Typography>{`Expired on: ${ite.expiredDate.toDateString()}`}</Typography>
+                    </ListItemPadding>
+                  </ListItemButton>
+                  {jobList.slice(-1)[0] !== ite && (
+                    <Divider orientation="horizontal" />
+                  )}
+                </>
+              ))}
+            </List>
+          </Box>
+        </BoxContainer>
       </Grid>
-      <Grid item xs={1}>
-        <img
-          src="/assets/logo2.png"
-          style={{ width: "69px", height: "69px", marginTop: "-50px" }}
-        />
-      </Grid>
-   <Grid container spacing={2} sx={{mt:'20px', ml:'20px'}}> 
-      <Grid item xs={4}sx={{width:'100%', backgroundColor:'grey',height:'100%', borderRadius:'15px' }} > 
-      <Box > 
-        <Box sx={{display:'flex', justifyContent:'space-evenly', color:'white'}}>
-          <Typography variant="h3"> All post </Typography>
-          <Button sx={{color:'wheat'}}>
-          <AddCircleOutlineIcon/> <Typography variant="h3" sx={{ml:'10px'}}> New Post </Typography> </Button>
-        </Box>
-     
-        </Box>
-        <List> 
-         {listItem.map((ite)=> ( 
-          <ListItemButton onClick={() => handleOnclick(ite.title)}> 
-          <ListItemText sx={{color:'white', padding:'5px'}}>
-          <Typography variant="h1" sx={{fontSize:'25px'}}> 
-           {ite.title} 
-           </Typography>
-           <Typography> 
-           {ite.company}
-           </Typography>
-           <Typography> 
-           {ite.city}
-           </Typography>
-           <Typography> 
-           {ite.createDate}
-           </Typography>
-           <Typography> 
-           {ite.closeDate}
-           </Typography>
-           <Divider  color="white" sx={{mt:'10px'}}/>
-           </ListItemText>        
-           </ListItemButton>
-       ))} </List>
-      </Grid>
-
-       <Grid item xs={1}> </Grid>
-      <Grid item xs={7}> <DataContent dataView={dataView}/>  </Grid>
+      <Grid item xs={7}>
+        <JobDescriptionContainer job={dataView} />
       </Grid>
     </Grid>
   );
 };
 
-export default PostManagement;
+export default JobManagement;

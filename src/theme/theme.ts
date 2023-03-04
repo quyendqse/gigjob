@@ -127,7 +127,7 @@ const theme = createTheme({
           ":hover": {
             borderRadius: "8px",
           },
-          height: "3rem",
+          height: "auto",
           margin: "0.25rem 0",
           borderRadius: "8px",
           "&.Mui-selected": {
