@@ -1,29 +1,31 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { protectedRoutes, publicRoutes } from "../constants/routes";
+import { routes } from "../constants/routes";
 import ProtectedRoute from "./ProtectedRoute";
-import PublicRoute from "./PublicRoute";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoute />}>
-          {protectedRoutes.map((r, index) => (
-            <Route key={`proRoute${index}`} path={r.path} element={r.element} />
-          ))}
-        </Route>
-        <Route element={<PublicRoute />}>
-          {publicRoutes.map((r, index) => (
-            <Route key={`pubRoute${index}`} path={r.path} element={r.element} />
+          {routes.map((r, index) => (
+            <Route key={index} path={r.path} element={r.element}>
+              {r.children?.map((e, i) => (
+                <Route
+                  key={`${index}-${i}`}
+                  path={r.path + e.path.replace(".", "")}
+                  element={e.element}
+                />
+              ))}
+            </Route>
           ))}
         </Route>
         <Route
           path="*"
           //this jsx is just temporary. This will be update with complete UI later.
           //TODO: update this error page to complete UI
-          element={
+          errorElement={
             <div>
-              Something went wrong. <a href="/">Go back</a>
+              Something went wrong. <a href={routes[0].path}>Go back</a>
             </div>
           }
         />

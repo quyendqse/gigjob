@@ -1,4 +1,3 @@
-import { red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
@@ -21,68 +20,61 @@ declare module "@mui/material/styles" {
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#2D3748",
-      light: "#2D3748",
-      backgroundChip: "#0B2136",
-      background: "#0D3B66",
-      success: "#117C00",
-      colorSideBar: "#EDF2F7",
+      main: "#a23f00",
+      background: "#ffffff",
+      backgroundChip: "#ffdbcc",
+      contrastText: "#ffffff",
+      light: "#ffb695",
+      dark: "#8e3700",
     },
     secondary: {
-      main: "#D55B13",
+      main: "#a33e00",
+      background: "#ffffff",
+      backgroundChip: "#ffdbcd",
+      contrastText: "#360f00",
+      light: "#ff8c55",
+      dark: "#351000",
     },
     error: {
-      main: red.A400,
-    },
-    warning: {
-      main: "#EE964B",
-      dark: "#E74A3B",
-    },
-    text: {
-      primary: "#000000",
-      secondary: "#8B8B8B",
-      third: "white",
-      iconColor: "#EE964B",
-      status: "#D55B13",
-    },
-    common: {
-      black: "#000",
-      white: "#fff",
+      main: "#ba1a1a",
+      light: "##ff897d",
+      dark: "#410002",
+      background: "#ffffff",
+      backgroundChip: "#ffdad6",
+      contrastText: "#410002",
     },
   },
   typography: {
-    h1: {
-      fontSize: 40,
-      lineHeight: "42.19px",
-      fontWeight: 800,
-    },
-    h2: {
-      fontStyle: "normal",
-      fontSize: 24,
-      lineHeight: "29px",
-      letterSpacing: "0.2em",
-    },
-    h3: {
-      fontStyle: "normal",
-      fontSize: 16,
-      lineHeight: "17px",
-      fontWeight: 700,
-    },
+    //   h1: {
+    //     fontSize: 40,
+    //     lineHeight: "42.19px",
+    //     fontWeight: 700,
+    //   },
+    //   h2: {
+    //     fontStyle: "normal",
+    //     fontSize: 24,
+    //     lineHeight: "29px",
+    //     fontWeight: 600,
+    //   },
+    // h3: {
+    //   fontStyle: "normal",
+    //   fontSize: 16,
+    //   lineHeight: "17px",
+    //   fontWeight: 500,
+    // },
     h4: {
-      fontSize: "16px",
       fontWeight: "700",
-      lineHeight: "21px",
+      lineHeight: "24px",
     },
     h5: {
-      fontSize: "18px",
-      fontWeight: "400",
-      lineHeight: "21.09px",
+      fontWeight: "600",
+      lineHeight: "22px",
+      color: "#351000",
     },
-
     h6: {},
     body1: {
-      fontSize: 14,
-      lineHeight: "16.94px",
+      lineHeight: "24px",
+      color: "#351000",
     },
     body2: {},
     caption: {
@@ -90,22 +82,7 @@ const theme = createTheme({
       lineHeight: "19.36px",
       fontWeight: 400,
     },
-
-    subtitle1: {
-      fontSize: 12,
-      lineHeight: "14.52px",
-    },
-    subtitle2: {},
   },
-  // breakpoints: {
-  //   values: {
-  //     xs: 0,
-  //     sm: 400,
-  //     md: 768,
-  //     lg: 1024,
-  //     xl: 1500
-  //   }
-  // }
   components: {
     MuiTextField: {
       styleOverrides: {
@@ -125,6 +102,71 @@ const theme = createTheme({
           "&:hover": {
             boxShadow: "none",
           },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          boxSizing: "unset",
+          borderRight: "none",
+          width: 320,
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          padding: "0rem 1rem",
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          ":hover": {
+            borderRadius: "8px",
+          },
+          height: "3rem",
+          margin: "0.25rem 0",
+          borderRadius: "8px",
+          "&.Mui-selected": {
+            borderRadius: "8px",
+            backgroundColor: "#f9dcce",
+            ":hover": {
+              backgroundColor: "#transparent",
+            },
+          },
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        primary: {
+          fontFamily: "Open Sans",
+          fontSize: "16px",
+          lineHeight: "22px",
+        },
+      },
+    },
+    MuiPopover: {
+      styleOverrides: {
+        paper: {
+          background: "#ffffff",
+          boxShadow: "2px 4px 14px rgba(0, 0, 0, 0.14)",
+          borderRadius: "24px",
+          padding: "8px 16px",
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          ":hover": {
+            borderRadius: "12px",
+          },
+          fontSize: "18px",
+          padding: "1rem",
         },
       },
     },

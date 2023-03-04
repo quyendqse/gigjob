@@ -1,9 +1,13 @@
-import { Navigate } from "react-router";
+import { useAuthState } from "react-firebase-hooks/auth";
+import Loading from "../components/Loading/Loading";
 import SideBar from "../components/Sidebar/SideBar";
-import { currentUser } from "../firebase/firebase";
+import { auth } from "../firebase/firebase";
+import SignIn from "../pages/SignIn/SignIn";
 
 function ProtectedRoute() {
-  return currentUser() != null ? <SideBar /> : <Navigate to={"/"} />;
+  const [user, loading] = useAuthState(auth);
+
+  return loading ? <Loading /> : user ? <SideBar /> : <SignIn />;
 }
 
 export default ProtectedRoute;

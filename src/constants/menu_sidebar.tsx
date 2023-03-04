@@ -1,28 +1,31 @@
-import HomeIcon from "@mui/icons-material/Home";
-import WorkIcon from "@mui/icons-material/Work";
-import MarkAsUnreadIcon from "@mui/icons-material/MarkAsUnread";
-import PaymentIcon from "@mui/icons-material/Payment";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import {
+  IoBriefcase,
+  IoCalendar,
+  IoHome,
+  IoStorefront,
+  IoWallet,
+} from "react-icons/io5";
+
 export const menu = [
   {
-    label: "Dashboard",
-    icon: <HomeIcon />,
-    path: "/home",
+    label: "Home",
+    icon: <IoHome />,
+    path: "/",
   },
   {
-    label: "Job Management",
-    icon: <WorkIcon />,
-    path: "/job-management",
+    label: "Schedule",
+    icon: <IoCalendar />,
+    path: "/schedule",
   },
   {
-    label: "Apply Management",
-    icon: <MarkAsUnreadIcon />,
-    path: "/apply-management",
+    label: "Job post",
+    icon: <IoBriefcase />,
+    path: "/job",
   },
   {
-    label: "Pay wage",
-    icon: <PaymentIcon />,
-    path: "/pay-wage",
+    label: "Payment",
+    icon: <IoWallet />,
+    path: "/payment",
   },
   {
     label: "Post Management",
@@ -31,7 +34,7 @@ export const menu = [
   },
   {
     label: "Profile",
-    icon: <AccountCircleIcon />,
+    icon: <IoStorefront />,
     path: "/profile",
   },
 ];

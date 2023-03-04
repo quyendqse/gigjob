@@ -1,22 +1,19 @@
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { logOut } from "../../firebase/firebase";
+import { useAppSelector } from "../../store/hooks";
+import { selectShop } from "../../store/shop/shopSlice";
 function Home() {
+  const shop = useAppSelector(selectShop);
   return (
     <Box
       sx={{
-        backgroundColor: "gray",
-        width: "1000px",
+        width: "100%",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
+        flexDirection: "column",
         fontSize: "20px",
         height: "100px",
       }}>
-      Homepage
-      <button type="button" onClick={() => logOut}>
-        Log out
-      </button>
+      <Typography variant="h5">Welcome, {shop.name}</Typography>
     </Box>
   );
 }
