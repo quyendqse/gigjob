@@ -18,8 +18,6 @@ const options = [
   },
 ];
 
-const ITEM_HEIGHT = 48;
-
 export default function PostOption() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
