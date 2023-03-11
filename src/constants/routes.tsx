@@ -1,6 +1,8 @@
 import Home from "../pages/Home/Home";
 import { EditProfile } from "../pages/Profiles/EditProfile";
 import Profile from "../pages/Profiles/Profile";
+import JobManagement from "../pages/PostManagement/PostManagement";
+
 import Schedule from "../pages/Schedule/Schedule";
 // the first path will be chosen when router redirect
 export const routes = [
@@ -16,7 +18,7 @@ export const routes = [
   {
     path: "/job",
     //TODO: replace
-    element: <div>Job post</div>,
+    element: <JobManagement />,
   },
   {
     path: "/payment",

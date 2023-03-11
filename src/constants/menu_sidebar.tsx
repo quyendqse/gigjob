@@ -18,7 +18,7 @@ export const menu = [
     path: "/schedule",
   },
   {
-    label: "Job post",
+    label: "Job Management",
     icon: <IoBriefcase />,
     path: "/job",
   },
