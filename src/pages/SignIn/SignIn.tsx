@@ -20,7 +20,6 @@ import { TextField } from "../../components/TextField";
 import { RoundedButton } from "../../components/RoundedButton";
 import GoogleIcon from "../../components/GoogleIcon";
 import { Formik } from "formik";
-import { useNavigate } from "react-router-dom";
 import { login, loginWithGoogle } from "../../firebase/firebase";
 import { useState } from "react";
 import { loginGoogle } from "../../api/data/Auth";
@@ -36,7 +35,6 @@ interface SignInForm {
 const initFormValue: SignInForm = { email: "", password: "" };
 
 function SignIn() {
-  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignIn = async (values: SignInForm) => {

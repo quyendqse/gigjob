@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
-import { getShopByAccountId } from "../../api/data/query/shop";
 import { ShopResponse } from "../../api/response/ShopResponse";
 import { shop } from "../../mockData/shopProfile";
 import Shop from "../../model/Shop";
