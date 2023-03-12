@@ -11,10 +11,11 @@ import { TextField } from "../../components/TextField";
 import { IoAddCircle, IoAddOutline } from "react-icons/io5";
 import { Container } from "@mui/system";
 import { Formik } from "formik";
-import { useAppSelector } from "../../store/hooks";
-import { selectShop } from "../../store/shop/shopSlice";
 import { Card, CenterColumn, Image } from "./Profile.style";
 import { shopAccount } from "../../mockData/accountData";
+import { ShopRequest } from "../../api/request/shop";
+import { AccountResponse } from "../../api/response/AccountResponse";
+import { getCurrentUser } from "../../firebase/firebase";
 
 const labelStyle = {
   marginTop: "1rem",
@@ -28,13 +29,6 @@ export const EditProfile = () => {
   window.onbeforeunload = () => {
     return window.confirm("Changes you made may not be saved.");
   };
-  // useBeforeUnload(
-  //   React.useCallback(() => {
-  //     window.confirm("Changes you made may not be saved.");
-  //   }, [])
-  // );
-
-  const shopProfile = useAppSelector(selectShop);
 
   return (
     <Container
@@ -43,11 +37,64 @@ export const EditProfile = () => {
         flexDirection: "column",
       }}>
       <Formik
-        initialValues={shopProfile}
-        onSubmit={() => console.log("Submitting")}>
+        initialValues={{
+          name: "",
+          phone: "",
+          imgUrl: "",
+          address: "",
+          description: "",
+        }}
+        onSubmit={(values) => {
+          var currentUser = getCurrentUser();
+          var account: AccountResponse = {
+            id: currentUser?.uid!,
+            email: currentUser?.email!,
+            password: "12345678",
+            imageUrl: "",
+            createdDate: new Date(),
+            updatedDate: new Date(),
+            username: currentUser!.email!,
+            isDisable: false,
+            isLocked: false,
+            role: "SHOP",
+          };
+
+          fetch("http://54.179.205.85:8080/api/v1/register", {
+            method: "post",
+            headers: {
+              Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+              "Content-type": "application/json; charset=UTF-8",
+              Connection: "keep-alive",
+              Accept: "*/*",
+            },
+            body: JSON.stringify(account),
+          }).then((res) => {
+            if (res.status === 200) {
+              var request: ShopRequest = {
+                accountId: localStorage.getItem("accountId")!,
+                description: values.description,
+                name: values.name,
+                jobIds: [],
+              };
+              fetch("http://54.179.205.85:8080/api/v1/shop", {
+                method: "post",
+                headers: {
+                  // Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+                  "Content-type": "application/json; charset=UTF-8",
+                  Connection: "keep-alive",
+                  Accept: "*/*",
+                },
+                body: JSON.stringify(request),
+              }).then((res) => {
+                if (res.status === 200) {
+                }
+              });
+            }
+          });
+        }}>
         {({ values, handleBlur, handleChange, handleSubmit }) => {
           return (
-            <>
+            <form onSubmit={handleSubmit}>
               <Typography variant="h2">Edit shop profile</Typography>
               <Grid container spacing={5}>
                 <Grid item xl={8} xs={12}>
@@ -66,20 +113,6 @@ export const EditProfile = () => {
                     onChange={handleChange}
                     value={values.name}
                   />
-                  {/* <Typography variant="h5" sx={labelStyle}>
-                    Website
-                  </Typography>
-                  <TextField
-                    hiddenLabel
-                    fullWidth
-                    id="website"
-                    type={"text"}
-                    margin="normal"
-                    variant="outlined"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.account}
-                  /> */}
                   <Typography variant="h5" sx={labelStyle}>
                     Phone Number
                   </Typography>
@@ -92,7 +125,7 @@ export const EditProfile = () => {
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.account.phone}
+                    value={values.phone}
                   />
                 </Grid>
                 <Grid item xl={4} xs={12}>
@@ -130,7 +163,7 @@ export const EditProfile = () => {
                 variant="outlined"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.account.addresses[0]}
+                value={values.address}
               />
               <Typography variant="h5" sx={labelStyle}>
                 Description
@@ -149,7 +182,7 @@ export const EditProfile = () => {
                 onChange={handleChange}
                 value={values.description}
               />
-            </>
+            </form>
           );
         }}
       </Formik>
@@ -192,10 +225,10 @@ export const EditProfile = () => {
         <Button
           onClick={() => {
             window.onbeforeunload = null;
-            navigate("/profile");
+            navigate("/");
           }}
           variant="contained"
-          component="label"
+          type="submit"
           sx={{ width: "80px" }}>
           Save
         </Button>

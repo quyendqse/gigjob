@@ -23,7 +23,9 @@ import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { login, loginWithGoogle } from "../../firebase/firebase";
 import { useState } from "react";
-import { routes } from "../../constants/routes";
+import { loginGoogle } from "../../api/data/Auth";
+import { ShopResponse } from "../../api/response/ShopResponse";
+import { getShopByAccountId } from "../../api/data/query/shop";
 
 interface SignInForm {
   email: string;
@@ -49,11 +51,16 @@ function SignIn() {
   const handleGoogleSignIn = () => {
     loginWithGoogle(
       (user) => {
-        if (user) {
-          navigate(routes[0].path);
-        } else {
-          alert("Something went wrong. Please try again later.");
-        }
+        loginGoogle(user).then((value) => {
+          if (value) {
+            getShopByAccountId(user.user.uid).then((value: ShopResponse) => {
+              // dispatch(updateShop(value));
+              localStorage.setItem("shopInfo", JSON.stringify(value));
+            });
+          } else {
+            // navigate("/profile/edit");
+          }
+        });
       },
       (r) => {
         console.log(JSON.stringify(r, null, 2));

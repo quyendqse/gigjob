@@ -38,6 +38,14 @@ export function login(
   );
 }
 
+export function getFirebaseUserId() {
+  return auth.currentUser?.uid ?? "";
+}
+
+export function getCurrentUser() {
+  return auth.currentUser;
+}
+
 export function loginWithGoogle(
   onSuccess: (u: UserCredential) => void,
   onReject: (r: any) => void,
@@ -49,5 +57,6 @@ export function loginWithGoogle(
 }
 
 export const logOut = async () => {
+  localStorage.clear();
   await auth.signOut();
 };

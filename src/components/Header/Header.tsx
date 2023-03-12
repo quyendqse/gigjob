@@ -39,8 +39,8 @@ function Header() {
       </HeaderName>
       <Avatar
         component={Button}
-        sx={{ width: "auto", height: "80%", p: 0 }}
-        src="/assets/logo2.png"
+        sx={{ width: "70px", height: "70px", objectFit: "contain", p: 0 }}
+        src="https://www.mintformations.co.uk/blog/wp-content/uploads/2020/05/shutterstock_583717939.jpg"
         onClick={handleClick}
       />
       <Menu

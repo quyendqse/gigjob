@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import styled from "styled-components";
-import Job from "../../model/Job";
+import { JobResponse } from "../../api/response/JobResponse";
 import { useAppSelector } from "../../store/hooks";
 import { selectShop } from "../../store/shop/shopSlice";
 import { BoxContainer } from "./PostManagement.style";
@@ -18,7 +18,7 @@ const SubTitle = styled.p`
 `;
 
 export type props = {
-  job: Job;
+  job: JobResponse | undefined;
 };
 
 const JobDescriptionContainer = ({ job }: props) => {
@@ -28,13 +28,24 @@ const JobDescriptionContainer = ({ job }: props) => {
     <BoxContainer sx={{ position: "relative" }}>
       <Title>{job?.title}</Title>
       <SubTitle>{`Location: ${shopProfile.account.addresses[0].city}`}</SubTitle>
-      <SubTitle>{`Salary: 25,000 vnđ`}</SubTitle>
-      <SubTitle>{`Job Type: ${job.jobType.name}`}</SubTitle>
+      <SubTitle>{`Job Type: ${job!.jobType!.name}`}</SubTitle>
       <Typography variant="h5" sx={{ paddingBottom: "12px" }}>
         Description
       </Typography>
       <Typography variant="body1" align="justify">
-        {job.description}
+        {job!.description}
+      </Typography>
+      <Typography variant="h5" sx={{ paddingBottom: "12px", mt: "14px" }}>
+        Skill
+      </Typography>
+      <Typography variant="body1" align="justify">
+        {job!.skill}
+      </Typography>
+      <Typography variant="h5" sx={{ paddingBottom: "12px", mt: "14px" }}>
+        Benefit
+      </Typography>
+      <Typography variant="body1" align="justify">
+        {job!.benefit}
       </Typography>
       <PostOption />
     </BoxContainer>
