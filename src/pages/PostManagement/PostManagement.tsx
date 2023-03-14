@@ -19,6 +19,7 @@ import {
 import { JobResponse } from "../../api/response/JobResponse";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ShopResponse } from "../../api/response/ShopResponse";
+import { host, port } from "../../constants/host";
 
 const JobManagement = () => {
   const [dataView, setDataview] = useState<JobResponse>();
@@ -31,14 +32,15 @@ const JobManagement = () => {
       setDataview(job);
     }
   };
-
   useEffect(() => {
     const shopInfo: ShopResponse = JSON.parse(
       localStorage.getItem("shopInfo")!
     );
-    fetch("http://54.179.205.85:8080/api/v1/job/shop/" + shopInfo.id, {
+    fetch(`http://${host}:${port}/api/v1/job/shop/` + shopInfo.id, {
       headers: {
-        Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+        Authorization:
+          "Bearer " +
+          sessionStorage.getItem("accessToken")?.replaceAll('"', ""),
         "Content-type": "application/json; charset=UTF-8",
         Connection: "keep-alive",
         Accept: "*/*",

@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -38,6 +39,28 @@ export function login(
   );
 }
 
+export function register(
+  email: string,
+  password: string,
+  onSuccess: (u: UserCredential) => void | PromiseLike<void>,
+  onReject: (reason: any) => void
+): Promise<void> {
+  return createUserWithEmailAndPassword(auth, email, password).then(
+    onSuccess,
+    (reason) => {
+      var msg: string = "";
+      switch (reason.code) {
+        case "auth/wrong-password":
+          msg = "Incorrect email or password";
+          break;
+        default:
+          msg = "Something went wrong please try again later.";
+      }
+      onReject(msg);
+    }
+  );
+}
+
 export function getFirebaseUserId() {
   return auth.currentUser?.uid ?? "";
 }
@@ -55,8 +78,3 @@ export function loginWithGoogle(
     .then(onSuccess, onReject)
     .catch(onError);
 }
-
-export const logOut = async () => {
-  localStorage.clear();
-  await auth.signOut();
-};

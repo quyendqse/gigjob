@@ -1,17 +1,25 @@
+import { host, port } from "../../../constants/host";
 import { ShopResponse } from "../../response/ShopResponse";
 
-const host = "http://54.179.205.85:8080/api/v1/shop/";
+const conn = `http://${host}:${port}/api/v1/shop/`;
 
-async function getShopByAccountId(id: string) {
-  var res = await fetch(host + id, {
-    headers: {
-      Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-      Connection: "keep-alive",
-      Accept: "*/*",
-    },
-  });
-  var data: ShopResponse = await res.json();
-
-  return data;
+async function getShopByAccountId(id: string): Promise<ShopResponse | null> {
+  const accessToken = window.sessionStorage
+    .getItem("accessToken")
+    ?.replaceAll('"', "");
+  if (accessToken == null) {
+    return null;
+  }
+  const headers = {
+    Authorization: "Bearer " + accessToken,
+    "Content-type": "application/json; charset=UTF-8",
+    Connection: "keep-alive",
+    Accept: "*/*",
+  };
+  var res = await fetch(conn + id, { headers: headers });
+  if (res.status === 200) {
+    return (await res.json()) as ShopResponse;
+  }
+  return null;
 }
 export { getShopByAccountId };

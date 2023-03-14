@@ -20,11 +20,10 @@ import { TextField } from "../../components/TextField";
 import { RoundedButton } from "../../components/RoundedButton";
 import GoogleIcon from "../../components/GoogleIcon";
 import { Formik } from "formik";
-import { login, loginWithGoogle } from "../../firebase/firebase";
 import { useState } from "react";
-import { loginGoogle } from "../../api/data/Auth";
-import { ShopResponse } from "../../api/response/ShopResponse";
-import { getShopByAccountId } from "../../api/data/query/shop";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 interface SignInForm {
   email: string;
@@ -36,35 +35,57 @@ const initFormValue: SignInForm = { email: "", password: "" };
 
 function SignIn() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [method, setMethod] = useState<"Google" | "EmailPassword" | null>();
+  const { loginGoogleFirebase, loginEmailPassword } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSignIn = async (values: SignInForm) => {
-    login(
-      values.email,
-      values.password,
-      (u) => {},
-      (reason) => setErrorMessage(reason)
+  const handleSignIn = (
+    values: SignInForm,
+    setSubmitting: (value: boolean) => void
+  ) => {
+    setLoading(true);
+    setMethod("EmailPassword");
+    loginEmailPassword(values.email, values.password).then(
+      ({ status, message }) => {
+        switch (status) {
+          case "success":
+            navigate("/");
+            break;
+          case "error":
+            message && setErrorMessage(message);
+            break;
+          default:
+            setErrorMessage("Something went wrong. Please try again");
+            break;
+        }
+        setLoading(false);
+        setMethod(null);
+        setSubmitting(false);
+      }
     );
   };
 
   const handleGoogleSignIn = () => {
-    loginWithGoogle(
-      (user) => {
-        loginGoogle(user).then((value) => {
-          if (value) {
-            getShopByAccountId(user.user.uid).then((value: ShopResponse) => {
-              // dispatch(updateShop(value));
-              localStorage.setItem("shopInfo", JSON.stringify(value));
-            });
-          } else {
-            // navigate("/profile/edit");
-          }
-        });
-      },
-      (r) => {
-        console.log(JSON.stringify(r, null, 2));
-      },
-      (e) => console.log(e)
-    );
+    setLoading(true);
+    setMethod("Google");
+    loginGoogleFirebase()
+      .then((signInStatus) => {
+        switch (signInStatus.status) {
+          case "success":
+            navigate("/", { replace: true });
+            break;
+          case "error":
+            signInStatus.message && setErrorMessage(signInStatus.message);
+            break;
+          default:
+            navigate("/shopProfile", { replace: true });
+            break;
+        }
+        setLoading(false);
+        setMethod(null);
+      })
+      .catch((e) => {});
   };
 
   return (
@@ -89,7 +110,11 @@ function SignIn() {
                 </Alert>
               )}
               <Typography variant="h3">Sign in</Typography>
-              <Formik initialValues={initFormValue} onSubmit={handleSignIn}>
+              <Formik
+                initialValues={initFormValue}
+                onSubmit={(values, { setSubmitting }) =>
+                  handleSignIn(values, setSubmitting)
+                }>
                 {({
                   values,
                   handleSubmit,
@@ -140,8 +165,12 @@ function SignIn() {
                     <RoundedButton
                       variant="contained"
                       type="submit"
-                      disabled={isSubmitting}>
-                      SIGN IN
+                      disabled={isSubmitting || loading}>
+                      {loading === true && method === "EmailPassword" ? (
+                        <CircularProgress color="warning" />
+                      ) : (
+                        <>Sign In</>
+                      )}
                     </RoundedButton>
                   </form>
                 )}
@@ -154,9 +183,16 @@ function SignIn() {
               <RoundedButton
                 variant="contained"
                 sx={secondaryStyle}
+                disabled={loading}
                 onClick={handleGoogleSignIn}>
-                <GoogleIcon />
-                Continue with Google
+                {loading === true && method === "Google" ? (
+                  <CircularProgress />
+                ) : (
+                  <>
+                    <GoogleIcon />
+                    Continue with Google
+                  </>
+                )}
               </RoundedButton>
             </Box>
           </FormContainer>

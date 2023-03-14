@@ -4,10 +4,11 @@ import { IoCreate, IoLogOut, IoSettings } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { useLocation, useNavigate } from "react-router-dom";
 import { menu } from "../../constants/menu_sidebar";
-import { logOut } from "../../firebase/firebase";
+import { useAuth } from "../../context/AuthContext";
 import { FlexHeader, HeaderName } from "./Header.style";
 
 function Header() {
+  const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -91,7 +92,7 @@ function Header() {
           </MenuItem>
           <MenuItem
             onClick={(event) => {
-              logOut();
+              logout();
               handleClose();
             }}>
             <ListItemIcon>

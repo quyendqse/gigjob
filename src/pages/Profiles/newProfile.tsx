@@ -1,18 +1,8 @@
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
 import { TextField } from "../../components/TextField";
-import { IoAddCircle, IoAddOutline } from "react-icons/io5";
 import { Container } from "@mui/system";
 import { Formik } from "formik";
-import { Card, CenterColumn, Image } from "./Profile.style";
-import { shopAccount } from "../../mockData/accountData";
+import { useAuth } from "../../context/AuthContext";
 
 const labelStyle = {
   marginTop: "1rem",
@@ -20,9 +10,8 @@ const labelStyle = {
   marginLeft: "0.25rem",
 };
 
-export const EditProfile = () => {
-  const navigate = useNavigate();
-
+export const NewProfile = () => {
+  const { logout } = useAuth();
   window.onbeforeunload = () => {
     return window.confirm("Changes you made may not be saved.");
   };
@@ -41,58 +30,13 @@ export const EditProfile = () => {
           address: "",
           description: "",
         }}
-        onSubmit={(values) => {
-          // var currentUser = getCurrentUser();
-          // var account: AccountResponse = {
-          //   id: currentUser?.uid!,
-          //   email: currentUser?.email!,
-          //   password: "12345678",
-          //   imageUrl: "",
-          //   createdDate: new Date(),
-          //   updatedDate: new Date(),
-          //   username: currentUser!.email!,
-          //   isDisable: false,
-          //   isLocked: false,
-          //   role: "SHOP",
-          // };
-          // fetch(`http://${host}:${port}/api/v1/register`, {
-          //   method: "post",
-          //   headers: {
-          //     "Content-type": "application/json; charset=UTF-8",
-          //     Connection: "keep-alive",
-          //     Accept: "*/*",
-          //   },
-          //   body: JSON.stringify(account),
-          // }).then((res) => {
-          //   if (res.status === 200) {
-          //     var request: ShopRequest = {
-          //       accountId: localStorage.getItem("accountId")!,
-          //       description: values.description,
-          //       name: values.name,
-          //       jobIds: [],
-          //     };
-          //     fetch(`http://${host}:${port}//api/v1/shop`, {
-          //       method: "post",
-          //       headers: {
-          //         // Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-          //         "Content-type": "application/json; charset=UTF-8",
-          //         Connection: "keep-alive",
-          //         Accept: "*/*",
-          //       },
-          //       body: JSON.stringify(request),
-          //     }).then((res) => {
-          //       if (res.status === 200) {
-          //       }
-          //     });
-          //   }
-          // });
-        }}>
+        onSubmit={(values) => {}}>
         {({ values, handleBlur, handleChange, handleSubmit }) => {
           return (
             <form onSubmit={handleSubmit}>
-              <Typography variant="h2">Edit shop profile</Typography>
+              <Typography variant="h2">New shop profile</Typography>
               <Grid container spacing={5}>
-                <Grid item xl={8} xs={12}>
+                <Grid item xs={12}>
                   <Typography variant="h5" sx={labelStyle}>
                     Name
                   </Typography>
@@ -123,7 +67,7 @@ export const EditProfile = () => {
                     value={values.phone}
                   />
                 </Grid>
-                <Grid item xl={4} xs={12}>
+                {/* <Grid item xl={4} xs={12}>
                   <Typography variant="h5" sx={labelStyle}>
                     Logo
                   </Typography>
@@ -144,7 +88,7 @@ export const EditProfile = () => {
                       </CenterColumn>
                     )}
                   </Card>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Typography variant="h5" sx={labelStyle}>
                 Address
@@ -177,11 +121,36 @@ export const EditProfile = () => {
                 onChange={handleChange}
                 value={values.description}
               />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                  margin: "2rem 1rem",
+                }}>
+                <Tooltip title="Back To Page Profile">
+                  <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ width: "100px" }}
+                    onClick={() => {
+                      logout();
+                    }}>
+                    Log out
+                  </Button>
+                </Tooltip>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{ width: "80px" }}>
+                  Save
+                </Button>
+              </Box>
             </form>
           );
         }}
       </Formik>
-      <Typography variant="h5" sx={labelStyle}>
+      {/* <Typography variant="h5" sx={labelStyle}>
         Images
       </Typography>
       <Box>
@@ -198,36 +167,7 @@ export const EditProfile = () => {
           <IoAddOutline />
           <input hidden accept="image/*" type="file" />
         </IconButton>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          margin: "2rem 1rem",
-        }}>
-        <Tooltip title="Back To Page Profile">
-          <Button
-            variant="contained"
-            component="label"
-            sx={{ width: "100px" }}
-            onClick={() => {
-              window.location.href = "/profile";
-            }}>
-            Cancel
-          </Button>
-        </Tooltip>
-        <Button
-          onClick={() => {
-            window.onbeforeunload = null;
-            navigate("/");
-          }}
-          variant="contained"
-          type="submit"
-          sx={{ width: "80px" }}>
-          Save
-        </Button>
-      </Box>
+      </Box> */}
     </Container>
   );
 };

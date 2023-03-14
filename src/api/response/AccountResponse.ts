@@ -1,12 +1,11 @@
 export interface AccountResponse {
   id: string;
   username: string;
-  password: string;
   email: string;
+  phone: string;
   createdDate: Date;
   updatedDate: Date;
-  isLocked: boolean;
-  isDisable: boolean;
-  imageUrl: string;
+  locked: boolean;
+  disable: boolean;
   role: string;
 }

@@ -1,20 +1,28 @@
 import { ApplicationApplyRequest } from "../../request/applicationAppy";
 import { ApplicationResponse } from "../../response/ApplicationResponse";
+import { host, port } from "../../../constants/host";
 
-const host = "http://54.179.205.85:8080/api/v1/application";
+const connection = `http://${host}:${port}/api/v1/application`;
 
 async function getApplicationsOfShop(
   id: string
 ): Promise<ApplicationResponse[]> {
-  var res = await fetch(host + "/shop/" + id, {
-    headers: {
-      Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-      Connection: "keep-alive",
-      Accept: "*/*",
-    },
+  const headers = {
+    Authorization:
+      "Bearer " + sessionStorage.getItem("accessToken")?.replaceAll('"', ""),
+    Connection: "keep-alive",
+    Accept: "*/*",
+    referer: `http://${host}:${port}`,
+  };
+  var res = await fetch(connection + "/shop/" + id, {
+    headers: headers,
   });
-  var data: ApplicationResponse[] = await res.json();
-  return data;
+  if (res.status === 200) {
+    var data: ApplicationResponse[] = await res.json();
+    return data;
+  } else {
+    return [];
+  }
 }
 
 async function acceptApplication(worker: any) {
@@ -23,10 +31,11 @@ async function acceptApplication(worker: any) {
     jobId: worker.job.id,
     status: worker.status,
   };
-  await fetch(host + "/accept", {
+  await fetch(connection + "/accept", {
     method: "PATCH",
     headers: {
-      Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+      Authorization:
+        "Bearer " + sessionStorage.getItem("accessToken")?.replaceAll('"', ""),
       "Content-type": "application/json; charset=UTF-8",
       Connection: "keep-alive",
       Accept: "*/*",
@@ -41,7 +50,7 @@ async function rejectApplication(worker: any) {
     jobId: worker.job.id,
     status: worker.status,
   };
-  await fetch(host + "/reject", {
+  await fetch(connection + "/reject", {
     method: "PATCH",
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("accessToken"),

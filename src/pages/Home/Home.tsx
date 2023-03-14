@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  CircularProgress,
   IconButton,
   Table,
   TableBody,
@@ -19,58 +20,41 @@ import {
 } from "../../api/data/query/application";
 import { ApplicationResponse } from "../../api/response/ApplicationResponse";
 import { ShopResponse } from "../../api/response/ShopResponse";
-import { WorkerResponse } from "../../api/response/WorkerResponse";
+import { Center } from "../../components/Center/Centers";
 function Home() {
-  async function createData(application: ApplicationResponse) {
-    var res = await fetch(
-      "http://54.179.205.85:8080/api/v1/worker/" + application.workerId,
-      {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-          Connection: "keep-alive",
-          Accept: "*/*",
-        },
-      }
-    );
-    var worker: WorkerResponse = await res.json();
+  const [loading, setLoading] = useState(true);
+
+  function createData(application: ApplicationResponse) {
     return {
-      id: application.workerId,
+      id: application.worker.id,
       name:
-        worker.lastName +
+        application.worker.lastName +
         " " +
-        (worker.middleName ? worker.middleName + " " : "") +
-        worker.firstName,
-      birthday: worker.birthday,
+        (application.worker.middleName
+          ? application.worker.middleName + " "
+          : "") +
+        application.worker.firstName,
+      birthday: application.worker.birthday,
       job: application.job,
       status: application.status,
     };
   }
-  const [data, setData] = useState<ApplicationResponse[]>([]);
   const [workers, setWorkers] = useState<any[]>([]);
   useEffect(() => {
+    setLoading(true);
     const values: ShopResponse = JSON.parse(localStorage.getItem("shopInfo")!);
     getApplicationsOfShop(values.id).then((values) => {
-      // console.log(values);
-      // for (let index = 0; index < values.length; index++) {
-      //   const element = values[index];
-      //   createData(element).then((value) => {
-      //     rows.push(value);
-      //   });
-      // }
-      setData(values);
+      setWorkers(values.map((v) => createData(v)));
+      setLoading(false);
     });
   }, []);
-
-  useEffect(() => {
-    if (data.length !== 0) {
-      data.forEach((a) => {
-        createData(a).then((value) => setWorkers([...workers, value]));
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-  useEffect(() => {}, [workers]);
-
+  if (loading) {
+    return (
+      <Center>
+        <CircularProgress />
+      </Center>
+    );
+  }
   return (
     <Box>
       {/* <Box

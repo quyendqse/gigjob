@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { JobRequest } from "../../api/request/job";
 import { TextField } from "../../components/TextField";
 import { ShopResponse } from "../../api/response/ShopResponse";
-import { useNavigate } from "react-router-dom";
+import { host, port } from "../../constants/host";
 const labelStyle = {
   marginTop: "1rem",
   marginBottom: "-0.5rem",
@@ -31,17 +31,18 @@ const initValue: JobRequest = {
 // ];
 
 function CreatePostPage() {
-  const navigate = useNavigate();
   const handleSubmit = (values: JobRequest) => {
     const shopInfo: ShopResponse = JSON.parse(
       localStorage.getItem("shopInfo")!
     );
     values.shopId = shopInfo.id;
-    fetch("http://54.179.205.85:8080api/v1/job", {
+    fetch(`http://${host}:${port}/api/v1/job`, {
       method: "POST",
       body: JSON.stringify(values),
       headers: {
-        Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+        Authorization:
+          "Bearer " +
+          sessionStorage.getItem("accessToken")?.replaceAll('"', ""),
         "Content-type": "application/json; charset=UTF-8",
         Connection: "keep-alive",
         Accept: "*/*",
@@ -50,7 +51,7 @@ function CreatePostPage() {
       if (res.status !== 200) {
         alert("error:" + res.body);
       } else {
-        navigate("/job");
+        window.location.href = "/job";
       }
     });
   };
