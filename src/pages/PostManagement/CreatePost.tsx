@@ -1,6 +1,6 @@
 import { Box, Button, Container, Tooltip, Typography } from "@mui/material";
 import { Formik } from "formik";
-import { JobRequest } from "../../api/request/job";
+import { JobRequest } from "../../api/request/JobRequest";
 import { TextField } from "../../components/TextField";
 import { ShopResponse } from "../../api/response/ShopResponse";
 import { host, port } from "../../constants/host";

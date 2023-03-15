@@ -79,7 +79,7 @@ function SignIn() {
             signInStatus.message && setErrorMessage(signInStatus.message);
             break;
           default:
-            navigate("/shopProfile", { replace: true });
+            navigate("/new", { replace: true });
             break;
         }
         setLoading(false);

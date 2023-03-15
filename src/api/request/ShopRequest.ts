@@ -1,3 +1,5 @@
+import Address from "../../model/Address";
+
 export interface ShopRequest {
   name: string;
   description: string;
@@ -6,4 +8,5 @@ export interface ShopRequest {
   username: string;
   password: string;
   phone: string;
+  address: Address;
 }

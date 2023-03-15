@@ -10,11 +10,11 @@ import SignUp from "../pages/SignUp/SignUp";
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  defer,
   Route,
 } from "react-router-dom";
 import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "../routes/ProtectedRoute";
+import { NewProfile } from "../pages/Profiles/NewProfile";
 
 export const publicRoutes = [
   {
@@ -42,6 +42,7 @@ export const routers = createBrowserRouter(
         </Route>
       </Route>
       <Route element={<PublicRoute />}>
+        <Route element={<NewProfile />} path={"/new"} />
         <Route element={<SignIn />} path={"/login"} />
         <Route element={<SignUp />} path={"/register"} />
       </Route>

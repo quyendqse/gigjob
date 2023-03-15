@@ -1,14 +1,15 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { Formik } from "formik";
+import { Formik, replace } from "formik";
 import { RoundedButton } from "../../components/RoundedButton";
 import { TextField } from "../../components/TextField";
 import { Card2, styles } from "./SignUp.style";
 import * as Yup from "yup";
-import { AccountRequest } from "../../api/request/account";
+import { AccountRequest } from "../../api/request/AccountRequest";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { CircularProgress } from "@mui/material";
+import { useState } from "react";
 
 interface Form {
   email: string;
@@ -53,9 +54,26 @@ const formRequest: Form = {
 };
 const SignUp = () => {
   const navigate = useNavigate();
-  const { loading, signUpEmailPassword } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { signUpEmailPassword } = useAuth();
 
-  const handleSubmit = (request: AccountRequest) => {};
+  const handleSubmit = (
+    request: AccountRequest,
+    setSubmitting: (value: boolean) => void
+  ) => {
+    setLoading(true);
+    signUpEmailPassword(request).then(({ status, message }) => {
+      switch (status) {
+        case "success":
+          navigate("/", { replace: true });
+          break;
+        default:
+          alert(message);
+          break;
+      }
+      setLoading(false);
+    });
+  };
 
   const toRequest = (values: Form): AccountRequest => {
     return {
@@ -78,9 +96,9 @@ const SignUp = () => {
         </Typography>
         <Formik
           initialValues={formRequest}
-          onSubmit={(values: Form) => {
+          onSubmit={(values: Form, { setSubmitting }) => {
             var request: AccountRequest = toRequest(values);
-            handleSubmit(request);
+            handleSubmit(request, setSubmitting);
           }}
           validationSchema={SignUpSchema}>
           {({

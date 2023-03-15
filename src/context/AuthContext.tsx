@@ -6,31 +6,34 @@ import {
   signOut,
   User,
 } from "firebase/auth";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { createNewShopInfo } from "../api/data/query/ProfileQM";
 import { getShopByAccountId } from "../api/data/query/shop";
-import { AccountRequest } from "../api/request/account";
+import { AccountRequest } from "../api/request/AccountRequest";
+import { ShopRequest } from "../api/request/ShopRequest";
 import { host, port } from "../constants/host";
 import { auth } from "../firebase/firebase";
 import { useLocalStorage } from "../hook/useLocalStorage";
 import { useSessionStorage } from "../hook/useSessionStorage";
-const AuthContext = createContext(
-  {} as {
-    user: User | null | undefined;
-    loading: boolean;
-    authLoading: boolean;
-    isLoggedIn: boolean;
-    session: string | null | undefined;
-    shopInfo: any;
-    loginGoogleFirebase: () => Promise<SignInStatus>;
-    loginEmailPassword: (
-      email: string,
-      password: string
-    ) => Promise<SignInStatus>;
-    signUpEmailPassword: (request: AccountRequest) => Promise<SignInStatus>;
-    logout: () => Promise<boolean>;
-  }
-);
+interface AuthenticationContext {
+  user: User | null | undefined;
+  loading: boolean;
+  authLoading: boolean;
+  isLoggedIn: boolean;
+  session: string | null | undefined;
+  shopInfo: any;
+  loginGoogleFirebase: () => Promise<SignInStatus>;
+  loginEmailPassword: (
+    email: string,
+    password: string
+  ) => Promise<SignInStatus>;
+  signUpEmailPassword: (request: AccountRequest) => Promise<SignInStatus>;
+  createNewShopProfile: (request: ShopRequest) => Promise<SignInStatus>;
+  logout: () => Promise<boolean>;
+}
+
+const AuthContext = createContext({} as AuthenticationContext);
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -53,18 +56,7 @@ export const AuthProvider = ({ children }: any) => {
       setAuthLoading(true);
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      const res = await fetch(
-        `http://${host}:${port}/api/v1/account/login/google`,
-        {
-          method: "POST",
-          headers: {
-            idTokenString: await user.getIdToken(),
-            "Content-type": "application/json; charset=UTF-8",
-            Connection: "keep-alive",
-            Accept: "*/*",
-          },
-        }
-      );
+      const res = await loginGoogleBackend(user);
       if (res.status === 200) {
         const { accessToken } = await res.json();
         setSession(accessToken);
@@ -83,9 +75,6 @@ export const AuthProvider = ({ children }: any) => {
           } as SignInStatus;
         }
       } else {
-        //? - if logged in to firebase but cannot get accessToken from backend, this mean this google account is new
-        //? - redirect to new shop
-        //? - This function need to be implemented
         setAuthLoading(false);
         return {
           status: "new_user",
@@ -103,6 +92,17 @@ export const AuthProvider = ({ children }: any) => {
       } as SignInStatus;
     }
   };
+
+  const loginGoogleBackend = async (user: User) =>
+    await fetch(`http://${host}:${port}/api/v1/account/login/google`, {
+      method: "POST",
+      headers: {
+        idTokenString: await user.getIdToken(),
+        "Content-type": "application/json; charset=UTF-8",
+        Connection: "keep-alive",
+        Accept: "*/*",
+      },
+    });
 
   //? the flow sign in backend and firebase with email and password to get accessToken and uid respectively. Then get shop info
   const loginEmailPassword = async (
@@ -213,6 +213,44 @@ export const AuthProvider = ({ children }: any) => {
     return result;
   };
 
+  const createNewShopProfile = async (
+    values: ShopRequest
+  ): Promise<SignInStatus> => {
+    setAuthLoading(true);
+    var res = await createNewShopInfo(values);
+    if (res != null) {
+      if (user != null) {
+        const res = await loginGoogleBackend(user);
+        if (res.ok) {
+          setSession(await res.json());
+          setShopInfoLocal(res);
+          setAuthLoading(false);
+          return {
+            status: "success",
+          };
+        } else {
+          setAuthLoading(false);
+          return {
+            status: "error",
+            message:
+              "Error while getting data from the server. Please try again later",
+          };
+        }
+      } else {
+        setAuthLoading(false);
+        return {
+          status: "error",
+          message: "You have signed out.",
+        };
+      }
+    }
+    setAuthLoading(false);
+    return {
+      status: "error",
+      message: "Something went wrong. Please try again later",
+    };
+  };
+
   const isLoggedIn = user !== null && session !== null;
 
   const value = useMemo(
@@ -226,6 +264,7 @@ export const AuthProvider = ({ children }: any) => {
       loginGoogleFirebase,
       loginEmailPassword,
       signUpEmailPassword,
+      createNewShopProfile,
       logout,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -234,6 +273,6 @@ export const AuthProvider = ({ children }: any) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => {
+export const useAuth = (): AuthenticationContext => {
   return useContext(AuthContext);
 };

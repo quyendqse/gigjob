@@ -1,7 +1,11 @@
+import { AccountResponse } from "./AccountResponse";
+import Address from "../../model/Address";
+
 export interface ShopResponse {
   id: string;
   name: string;
   description: string;
   accountId: string;
-  // jobIds: Array<number>;
+  account: AccountResponse;
+  addresses: Array<Address>;
 }

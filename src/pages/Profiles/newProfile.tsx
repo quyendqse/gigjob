@@ -1,8 +1,21 @@
-import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { TextField } from "../../components/TextField";
 import { Container } from "@mui/system";
 import { Formik } from "formik";
 import { useAuth } from "../../context/AuthContext";
+import { Center } from "../../components/Center/Centers";
+import { useState } from "react";
+import { ShopRequest } from "../../api/request/ShopRequest";
+import Address from "../../model/Address";
+import * as Yup from "yup";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const labelStyle = {
   marginTop: "1rem",
@@ -10,28 +23,88 @@ const labelStyle = {
   marginLeft: "0.25rem",
 };
 
+const newProfileSchema = Yup.object().shape({
+  username: Yup.string().required("Required").max(50, "Too long"),
+  name: Yup.string().required("Required").max(50, "Too long"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  address: Yup.object().shape({
+    street: Yup.string().required("Required"),
+    district: Yup.string().required("Required"),
+    country: Yup.string().required("Required"),
+  }),
+  phone: Yup.string()
+    .required("Required")
+    .matches(/[0-9]/, "Can only contains number")
+    .max(10, "Phone start with 0 and 10 characters long."),
+  description: Yup.string().required("Required"),
+});
+
 export const NewProfile = () => {
-  const { logout } = useAuth();
-  window.onbeforeunload = () => {
-    return window.confirm("Changes you made may not be saved.");
+  const { user, loading, logout, createNewShopProfile } = useAuth();
+  const [loadingNetwork, setLoadingNetwork] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = (
+    values: ShopRequest,
+    setSubmitting: (value: boolean) => void
+  ) => {
+    setLoadingNetwork(true);
+    createNewShopProfile(values).then(({ status, message }) => {
+      switch (status) {
+        case "success":
+          navigate("/", { replace: true });
+          break;
+
+        default:
+          break;
+      }
+      setLoadingNetwork(false);
+    });
   };
 
-  return (
+  return loading || loadingNetwork ? (
+    <Center>
+      <CircularProgress />
+    </Center>
+  ) : user === null ? (
+    <Navigate to="/login" replace />
+  ) : (
     <Container
       sx={{
         display: "flex",
         flexDirection: "column",
       }}>
       <Formik
-        initialValues={{
-          name: "",
-          phone: "",
-          imgUrl: "",
-          address: "",
-          description: "",
-        }}
-        onSubmit={(values) => {}}>
-        {({ values, handleBlur, handleChange, handleSubmit }) => {
+        validationSchema={newProfileSchema}
+        initialValues={
+          {
+            name: "",
+            accountId: user!.uid,
+            email: user!.email,
+            username: "",
+            phone: "",
+            description: "",
+            address: {
+              id: 0,
+              country: "Vietnam",
+              street: "",
+              district: "",
+              city: "",
+              province: "",
+            } as Address,
+          } as ShopRequest
+        }
+        onSubmit={(values, { setSubmitting }) =>
+          handleSubmit(values, setSubmitting)
+        }>
+        {({
+          values,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          errors,
+          touched,
+        }) => {
           return (
             <form onSubmit={handleSubmit}>
               <Typography variant="h2">New shop profile</Typography>
@@ -43,8 +116,40 @@ export const NewProfile = () => {
                   <TextField
                     hiddenLabel
                     fullWidth
+                    id="email"
+                    disabled
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.email}
+                  />
+                  <Typography variant="h5" sx={labelStyle}>
+                    Username
+                  </Typography>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    id="username"
+                    error={errors.username !== undefined && touched.username}
+                    helperText={touched.username && errors.username}
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.username}
+                  />
+                  <Typography variant="h5" sx={labelStyle}>
+                    Shop Name
+                  </Typography>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
                     id="name"
-                    required
+                    error={errors.name !== undefined && touched.name}
+                    helperText={touched.name && errors.name}
                     type={"text"}
                     margin="normal"
                     variant="outlined"
@@ -58,6 +163,8 @@ export const NewProfile = () => {
                   <TextField
                     hiddenLabel
                     fullWidth
+                    error={errors.phone !== undefined && touched.phone}
+                    helperText={touched.phone && errors.phone}
                     id="phone"
                     type={"text"}
                     margin="normal"
@@ -67,43 +174,117 @@ export const NewProfile = () => {
                     value={values.phone}
                   />
                 </Grid>
-                {/* <Grid item xl={4} xs={12}>
-                  <Typography variant="h5" sx={labelStyle}>
-                    Logo
-                  </Typography>
-                  <Card
-                    style={{
-                      marginTop: "2rem",
-                      height: "80%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    onClick={() => {}}>
-                    {shopAccount.imageUrl ? (
-                      <Image src={shopAccount.imageUrl} />
-                    ) : (
-                      <CenterColumn>
-                        <IoAddCircle size={50} />
-                      </CenterColumn>
-                    )}
-                  </Card>
-                </Grid> */}
               </Grid>
               <Typography variant="h5" sx={labelStyle}>
                 Address
               </Typography>
-              <TextField
-                hiddenLabel
-                fullWidth
-                id="address"
-                type={"text"}
-                margin="normal"
-                variant="outlined"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address}
-              />
+              <Grid container spacing={2}>
+                <Grid item xs={8}>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    label="Street"
+                    id="address.street"
+                    type={"text"}
+                    error={
+                      errors.address?.street !== undefined &&
+                      touched.address?.street
+                    }
+                    helperText={
+                      touched.address?.street && errors.address?.street
+                    }
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.address.street}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    error={
+                      errors.address?.district !== undefined &&
+                      touched.address?.district
+                    }
+                    helperText={
+                      touched.address?.district && errors.address?.district
+                    }
+                    label="District"
+                    id="address.district"
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.address.district}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    error={
+                      errors.address?.city !== undefined &&
+                      touched.address?.city
+                    }
+                    helperText={touched.address?.city && errors.address?.city}
+                    label="City"
+                    id="address.city"
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.address.city}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    error={
+                      errors.address?.province !== undefined &&
+                      touched.address?.province
+                    }
+                    helperText={
+                      touched.address?.province && errors.address?.province
+                    }
+                    label="Province"
+                    id="address.province"
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.address.province}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    hiddenLabel
+                    fullWidth
+                    label="Country"
+                    id="address.country"
+                    error={
+                      errors.address?.country !== undefined &&
+                      touched.address?.country
+                    }
+                    helperText={
+                      touched.address?.country && errors.address?.country
+                    }
+                    type={"text"}
+                    margin="normal"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.address.country}
+                  />
+                </Grid>
+              </Grid>
               <Typography variant="h5" sx={labelStyle}>
                 Description
               </Typography>
@@ -111,8 +292,9 @@ export const NewProfile = () => {
                 hiddenLabel
                 multiline
                 fullWidth
+                error={errors.description !== undefined && touched.description}
+                helperText={touched.description && errors.description}
                 id="description"
-                required
                 type={"text"}
                 margin="normal"
                 minRows={10}
@@ -130,12 +312,10 @@ export const NewProfile = () => {
                 }}>
                 <Tooltip title="Back To Page Profile">
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     component="label"
                     sx={{ width: "100px" }}
-                    onClick={() => {
-                      logout();
-                    }}>
+                    onClick={logout}>
                     Log out
                   </Button>
                 </Tooltip>
@@ -150,24 +330,6 @@ export const NewProfile = () => {
           );
         }}
       </Formik>
-      {/* <Typography variant="h5" sx={labelStyle}>
-        Images
-      </Typography>
-      <Box>
-        <IconButton
-          sx={{
-            height: "120px",
-            width: "120px",
-            borderRadius: "16px",
-            margin: "1rem 0",
-          }}
-          color="primary"
-          aria-label="upload picture"
-          component="label">
-          <IoAddOutline />
-          <input hidden accept="image/*" type="file" />
-        </IconButton>
-      </Box> */}
     </Container>
   );
 };

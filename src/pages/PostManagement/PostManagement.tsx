@@ -88,7 +88,8 @@ const JobManagement = () => {
                       onClick={() => {
                         handleOnclick(ite);
                       }}>
-                      <ListItemPadding style={{ overflow: "hidden" }}>
+                      <ListItemPadding
+                        style={{ overflow: "hidden", padding: "0" }}>
                         <Typography
                           variant="h6"
                           sx={{ fontWeight: "bold" }}
