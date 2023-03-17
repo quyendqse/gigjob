@@ -9,6 +9,7 @@ export interface JobResponse {
   description: string;
   skill: string;
   benefit: string;
+  salary: number;
   createdDate: Date;
   updatedDate: Date;
   expiredDate: Date;

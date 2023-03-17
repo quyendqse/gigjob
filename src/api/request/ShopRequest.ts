@@ -7,6 +7,7 @@ export interface ShopRequest {
   email: string;
   username: string;
   password: string;
+  imageUrl: string;
   phone: string;
   address: Address;
 }

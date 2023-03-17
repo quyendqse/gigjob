@@ -1,6 +1,11 @@
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Table,
   TableBody,
@@ -55,6 +60,20 @@ const rows = [
 
 function Schedule() {
   const [value, setValue] = useState<Date | null>(new Date());
+  const [open, setOpen] = useState(false);
+  const [submittingId, setSubmittingId] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
+  const handleClickOpen = (name: string, id: number) => {
+    setOpen(true);
+    setName(name);
+    setSubmittingId(id.toString());
+  };
+
+  const handleClose = () => {
+    alert(`submit session of worker ${name}`);
+    setOpen(false);
+  };
+
   return (
     <Box>
       <Box
@@ -88,9 +107,9 @@ function Schedule() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows.map((row, index) => (
               <TableRow
-                key={row.name}
+                key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell scope="row">{row.name}</TableCell>
                 <TableCell>{row.phone}</TableCell>
@@ -98,19 +117,36 @@ function Schedule() {
                 <TableCell>{row.shift}</TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>
-                  <Button variant="contained">Check-in</Button>
-                  <Box sx={{ mx: "1rem", display: "inline" }}>
-                    <Button variant="outlined">Check-out</Button>
-                  </Box>
-                  <IconButton>
-                    <IoEllipsisVerticalCircle />
-                  </IconButton>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleClickOpen(row.name, index)}>
+                    Check-in
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Worked hour for {name} with</DialogTitle>
+        <DialogContent>
+          <DialogContentText></DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="hour"
+            label="Hour"
+            type="number"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

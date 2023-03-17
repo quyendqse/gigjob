@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: any) => {
           setAuthLoading(false);
           return {
             status: "error",
-            message: "Something went wrong.Please try again",
+            message: "Permission denied",
           } as SignInStatus;
         }
       } else {
@@ -93,17 +93,18 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
-  const loginGoogleBackend = async (user: User) =>
-    await fetch(`http://${host}:${port}/api/v1/account/login/google`, {
+  const loginGoogleBackend = async (user: User) => {
+    const idToken = await user.getIdToken();
+    return await fetch(`http://${host}:${port}/api/v1/account/login/google`, {
       method: "POST",
       headers: {
-        idTokenString: await user.getIdToken(),
+        idTokenString: idToken,
         "Content-type": "application/json; charset=UTF-8",
         Connection: "keep-alive",
         Accept: "*/*",
       },
     });
-
+  };
   //? the flow sign in backend and firebase with email and password to get accessToken and uid respectively. Then get shop info
   const loginEmailPassword = async (
     email: string,
@@ -167,7 +168,7 @@ export const AuthProvider = ({ children }: any) => {
         request.password
       );
       var user = res.user;
-      const conn = `http://${host}:${port}/api/v1/account/register`;
+      const conn = `http://${host}:${port}/api/v1/account/register/shop`;
       request.id = user.uid;
       const response = await fetch(conn, {
         method: "post",
@@ -217,13 +218,13 @@ export const AuthProvider = ({ children }: any) => {
     values: ShopRequest
   ): Promise<SignInStatus> => {
     setAuthLoading(true);
-    var res = await createNewShopInfo(values);
-    if (res != null) {
+    var resShop = await createNewShopInfo(values);
+    if (resShop != null) {
       if (user != null) {
         const res = await loginGoogleBackend(user);
         if (res.ok) {
           setSession(await res.json());
-          setShopInfoLocal(res);
+          setShopInfoLocal(resShop);
           setAuthLoading(false);
           return {
             status: "success",
@@ -251,7 +252,8 @@ export const AuthProvider = ({ children }: any) => {
     };
   };
 
-  const isLoggedIn = user !== null && session !== null;
+  const isLoggedIn =
+    user !== null && session !== null && shopInfoLocal !== null;
 
   const value = useMemo(
     () => ({

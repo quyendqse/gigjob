@@ -1,9 +1,19 @@
-import { Box, Button, Container, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  MenuItem,
+  Select,
+  Tooltip,
+  Typography,
+  TextField,
+} from "@mui/material";
 import { Formik } from "formik";
 import { JobRequest } from "../../api/request/JobRequest";
-import { TextField } from "../../components/TextField";
+// import {  } from "../../components/TextField";
 import { ShopResponse } from "../../api/response/ShopResponse";
 import { host, port } from "../../constants/host";
+import { useSessionStorage } from "../../hook/useSessionStorage";
 const labelStyle = {
   marginTop: "1rem",
   marginBottom: "-0.5rem",
@@ -12,6 +22,7 @@ const labelStyle = {
 
 const initValue: JobRequest = {
   id: 0,
+  salary: 0,
   shopId: "",
   jobTypeId: 1,
   title: "",
@@ -20,36 +31,38 @@ const initValue: JobRequest = {
   benefit: "",
 };
 
-// const select = [
-//   "CASUAL",
-//   "CONTRACTOR",
-//   "EXTERNAL",
-//   "FIXED_TERM_FULL_TIME",
-//   "FIXED_TERM_PART_TIME",
-//   "PERMANENT_TERM_FULL_TIME",
-//   "PERMANENT_TERM_PART_TIME",
-// ];
+const select = [
+  {
+    id: 1,
+    name: "Việc khối văn phòng",
+  },
+  {
+    id: 2,
+    name: "Việc ở siêu thị, kho",
+  },
+];
 
 function CreatePostPage() {
+  const [accessToken] = useSessionStorage("accessToken", null);
+
   const handleSubmit = (values: JobRequest) => {
     const shopInfo: ShopResponse = JSON.parse(
       localStorage.getItem("shopInfo")!
     );
     values.shopId = shopInfo.id;
+    const headers = {
+      Authorization: "Bearer " + accessToken,
+      "Content-type": "application/json; charset=UTF-8",
+      Connection: "keep-alive",
+      Accept: "*/*",
+    };
     fetch(`http://${host}:${port}/api/v1/job`, {
-      method: "POST",
+      method: "post",
       body: JSON.stringify(values),
-      headers: {
-        Authorization:
-          "Bearer " +
-          sessionStorage.getItem("accessToken")?.replaceAll('"', ""),
-        "Content-type": "application/json; charset=UTF-8",
-        Connection: "keep-alive",
-        Accept: "*/*",
-      },
+      headers: headers,
     }).then((res) => {
       if (res.status !== 200) {
-        alert("error:" + res.body);
+        res.text().then((data) => console.log(data));
       } else {
         window.location.href = "/job";
       }
@@ -82,6 +95,22 @@ function CreatePostPage() {
                 value={values.title}
               />
               <Typography variant="h5" sx={labelStyle}>
+                Job type
+              </Typography>
+              <Select
+                fullWidth
+                name="jobTypeId"
+                sx={{ marginTop: "20px" }}
+                id="jobTypeId"
+                value={values.jobTypeId}
+                onChange={handleChange}>
+                {select.map((s) => (
+                  <MenuItem key={s.id} value={s.id}>
+                    {s.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Typography variant="h5" sx={labelStyle}>
                 Description
               </Typography>
               <TextField
@@ -105,13 +134,30 @@ function CreatePostPage() {
               <TextField
                 hiddenLabel
                 fullWidth
+                multiline
                 id="skill"
                 type={"text"}
+                minRows={10}
                 margin="normal"
                 variant="outlined"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.skill}
+              />
+              <Typography variant="h5" sx={labelStyle}>
+                Salary per hour
+              </Typography>
+              <TextField
+                hiddenLabel
+                fullWidth
+                id="salary"
+                name="salary"
+                type={"number"}
+                margin="normal"
+                variant="outlined"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.salary}
               />
               <Typography variant="h5" sx={labelStyle}>
                 Benefit
@@ -120,6 +166,8 @@ function CreatePostPage() {
                 hiddenLabel
                 fullWidth
                 id="benefit"
+                multiline
+                minRows={10}
                 type={"text"}
                 margin="normal"
                 variant="outlined"
@@ -127,19 +175,6 @@ function CreatePostPage() {
                 onChange={handleChange}
                 value={values.benefit}
               />
-
-              {/* <Typography variant="h5" sx={labelStyle}>
-                JobType
-              </Typography>
-              <Select
-                sx={{ marginTop: "20px" }}
-                id="jobTypeId"
-                value={values.jobTypeId}
-                onChange={({target}) => handleChange("")}>
-                {select.map((s, i) => (
-                  <MenuItem value={i}>{s}</MenuItem>
-                ))}
-              </Select> */}
               <Box
                 sx={{
                   display: "flex",

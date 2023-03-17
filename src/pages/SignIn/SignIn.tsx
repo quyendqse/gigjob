@@ -194,6 +194,16 @@ function SignIn() {
                   </>
                 )}
               </RoundedButton>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "1rem",
+                }}>
+                <Button variant="text" onClick={() => navigate("/register")}>
+                  Register
+                </Button>
+              </div>
             </Box>
           </FormContainer>
         </FormBox>

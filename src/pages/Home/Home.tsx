@@ -62,6 +62,8 @@ function Home() {
   useEffect(() => {
     setIsLoading(true);
     var shop: ShopResponse = shopInfo;
+    if (shop == null) {
+    }
     getApplicationsOfShop(shop.id, session).then((ar) => {
       setWorkers(ar.map((ar, index) => createData(ar, index)));
       setIsLoading(false);

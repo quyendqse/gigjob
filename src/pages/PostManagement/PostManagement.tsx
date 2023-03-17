@@ -20,9 +20,11 @@ import { JobResponse } from "../../api/response/JobResponse";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ShopResponse } from "../../api/response/ShopResponse";
 import { host, port } from "../../constants/host";
+import { useSessionStorage } from "../../hook/useSessionStorage";
 
 const JobManagement = () => {
   const [dataView, setDataview] = useState<JobResponse>();
+  const [session, setSession] = useSessionStorage("accessToken", null);
   const navigate = useNavigate();
   const location = useLocation();
   const [jobs, setJobs] = useState<JobResponse[]>([]);
@@ -33,29 +35,30 @@ const JobManagement = () => {
     }
   };
   useEffect(() => {
-    const shopInfo: ShopResponse = JSON.parse(
-      localStorage.getItem("shopInfo")!
-    );
-    fetch(`http://${host}:${port}/api/v1/job/shop/` + shopInfo.id, {
-      headers: {
-        Authorization:
-          "Bearer " +
-          sessionStorage.getItem("accessToken")?.replaceAll('"', ""),
-        "Content-type": "application/json; charset=UTF-8",
-        Connection: "keep-alive",
-        Accept: "*/*",
-      },
-    })
-      .then((res) => res.json())
-      .then((values: JobResponse[]) => {
-        values.forEach((value) => {
-          value.createdDate = new Date(value.createdDate);
-          value.updatedDate = new Date(value.updatedDate);
-          value.expiredDate = new Date(value.expiredDate);
-          return value;
+    if (location.pathname === "/job") {
+      const shopInfo: ShopResponse = JSON.parse(
+        localStorage.getItem("shopInfo")!
+      );
+      fetch(`http://${host}:${port}/api/v1/job/shop/` + shopInfo.id, {
+        headers: {
+          Authorization: "Bearer " + session,
+          "Content-type": "application/json; charset=UTF-8",
+          Connection: "keep-alive",
+          Accept: "*/*",
+        },
+      })
+        .then((res) => res.json())
+        .then((values: JobResponse[]) => {
+          values.forEach((value) => {
+            value.createdDate = new Date(value.createdDate);
+            value.updatedDate = new Date(value.updatedDate);
+            value.expiredDate = new Date(value.expiredDate);
+            return value;
+          });
+          return setJobs([...values]);
         });
-        return setJobs([...values]);
-      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const openNewPost = () => {

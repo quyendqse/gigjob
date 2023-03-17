@@ -1,4 +1,4 @@
-export interface WorkerResponse {
+export interface WorkerDetailResponse {
   id: string;
   firstName: string;
   lastName: string;

@@ -29,6 +29,10 @@ const JobDescriptionContainer = ({ job }: props) => {
       <Title>{job?.title}</Title>
       <SubTitle>{`Location: ${shopProfile.account.addresses[0].city}`}</SubTitle>
       <SubTitle>{`Job Type: ${job!.jobType!.name}`}</SubTitle>
+      <SubTitle>
+        Salary:
+        <strong>{` ${job!.salary}đ`}</strong>
+      </SubTitle>
       <Typography variant="h5" sx={{ paddingBottom: "12px" }}>
         Description
       </Typography>

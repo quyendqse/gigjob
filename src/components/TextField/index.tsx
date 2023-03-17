@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import { TextField as MuiTextField } from "@mui/material";
+import { TextField as MuiTextField, styled } from "@mui/material";
 
 export const TextField = styled(MuiTextField)({
   "& .MuiInputBase-root": {

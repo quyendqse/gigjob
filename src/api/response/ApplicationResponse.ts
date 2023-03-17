@@ -1,8 +1,8 @@
 import { JobDetailResponse } from "./JobDetailResponse";
-import { WorkerResponse } from "./WorkerResponse";
+import { WorkerDetailResponse } from "./WorkerResponse";
 
 export interface ApplicationResponse {
-  worker: WorkerResponse;
+  worker: WorkerDetailResponse;
   job: JobDetailResponse;
   status: "PENDING" | "ACCEPTED" | "REJECTED";
 }

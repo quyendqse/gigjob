@@ -6,4 +6,5 @@ export interface JobRequest {
   description: string;
   skill: string;
   benefit: string;
+  salary: number;
 }
