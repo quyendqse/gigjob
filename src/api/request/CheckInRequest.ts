@@ -1,6 +1,8 @@
+import { Shift } from "../../constants/Shift";
+
 export interface CheckInRequest {
   workerId: string;
-  jobId: string;
+  jobId: number;
   duration: number;
-  shift: "DAY" | "AFTERNOON" | "MIDNIGHT" | "NIGHT";
+  shift: Shift;
 }
