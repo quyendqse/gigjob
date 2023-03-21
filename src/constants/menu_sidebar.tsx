@@ -23,9 +23,9 @@ export const menu = [
     path: "/job",
   },
   {
-    label: "Payment",
+    label: "Session",
     icon: <IoWallet />,
-    path: "/payment",
+    path: "/session",
   },
   {
     label: "Profile",

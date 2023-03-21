@@ -111,7 +111,7 @@ export const NewProfile = () => {
               <Grid container spacing={5}>
                 <Grid item xs={12}>
                   <Typography variant="h5" sx={labelStyle}>
-                    Name
+                    Email
                   </Typography>
                   <TextField
                     hiddenLabel

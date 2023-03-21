@@ -35,7 +35,7 @@ export const routers = createBrowserRouter(
       <Route element={<ProtectedRoute />}>
         <Route element={<Home />} path={"/"} />
         <Route element={<Schedule />} path={"/schedule"} />
-        <Route element={<Session />} path={"/payment"} />
+        <Route element={<Session />} path={"/session"} />
         <Route element={<TopUp />} path={"/topUp"} />
         <Route element={<Profile />} path={"/profile"}>
           <Route element={<EditProfile />} path={"edit"} />
