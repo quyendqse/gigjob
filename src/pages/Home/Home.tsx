@@ -110,6 +110,9 @@ function Home() {
     <Box>
       <TableContainer component={Card} sx={{ mt: "2rem" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          {workers.length === 0 || workers == null ? (
+            <caption>No record</caption>
+          ) : null}
           <TableHead className="tableHeader">
             <TableRow>
               <TableCell>Name</TableCell>

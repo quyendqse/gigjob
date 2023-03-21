@@ -12,6 +12,7 @@ import { createNewShopInfo } from "../api/data/query/ProfileQM";
 import { getShopByAccountId } from "../api/data/query/shop";
 import { AccountRequest } from "../api/request/AccountRequest";
 import { ShopRequest } from "../api/request/ShopRequest";
+import { ShopResponse } from "../api/response/ShopResponse";
 import { host, port } from "../constants/host";
 import { auth } from "../firebase/firebase";
 import { useLocalStorage } from "../hook/useLocalStorage";
@@ -22,7 +23,7 @@ interface AuthenticationContext {
   authLoading: boolean;
   isLoggedIn: boolean;
   session: string | null | undefined;
-  shopInfo: any;
+  shopInfo: ShopResponse | null | undefined;
   loginGoogleFirebase: () => Promise<SignInStatus>;
   loginEmailPassword: (
     email: string,

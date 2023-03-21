@@ -15,6 +15,8 @@ import {
 import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import { NewProfile } from "../pages/Profiles/NewProfile";
+import Session from "../pages/Session/Session";
+import TopUp from "../pages/TopUp/TopUp";
 
 export const publicRoutes = [
   {
@@ -33,7 +35,8 @@ export const routers = createBrowserRouter(
       <Route element={<ProtectedRoute />}>
         <Route element={<Home />} path={"/"} />
         <Route element={<Schedule />} path={"/schedule"} />
-        <Route element={<div>Payment</div>} path={"/payment"} />
+        <Route element={<Session />} path={"/payment"} />
+        <Route element={<TopUp />} path={"/topUp"} />
         <Route element={<Profile />} path={"/profile"}>
           <Route element={<EditProfile />} path={"edit"} />
         </Route>

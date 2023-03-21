@@ -5,10 +5,8 @@ import { IoCall, IoFileTray, IoLocation, IoMailOpen } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { Outlet, useLocation } from "react-router-dom";
 import { getAccountImage } from "../../api/data/query/account";
-import { ShopResponse } from "../../api/response/ShopResponse";
 import { defaultImg } from "../../constants/defaultValues";
 import { useLocalStorage } from "../../hook/useLocalStorage";
-import { shopAccount } from "../../mockData/accountData";
 import {
   Card,
   CenterColumn,

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   CircularProgress,
   IconButton,
@@ -16,11 +17,13 @@ import { defaultImg } from "../../constants/defaultValues";
 import { host, port } from "../../constants/host";
 import { menu } from "../../constants/menu_sidebar";
 import { useAuth } from "../../context/AuthContext";
+import { auth } from "../../firebase/firebase";
 import { useLocalStorage } from "../../hook/useLocalStorage";
-import { FlexHeader, HeaderName } from "./Header.style";
+import { ActionsGroup, FlexHeader, HeaderName } from "./Header.style";
+import Balance from "./TopUpButton";
 
 function Header() {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,7 +45,6 @@ function Header() {
   };
 
   useEffect(() => {
-    setLoading(true);
     getAccountImage(shopInfo.account.id).then((res) => {
       if (res) {
         setAvatar(res);
@@ -58,14 +60,13 @@ function Header() {
   return (
     <FlexHeader>
       <HeaderName variant="h3">
-        {
+        {location.state?.label ??
           menu.filter((m) => {
             return (
               (m.path === "/home" && location.pathname === "/") ||
               m.path.split(/\//g)[1] === location.pathname.split(/\//g)[1]
             );
-          })[0].label
-        }
+          })[0].label}
       </HeaderName>
 
       {loading ? (
@@ -77,15 +78,17 @@ function Header() {
           size={20}
         />
       ) : (
-        <>
+        <ActionsGroup>
+          <Balance />
           <Avatar
             component={IconButton}
             sx={{
               width: "60px",
               height: "60px",
-              objectFit: "contain",
+              objectFit: "cover",
               alignSelf: "center",
-              margin: "0 1rem",
+              padding: "0",
+              margin: "0 1rem 0 2rem",
             }}
             src={avatar!}
             onClick={handleClick}
@@ -148,7 +151,7 @@ function Header() {
               </MenuItem>
             </IconContext.Provider>
           </Menu>
-        </>
+        </ActionsGroup>
       )}
     </FlexHeader>
   );

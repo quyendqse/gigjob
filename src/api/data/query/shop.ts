@@ -16,6 +16,7 @@ async function getShopByAccountId(id: string): Promise<ShopResponse | null> {
       method: "get",
       headers: {
         Authorization: `Bearer ${session}`,
+        "Access-Control-Request-Method": "GET",
       },
     });
 

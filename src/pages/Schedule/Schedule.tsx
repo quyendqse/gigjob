@@ -17,8 +17,10 @@ import {
   TableRow,
   Typography,
   TextField,
+  Snackbar,
+  IconButton,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Card } from "../Profiles/Profile.style";
 import { useLocalStorage } from "../../hook/useLocalStorage";
 import { ShopResponse } from "../../api/response/ShopResponse";
@@ -31,7 +33,6 @@ import { Center } from "../../components/Center/Centers";
 import { Formik } from "formik";
 import { Shift } from "../../constants/Shift";
 import { CheckInRequest } from "../../api/request/CheckInRequest";
-import { IoShieldHalfOutline } from "react-icons/io5";
 
 function createData(data: ApplicationResponse): DataView {
   var worker: WorkerDetailResponse = data.worker;
@@ -110,6 +111,7 @@ async function checkIn(request: CheckInRequest, accessToken: string) {
 
 function Schedule() {
   const [open, setOpen] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [submittingRow, setSubmittingRow] = useState<DataView | null>(null);
   const [initLoading, setInitLoading] = useState(false);
   const [shopInfo] = useLocalStorage("shopInfo", null);
@@ -117,7 +119,7 @@ function Schedule() {
   const [session] = useSessionStorage("accessToken", null);
   const [name, setName] = useState<string | null>(null);
 
-  const handleClickOpen = (value: DataView) => {
+  const openDialog = (value: DataView) => {
     setSubmittingRow(value);
     setOpen(true);
     setName(name);
@@ -135,9 +137,8 @@ function Schedule() {
     };
     checkIn(request, session).then((data) => {
       if (data != null) {
-        alert("Checked in");
-      } else {
-        alert("Something went wrong");
+        closeDialog();
+        setOpenSnackbar(true);
       }
     });
   };
@@ -156,10 +157,25 @@ function Schedule() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClose = () => {
+  const closeDialog = () => {
     setSubmittingRow(null);
     setOpen(false);
   };
+
+  const closeSnackbar = () => setOpenSnackbar(false);
+
+  const action = (
+    <Fragment>
+      <Button color="secondary" size="small" onClick={closeSnackbar}>
+        CLOSE
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={closeSnackbar}></IconButton>
+    </Fragment>
+  );
 
   return initLoading ? (
     <Center>
@@ -167,26 +183,11 @@ function Schedule() {
     </Center>
   ) : (
     <Box>
-      {/* <Box
-        sx={{ display: "flex", flexDirection: "row", alignItems: "stretch" }}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography>Day: </Typography>
-        </div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            value={value}
-            onChange={(newValue) => {
-              setValue(newValue);
-            }}
-            renderInput={(params) => (
-              <TextField {...params} sx={{ margin: "0 1rem" }} />
-            )}
-          />
-        </LocalizationProvider>
-        <Button variant="outlined">Go</Button>
-      </Box> */}
       <TableContainer component={Card} sx={{ mt: "2rem" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          {rowsData.length === 0 || rowsData == null ? (
+            <caption>No record</caption>
+          ) : null}
           <TableHead className="tableHeader">
             <TableRow>
               <TableCell>Name</TableCell>
@@ -204,9 +205,7 @@ function Schedule() {
                 <TableCell>{row.phone}</TableCell>
                 <TableCell>{row.job}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleClickOpen(row)}>
+                  <Button variant="contained" onClick={() => openDialog(row)}>
                     Check-in
                   </Button>
                 </TableCell>
@@ -215,7 +214,7 @@ function Schedule() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={closeDialog}>
         <DialogTitle>Worked hour for {name} with</DialogTitle>
         <Formik
           initialValues={{
@@ -256,13 +255,21 @@ function Schedule() {
                 </Select>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={closeDialog}>Cancel</Button>
                 <Button type="submit">Submit</Button>
               </DialogActions>
             </form>
           )}
         </Formik>
       </Dialog>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={closeDialog}
+        message="Checked in"
+        action={action}
+      />
     </Box>
   );
 }
