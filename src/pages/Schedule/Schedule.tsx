@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   MenuItem,
   Select,
@@ -15,8 +14,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  TextField,
   Snackbar,
   IconButton,
 } from "@mui/material";
@@ -125,14 +122,13 @@ function Schedule() {
     setName(name);
   };
 
-  const handleSubmit = (values: { hour: number; shift: Shift }) => {
+  const handleSubmit = (values: { shift: Shift }) => {
     if (submittingRow == null) {
       return;
     }
     var request: CheckInRequest = {
       workerId: submittingRow!.workerId,
       jobId: submittingRow!.jobId,
-      duration: values.hour,
       shift: values.shift,
     };
     checkIn(request, session).then((data) => {
@@ -215,34 +211,16 @@ function Schedule() {
         </Table>
       </TableContainer>
       <Dialog open={open} onClose={closeDialog}>
-        <DialogTitle>Worked hour for {name} with</DialogTitle>
+        <DialogTitle>Shift of {submittingRow?.name}</DialogTitle>
         <Formik
           initialValues={{
-            hour: 0,
             shift: "DAY" as Shift,
           }}
           onSubmit={(values) => handleSubmit(values)}>
           {({ values, handleBlur, handleChange, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <DialogContent>
-                <DialogContentText>
-                  Enter your worker working hour for tracking session and salary
-                </DialogContentText>
-                <Typography variant="body2">Hour</Typography>
-                <TextField
-                  autoFocus
-                  hiddenLabel
-                  margin="dense"
-                  id="hour"
-                  type="number"
-                  fullWidth
-                  value={values.hour}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <Typography variant="body2">Shift</Typography>
                 <Select
-                  aria-label=""
                   id="shift"
                   fullWidth
                   name="shift"

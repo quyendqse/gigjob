@@ -10,7 +10,7 @@ const ListHead = styled.div`
 
 const BoxContainer = styled(Box)`
   background-color: white;
-  border-radius: 24px;
+  border-radius: 12px;
   padding: 2rem;
 `;
 

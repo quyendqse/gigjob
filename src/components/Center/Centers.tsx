@@ -5,5 +5,5 @@ export const Center = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: calc(100vh - 115px - 32px);
 `;

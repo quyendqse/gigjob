@@ -1,7 +1,5 @@
 import {
   Avatar,
-  Box,
-  Button,
   CircularProgress,
   IconButton,
   ListItemIcon,
@@ -14,21 +12,19 @@ import { IconContext } from "react-icons/lib";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAccountImage } from "../../api/data/query/account";
 import { defaultImg } from "../../constants/defaultValues";
-import { host, port } from "../../constants/host";
 import { menu } from "../../constants/menu_sidebar";
 import { useAuth } from "../../context/AuthContext";
-import { auth } from "../../firebase/firebase";
 import { useLocalStorage } from "../../hook/useLocalStorage";
+import { useSessionStorage } from "../../hook/useSessionStorage";
 import { ActionsGroup, FlexHeader, HeaderName } from "./Header.style";
-import Balance from "./TopUpButton";
 
 function Header() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-
+  const [session] = useSessionStorage("accessToken", null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [shopInfo, setShopInfo] = useLocalStorage("shopInfo", null);
+  const [shopInfo] = useLocalStorage("shopInfo", null);
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState<string | null>(null);
   const open = Boolean(anchorEl);
@@ -45,7 +41,7 @@ function Header() {
   };
 
   useEffect(() => {
-    getAccountImage(shopInfo.account.id).then((res) => {
+    getAccountImage(shopInfo.account.id, session).then((res) => {
       if (res) {
         setAvatar(res);
         setLoading(false);
@@ -79,12 +75,12 @@ function Header() {
         />
       ) : (
         <ActionsGroup>
-          <Balance />
+          {/* <Balance /> */}
           <Avatar
             component={IconButton}
             sx={{
-              width: "60px",
-              height: "60px",
+              width: "40px",
+              height: "40 px",
               objectFit: "cover",
               alignSelf: "center",
               padding: "0",
@@ -108,14 +104,14 @@ function Header() {
                   width: 32,
                   height: 32,
                   ml: -0.5,
-                  mr: 0.5,
+                  mr: 0,
                 },
                 "&:before": {
                   content: '""',
                   display: "block",
                   position: "absolute",
                   top: 0,
-                  right: 24,
+                  right: 20,
                   width: 10,
                   height: 10,
                   bgcolor: "background.paper",

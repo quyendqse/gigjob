@@ -94,6 +94,18 @@ const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        standard: {
+          borderRadius: 10,
+        },
+        outlined: {
+          "& .MuiInputBase-root	": {
+            borderRadius: 10,
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -154,8 +166,8 @@ const theme = createTheme({
         paper: {
           background: "#ffffff",
           boxShadow: "2px 4px 14px rgba(0, 0, 0, 0.14)",
-          borderRadius: "24px",
-          padding: "8px 16px",
+          borderRadius: "12px",
+          padding: "4px 8px",
         },
       },
     },
@@ -163,7 +175,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           ":hover": {
-            borderRadius: "12px",
+            borderRadius: "6px",
           },
           fontSize: "18px",
           padding: "1rem",

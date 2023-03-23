@@ -116,11 +116,9 @@ function Home() {
           <TableHead className="tableHeader">
             <TableRow>
               <TableCell>Name</TableCell>
-              {/* <TableCell>Phone</TableCell> */}
-              <TableCell>Job</TableCell>
-              {/* <TableCell>Birthday</TableCell> */}
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell align="center">Job</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -129,29 +127,33 @@ function Home() {
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell scope="row">{worker.name}</TableCell>
-                {/* <TableCell>{row.phone}</TableCell> */}
-                <TableCell>{worker.job.title}</TableCell>
-                {/* <TableCell>{row.}</TableCell> */}
-                <TableCell>
+                <TableCell align="center">{worker.job.title}</TableCell>
+                <TableCell align="center">
                   {isLoading && loadingId === worker.id ? (
                     <CircularProgress />
                   ) : (
                     worker.status
                   )}
                 </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleAccept(worker)}>
-                    Accept
-                  </Button>
-                  <Box sx={{ mx: "1rem", display: "inline" }}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleReject(worker)}>
-                      Reject
-                    </Button>
-                  </Box>
+                <TableCell align="center">
+                  {worker.status !== "ACCEPTED" && (
+                    <Box sx={{ mx: "0.5rem", display: "inline-block" }}>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleAccept(worker)}>
+                        Accept
+                      </Button>
+                    </Box>
+                  )}
+                  {worker.status !== "REJECTED" && (
+                    <Box sx={{ mx: "0.5rem", display: "inline-block" }}>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleReject(worker)}>
+                        Reject
+                      </Button>
+                    </Box>
+                  )}
                   <IconButton>
                     <IoEllipsisVerticalCircle />
                   </IconButton>

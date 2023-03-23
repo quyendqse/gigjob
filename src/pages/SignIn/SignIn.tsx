@@ -149,20 +149,9 @@ function SignIn() {
                       onBlur={handleBlur}
                       value={values.password}
                     />
-                    <Grid container sx={{ margin: "1rem auto" }}>
-                      <Grid item xs={6}>
-                        <FormGroup>
-                          <FormControlLabel
-                            control={<Switch />}
-                            label="Remember me"
-                          />
-                        </FormGroup>
-                      </Grid>
-                      <Grid item xs={6} sx={{ textAlign: "right" }}>
-                        <Button variant="text">Forgot Password?</Button>
-                      </Grid>
-                    </Grid>
+
                     <RoundedButton
+                      sx={{ mt: "2rem" }}
                       variant="contained"
                       type="submit"
                       disabled={isSubmitting || loading}>
@@ -194,16 +183,16 @@ function SignIn() {
                   </>
                 )}
               </RoundedButton>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "1rem",
-                }}>
-                <Button variant="text" onClick={() => navigate("/register")}>
-                  Register
-                </Button>
-              </div>
+              <Grid container sx={{ margin: "1rem auto" }}>
+                <Grid item xs={6}>
+                  <Button variant="text" onClick={() => navigate("/register")}>
+                    Register
+                  </Button>
+                </Grid>
+                <Grid item xs={6} sx={{ textAlign: "right" }}>
+                  <Button variant="text">Forgot Password?</Button>
+                </Grid>
+              </Grid>
             </Box>
           </FormContainer>
         </FormBox>

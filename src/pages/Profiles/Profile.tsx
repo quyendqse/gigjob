@@ -14,15 +14,17 @@ import {
   Image,
   Row,
 } from "./Profile.style";
+import { useSessionStorage } from "../../hook/useSessionStorage";
 
 function Profile() {
-  const [shopInfo, setShopInfo] = useLocalStorage("shopInfo", null);
+  const [shopInfo] = useLocalStorage("shopInfo", null);
+  const [session] = useSessionStorage("accessToken", null);
   const [avatar, setAvatar] = useState<string | null>();
   const location = useLocation();
   const marginVertical2rem = { margin: "2rem 0" };
 
   useEffect(() => {
-    getAccountImage(shopInfo.account.id).then((data) => {
+    getAccountImage(shopInfo.account.id, session).then((data) => {
       if (data != null && data !== "") {
         setAvatar(data);
       } else {
@@ -42,9 +44,13 @@ function Profile() {
         xl={5}
         xs={12}
         sx={{ paddingBottom: { xl: "2rem", xs: "none" } }}>
-        <Card>
+        <Card style={{ padding: "3rem 0" }}>
           <FlexCenterContainer>
-            {avatar != null ? <Image src={avatar} /> : <CircularProgress />}
+            {avatar != null ? (
+              <Image src={avatar} />
+            ) : (
+              <CircularProgress style={{ margin: "2rem 0" }} />
+            )}
             <Typography variant="h5" className="primaryColor">
               {shopInfo.name}
             </Typography>

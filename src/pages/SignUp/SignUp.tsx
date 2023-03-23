@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { Formik, replace } from "formik";
+import { Formik } from "formik";
 import { RoundedButton } from "../../components/RoundedButton";
 import { TextField } from "../../components/TextField";
 import { Card2, styles } from "./SignUp.style";
@@ -11,6 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import Address from "../../model/Address";
+import { geocode } from "../../api/data/query/geocode";
 
 interface Form {
   email: string;
@@ -77,17 +78,27 @@ const SignUp = () => {
     setSubmitting: (value: boolean) => void
   ) => {
     setLoading(true);
-    signUpEmailPassword(request).then(({ status, message }) => {
-      switch (status) {
-        case "success":
-          navigate("/", { replace: true });
-          break;
-        default:
-          alert(message);
-          break;
-      }
-      setLoading(false);
-    });
+    geocode(
+      request.address,
+      (data) => {
+        if (data.data.items.length !== 0) {
+          request.longitude = data.data.items[0].position.lng;
+          request.latitude = data.data.items[0].position.lat;
+          signUpEmailPassword(request).then(({ status, message }) => {
+            switch (status) {
+              case "success":
+                navigate("/", { replace: true });
+                break;
+              default:
+                alert(message);
+                break;
+            }
+            setLoading(false);
+          });
+        }
+      },
+      (reason) => alert(reason)
+    );
   };
 
   const toRequest = (values: Form): AccountRequest => {
