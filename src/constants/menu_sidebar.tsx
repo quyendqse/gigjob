@@ -1,15 +1,15 @@
 import {
   IoBriefcase,
   IoCalendar,
-  IoHome,
+  IoDocument,
   IoStorefront,
   IoWallet,
 } from "react-icons/io5";
 
 export const menu = [
   {
-    label: "Home",
-    icon: <IoHome />,
+    label: "Applications",
+    icon: <IoDocument />,
     path: "/",
   },
   {
@@ -23,9 +23,9 @@ export const menu = [
     path: "/job",
   },
   {
-    label: "Payment",
+    label: "Session",
     icon: <IoWallet />,
-    path: "/payment",
+    path: "/session",
   },
   {
     label: "Profile",

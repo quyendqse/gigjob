@@ -6,5 +6,5 @@ export default interface Shop {
   name: string;
   description: string;
   account: Account;
-  jobs: Array<Job>;
+  // jobs: Array<Job>;
 }

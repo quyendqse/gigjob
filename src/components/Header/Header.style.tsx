@@ -21,4 +21,11 @@ const HeaderName = styled(Typography)`
   color: #a23f00;
 `;
 
-export { FlexHeader, HeaderName };
+const ActionsGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+`;
+
+export { FlexHeader, HeaderName, ActionsGroup };

@@ -7,8 +7,9 @@ import { menu } from "../../constants/menu_sidebar";
 import { IconContext } from "react-icons/lib";
 import Header from "../Header/Header";
 import { ListItemIcon, ListItemText } from "@mui/material";
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation, useOutlet } from "react-router-dom";
 import { Padding } from "./Sidebar.style";
+import { useAuth } from "../../context/AuthContext";
 const drawerWidth = 320;
 const mainLayoutStyle = {
   flexGrow: 1,
@@ -31,7 +32,9 @@ const drawerStyle = {
 
 export default function SideBar() {
   const logoAsset = "/assets/logo.png";
+  const { loading, isLoggedIn } = useAuth();
   const location = useLocation();
+  const outlet = useOutlet();
   console.log(location.hash);
 
   const getSelectedItem = (path: string, num: number) => {
@@ -73,9 +76,7 @@ export default function SideBar() {
       </Box>
       <Box component="main" sx={mainLayoutStyle}>
         <Header />
-        <Padding>
-          <Outlet />
-        </Padding>
+        <Padding>{outlet}</Padding>
       </Box>
     </Box>
   );

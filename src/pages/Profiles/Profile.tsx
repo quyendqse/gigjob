@@ -1,26 +1,37 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, CircularProgress } from "@mui/material";
+import Address from "../../model/Address";
+import { useEffect, useState } from "react";
 import { IoCall, IoFileTray, IoLocation, IoMailOpen } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { Outlet, useLocation } from "react-router-dom";
-import { shopAccount } from "../../mockData/accountData";
-import { useAppSelector } from "../../store/hooks";
-import { selectShop } from "../../store/shop/shopSlice";
+import { getAccountImage } from "../../api/data/query/account";
+import { defaultImg } from "../../constants/defaultValues";
+import { useLocalStorage } from "../../hook/useLocalStorage";
 import {
   Card,
   CenterColumn,
   FlexCenterContainer,
   Image,
-  ShopInfoLabel,
-  ShopInfoValue,
-  EquallyRow,
   Row,
 } from "./Profile.style";
 
 function Profile() {
+  const [shopInfo, setShopInfo] = useLocalStorage("shopInfo", null);
+  const [avatar, setAvatar] = useState<string | null>();
   const location = useLocation();
-  const shopProfile = useAppSelector(selectShop);
   const marginVertical2rem = { margin: "2rem 0" };
-  console.log(location.pathname);
+
+  useEffect(() => {
+    getAccountImage(shopInfo.account.id).then((data) => {
+      if (data != null && data !== "") {
+        setAvatar(data);
+      } else {
+        setAvatar(defaultImg);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (location.pathname !== "/profile") {
     return <Outlet />;
   }
@@ -33,24 +44,10 @@ function Profile() {
         sx={{ paddingBottom: { xl: "2rem", xs: "none" } }}>
         <Card>
           <FlexCenterContainer>
-            <Image src={shopAccount.imageUrl} />
+            {avatar != null ? <Image src={avatar} /> : <CircularProgress />}
             <Typography variant="h5" className="primaryColor">
-              {shopProfile.name}
+              {shopInfo.name}
             </Typography>
-            <EquallyRow>
-              <CenterColumn>
-                <ShopInfoValue>23</ShopInfoValue>
-                <ShopInfoLabel>Posts</ShopInfoLabel>
-              </CenterColumn>
-              <CenterColumn>
-                <ShopInfoValue>N/A</ShopInfoValue>
-                <ShopInfoLabel>Reviews</ShopInfoLabel>
-              </CenterColumn>
-              <CenterColumn>
-                <ShopInfoValue>140</ShopInfoValue>
-                <ShopInfoLabel>Applicants</ShopInfoLabel>
-              </CenterColumn>
-            </EquallyRow>
           </FlexCenterContainer>
         </Card>
         <Card style={marginVertical2rem}>
@@ -63,20 +60,18 @@ function Profile() {
                 <IoLocation className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                {shopProfile.account.addresses?.map(
-                  ({ street, district, country, province, city }) => (
-                    <Typography>
-                      {street +
-                        ", " +
-                        district +
-                        ", " +
-                        city +
-                        ", " +
-                        (province ? `${province}, ` : "") +
-                        country}
-                    </Typography>
-                  )
-                )}
+                {shopInfo.addresses?.map((address: Address) => (
+                  <Typography>
+                    {address.street +
+                      ", " +
+                      address.district +
+                      ", " +
+                      address.city +
+                      ", " +
+                      (address.province ? `${address.province}, ` : "") +
+                      address.country}
+                  </Typography>
+                ))}
               </div>
             </Row>
             <Row>
@@ -84,9 +79,7 @@ function Profile() {
                 <IoMailOpen className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                {[shopAccount.email]?.map((m, ind) => (
-                  <Typography key={ind}>{m}</Typography>
-                )) ?? "None"}
+                {shopInfo.account.email ?? "None"}
               </div>
             </Row>
             <Row>
@@ -94,7 +87,9 @@ function Profile() {
                 <IoCall className="primaryColor" />
               </div>
               <div id="col" style={{ padding: "0.5rem 0.5rem" }}>
-                <Typography>{shopProfile.account.phone}</Typography>
+                <Typography>
+                  {shopInfo.account.phone ?? "Not available"}
+                </Typography>
               </div>
             </Row>
             {/* <Row>
@@ -129,7 +124,7 @@ function Profile() {
             About Company
           </Typography>
           <div style={{ margin: "0 1rem" }}>
-            {shopProfile.description.split("\n").map((p, pi) => (
+            {shopInfo.description.split("\n").map((p: string, pi: number) => (
               <Typography
                 key={pi}
                 variant="body1"
