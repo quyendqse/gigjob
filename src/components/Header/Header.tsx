@@ -6,6 +6,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import _ from "lodash";
 import { useEffect, useState } from "react";
 import { IoCreate, IoLogOut, IoSettings } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
@@ -26,7 +27,6 @@ function Header() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [shopInfo] = useLocalStorage("shopInfo", null);
   const [loading, setLoading] = useState(true);
-  const [avatar, setAvatar] = useState<string | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -39,20 +39,6 @@ function Header() {
     navigate("/profile/edit");
     handleClose();
   };
-
-  useEffect(() => {
-    getAccountImage(shopInfo.account.id, session).then((res) => {
-      if (res) {
-        setAvatar(res);
-        setLoading(false);
-      } else {
-        setAvatar(defaultImg);
-        setLoading(false);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <FlexHeader>
       <HeaderName variant="h3">
@@ -64,91 +50,85 @@ function Header() {
             );
           })[0].label}
       </HeaderName>
-
-      {loading ? (
-        <CircularProgress
+      <ActionsGroup>
+        {/* <Balance /> */}
+        <Avatar
+          component={IconButton}
           sx={{
+            width: "40px",
+            height: "40 px",
+            objectFit: "cover",
             alignSelf: "center",
-            margin: "0 1rem",
+            padding: "0",
+            margin: "0 1rem 0 2rem",
           }}
-          size={20}
+          src={
+            _.isString(shopInfo.account.imageUrl) &&
+            !_.isEmpty(shopInfo.account.imageUrl)
+              ? shopInfo.account.imageUrl
+              : defaultImg
+          }
+          onClick={handleClick}
         />
-      ) : (
-        <ActionsGroup>
-          {/* <Balance /> */}
-          <Avatar
-            component={IconButton}
-            sx={{
-              width: "40px",
-              height: "40 px",
-              objectFit: "cover",
-              alignSelf: "center",
-              padding: "0",
-              margin: "0 1rem 0 2rem",
-            }}
-            src={avatar!}
-            onClick={handleClick}
-          />
-          <Menu
-            id="account-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 0,
-                },
-                "&:before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 20,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
+        <Menu
+          id="account-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              mt: 1.5,
+              "& .MuiAvatar-root": {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 0,
               },
-            }}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-            <IconContext.Provider value={{ size: "1.4rem" }}>
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <IoSettings />
-                </ListItemIcon>
-                Settings
-              </MenuItem>
-              <MenuItem onClick={moveToEditProfile}>
-                <ListItemIcon>
-                  <IoCreate />
-                </ListItemIcon>
-                Edit Profile
-              </MenuItem>
-              <MenuItem
-                onClick={(event) => {
-                  logout();
-                  handleClose();
-                }}>
-                <ListItemIcon>
-                  <IoLogOut />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
-            </IconContext.Provider>
-          </Menu>
-        </ActionsGroup>
-      )}
+              "&:before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 0,
+                right: 20,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
+                zIndex: 0,
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
+          <IconContext.Provider value={{ size: "1.4rem" }}>
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <IoSettings />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            <MenuItem onClick={moveToEditProfile}>
+              <ListItemIcon>
+                <IoCreate />
+              </ListItemIcon>
+              Edit Profile
+            </MenuItem>
+            <MenuItem
+              onClick={(event) => {
+                logout();
+                handleClose();
+              }}>
+              <ListItemIcon>
+                <IoLogOut />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </IconContext.Provider>
+        </Menu>
+      </ActionsGroup>
     </FlexHeader>
   );
 }

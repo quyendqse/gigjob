@@ -2,29 +2,27 @@ import {
   Box,
   Button,
   Grid,
-  IconButton,
   Tooltip,
   Typography,
   CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "../../components/TextField";
-import { IoAddCircle, IoAddOutline } from "react-icons/io5";
 import { Container } from "@mui/system";
 import { Formik } from "formik";
-import { Card, CenterColumn, Image } from "./Profile.style";
-import { shopAccount } from "../../mockData/accountData";
+import { Card, Image } from "./Profile.style";
 import * as Yup from "yup";
 import { useLocalStorage } from "../../hook/useLocalStorage";
 import { ShopRequest } from "../../api/request/ShopRequest";
 import Address from "../../model/Address";
 import { useSessionStorage } from "../../hook/useSessionStorage";
 import { host, port } from "../../constants/host";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Center } from "../../components/Center/Centers";
 import axios from "axios";
 import { ShopResponse } from "../../api/response/ShopResponse";
-
+import { defaultImg } from "../../constants/defaultValues";
+import * as _ from "lodash";
 const labelStyle = {
   marginTop: "1rem",
   marginBottom: "-0.5rem",
@@ -43,43 +41,106 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required("Required"),
 });
 
-const conn = `http://${host}:${port}/api/v1/shop/profile/edit`;
 export const EditProfile = () => {
   const [shopInfo, setShopInfo] = useLocalStorage("shopInfo", null);
   const [session] = useSessionStorage("accessToken", null);
   const [processing, setProcessing] = useState(false);
+  const [avatar, setAvatar] = useState<File>();
+  const [defaultAvatar, setDefaultAvatar] = useState<File>();
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [loadingImage, setLoadingImage] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setLoadingImage(true);
+    axios({
+      method: "get",
+      baseURL: `http://${host}:${port}/api`,
+      url: `/v1/account/avatar/${shopInfo.account.id}`,
+      headers: {
+        Authorization: `Bearer ${session}`,
+      },
+    })
+      .then(({ data: imgUrl }) => {
+        if (!_.isUndefined(imgUrl) && !_.isEmpty(imgUrl)) {
+          setAvatarUrl(imgUrl);
+          axios
+            .get(imgUrl, { responseType: "blob" })
+            .then((response) => {
+              setAvatar(new File([response.data], "avatar"));
+              setDefaultAvatar(new File([response.data], "avatar"));
+            })
+            .catch((err) => console.log(err));
+        } else {
+        }
+        setLoadingImage(false);
+      })
+      .catch((error) => alert("image not found"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const resetImage = () => {
+    setAvatar(defaultAvatar);
+    if (_.isUndefined(defaultAvatar)) {
+      setAvatarUrl("");
+    } else {
+      setAvatarUrl(URL.createObjectURL(defaultAvatar));
+    }
+  };
+
+  const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setAvatar(e.target.files[0]);
+      setAvatarUrl(URL.createObjectURL(e.target.files?.[0]));
+    }
+    e.target.value = "";
+  };
+
   const handleSubmit = (values: ShopRequest) => {
-    setProcessing(false);
-    const headers = {
-      Authorization: "Bearer " + session.accessToken,
-      "Content-type": "application/json; charset=UTF-8",
-      Connection: "keep-alive",
-      Accept: "*/*",
-    };
+    setProcessing(true);
     axios({
       url: "/v1/shop/edit",
       baseURL: `http://${host}:${port}/api`,
       method: "post",
       headers: {
-        Authorization: "Bearer " + session.accessToken,
+        Authorization: `Bearer ${session}`,
       },
       data: values,
     })
       .then((res) => {
-        if (res.status === 200) {
-          res.data().then((data: ShopResponse) => {
-            setShopInfo(data);
-            setProcessing(false);
-            navigate("/profile");
-          });
+        const shop = res.data as ShopResponse;
+        setShopInfo(shop);
+        if (avatar) {
+          var formData = new FormData();
+          formData.append("file", avatar);
+          axios({
+            method: "post",
+            baseURL: `http://${host}:${port}/api`,
+            url: `/v1/account/${shopInfo.account.id}/image`,
+            headers: {
+              Authorization: `Bearer ${session}`,
+              "Content-Type": "multipart/form-data",
+              "Content-Length": `${avatar.size}`,
+            },
+            data: formData,
+          })
+            .then(({ data }) => {
+              var clone = { ...shopInfo };
+              clone.account.imageUrl = data;
+              setShopInfo(clone);
+              // navigate("/profile", { replace: true });
+              window.location.href = "/profile";
+            })
+            .catch(() => {
+              alert("Error when uploading file. Please try again later");
+              setProcessing(false);
+            });
         } else {
-          setProcessing(false);
+          window.location.href = "/profile";
+          // navigate("/profile", { replace: true });
         }
       })
       .catch((error) => {
-        console.log(error);
         setProcessing(false);
       });
   };
@@ -105,7 +166,7 @@ export const EditProfile = () => {
             district: "",
             id: "",
           },
-          imageUrl: "tre",
+          imageUrl: "",
           username: shopInfo.account.username,
           description: shopInfo.description,
           phone: shopInfo.account.phone,
@@ -208,15 +269,39 @@ export const EditProfile = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                    }}
-                    onClick={() => {}}>
-                    {shopAccount.imageUrl ? (
-                      <Image src={shopAccount.imageUrl} />
+                      flexDirection: "column",
+                      backgroundColor: "#f9dcce",
+                    }}>
+                    {loadingImage ? (
+                      <CircularProgress />
                     ) : (
-                      <CenterColumn>
-                        <IoAddCircle size={50} />
-                      </CenterColumn>
+                      <Image
+                        src={!_.isEmpty(avatarUrl) ? avatarUrl : defaultImg}
+                      />
                     )}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "60%",
+                        marginTop: "2rem",
+                      }}>
+                      <Button variant="contained" component="label">
+                        Upload
+                        <input
+                          hidden
+                          accept="image/*"
+                          type="file"
+                          onChange={handleAvatarChange}
+                        />
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        component="label"
+                        onClick={resetImage}>
+                        Reset
+                      </Button>
+                    </div>
                   </Card>
                 </Grid>
               </Grid>
@@ -354,7 +439,7 @@ export const EditProfile = () => {
                 onChange={handleChange}
                 value={values.description}
               />
-              <Typography variant="h5" sx={labelStyle}>
+              {/* <Typography variant="h5" sx={labelStyle}>
                 Images
               </Typography>
               <Box>
@@ -371,7 +456,7 @@ export const EditProfile = () => {
                   <IoAddOutline />
                   <input required={false} hidden accept="image/*" type="file" />
                 </IconButton>
-              </Box>
+              </Box> */}
               <Box
                 sx={{
                   display: "flex",

@@ -15,6 +15,7 @@ import {
   Row,
 } from "./Profile.style";
 import { useSessionStorage } from "../../hook/useSessionStorage";
+import _ from "lodash";
 
 function Profile() {
   const [shopInfo] = useLocalStorage("shopInfo", null);
@@ -23,16 +24,18 @@ function Profile() {
   const location = useLocation();
   const marginVertical2rem = { margin: "2rem 0" };
 
-  useEffect(() => {
-    getAccountImage(shopInfo.account.id, session).then((data) => {
-      if (data != null && data !== "") {
-        setAvatar(data);
-      } else {
-        setAvatar(defaultImg);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   getAccountImage(shopInfo.account.id, session).then((data) => {
+  //     if (data != null && data !== "") {
+  //       setAvatar(data);
+  //     } else {
+  //       setAvatar(defaultImg);
+  //     }
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  useEffect(() => {}, [shopInfo]);
 
   if (location.pathname !== "/profile") {
     return <Outlet />;
@@ -46,11 +49,19 @@ function Profile() {
         sx={{ paddingBottom: { xl: "2rem", xs: "none" } }}>
         <Card style={{ padding: "3rem 0" }}>
           <FlexCenterContainer>
-            {avatar != null ? (
+            {/* {avatar != null ? (
               <Image src={avatar} />
             ) : (
               <CircularProgress style={{ margin: "2rem 0" }} />
-            )}
+            )} */}
+            <Image
+              src={
+                _.isString(shopInfo.account.imageUrl) &&
+                !_.isEmpty(shopInfo.account.imageUrl)
+                  ? shopInfo.account.imageUrl
+                  : defaultImg
+              }
+            />
             <Typography variant="h5" className="primaryColor">
               {shopInfo.name}
             </Typography>
