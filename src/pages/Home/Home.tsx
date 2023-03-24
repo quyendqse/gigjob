@@ -8,10 +8,10 @@ import {
   TableHead,
   TableRow,
   CircularProgress,
+  MenuItem,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { IoEllipsisVerticalCircle } from "react-icons/io5";
 import {
   acceptApplication,
   getApplicationsOfShop,
@@ -24,6 +24,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useLocalStorage } from "../../hook/useLocalStorage";
 import { useSessionStorage } from "../../hook/useSessionStorage";
 import { Card } from "../Profiles/Profile.style";
+import FadeMenu from "./FadeMenu";
 
 export interface ApplicationViewData {
   id: number;
@@ -152,10 +153,9 @@ function Home() {
                       Reject
                     </Button>
                   </Box>
-                  <IconButton>
-                    <IoEllipsisVerticalCircle />
-                  </IconButton>
+                  
                 </TableCell>
+                <FadeMenu/>
               </TableRow>
             ))}
           </TableBody>

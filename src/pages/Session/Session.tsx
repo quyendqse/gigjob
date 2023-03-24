@@ -54,11 +54,11 @@ function Session() {
   const [rowsData, setRowsData] = useState<DataView[]>([]);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { session, shopInfo, logout } = useAuth();
-
+  
   const refreshData = () => {
     getSessionByDate(shopInfo?.id!, session!, date!).then((data) => {
       if (data != null) {
-        setRowsData(data.map(createData));
+        setRowsData(data.map(createData)); 
       }
       setInitLoading(false);
     });
