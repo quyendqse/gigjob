@@ -1,10 +1,9 @@
-import { Grid, Typography, CircularProgress } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Address from "../../model/Address";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IoCall, IoFileTray, IoLocation, IoMailOpen } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { Outlet, useLocation } from "react-router-dom";
-import { getAccountImage } from "../../api/data/query/account";
 import { defaultImg } from "../../constants/defaultValues";
 import { useLocalStorage } from "../../hook/useLocalStorage";
 import {
@@ -14,13 +13,10 @@ import {
   Image,
   Row,
 } from "./Profile.style";
-import { useSessionStorage } from "../../hook/useSessionStorage";
 import _ from "lodash";
 
 function Profile() {
   const [shopInfo] = useLocalStorage("shopInfo", null);
-  const [session] = useSessionStorage("accessToken", null);
-  const [avatar, setAvatar] = useState<string | null>();
   const location = useLocation();
   const marginVertical2rem = { margin: "2rem 0" };
 
@@ -62,7 +58,10 @@ function Profile() {
                   : defaultImg
               }
             />
-            <Typography variant="h5" className="primaryColor">
+            <Typography
+              variant="h5"
+              className="primaryColor"
+              sx={{ mt: "1rem" }}>
               {shopInfo.name}
             </Typography>
           </FlexCenterContainer>

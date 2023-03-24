@@ -14,10 +14,9 @@ import {
 } from "react-router-dom";
 import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "../routes/ProtectedRoute";
-import { NewProfile } from "../pages/Profiles/NewProfile";
 import Session from "../pages/Session/Session";
-import TopUp from "../pages/TopUp/TopUp";
 import EditPost from "../pages/PostManagement/UpdatePost";
+import { NewProfile } from "../pages/Profiles/NewProfile";
 
 export const publicRoutes = [
   {
