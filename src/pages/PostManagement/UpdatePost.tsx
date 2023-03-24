@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import { JobRequest } from "../../api/request/JobRequest";
-import { ShopResponse } from "../../api/response/ShopResponse";
 import { host, port } from "../../constants/host";
 import { useSessionStorage } from "../../hook/useSessionStorage";
 import * as Yup from "yup";
@@ -21,24 +20,17 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { NumericFormat, NumericFormatProps } from "react-number-format";
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useLocalStorage } from "../../hook/useLocalStorage";
+import { useLocation, useNavigate } from "react-router-dom";
+import { JobResponse } from "../../api/response/JobResponse";
+import axios from "axios";
+import { Center } from "../../components/Center/Centers";
+import CircularProgress from "@mui/material/CircularProgress";
 const labelStyle = {
   marginTop: "1rem",
   marginBottom: "-0.5rem",
   marginLeft: "0.25rem",
-};
-
-const initValue = {
-  id: 0,
-  shopId: "",
-  jobTypeId: 1,
-  title: "",
-  description: "",
-  skill: "",
-  benefit: "",
-  expiredDate: dayjs(new Date()),
-  salary: "",
 };
 
 const select = [
@@ -59,10 +51,6 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required("Required").max(5000, "Too long"),
   skill: Yup.string().required("Required").max(5000, "Too long"),
   benefit: Yup.string().required("Required").max(5000, "Too long"),
-  expiredDate: Yup.date().min(
-    dayjs(new Date()),
-    "Expire date cannot before today"
-  ),
 });
 
 interface CustomProps {
@@ -93,9 +81,53 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
   }
 );
 
-function CreatePostPage() {
+const mapDate = (values: any, shopId: string): JobRequest => ({
+  id: 0,
+  shopId: shopId,
+  jobTypeId: values.jobTypeId,
+  title: values.title,
+  description: values.description,
+  skill: values.skill,
+  benefit: values.benefit,
+  salary: +values.salary,
+  expiredDate: values.expiredDate.toDate(),
+});
+
+function EditPost() {
   const [accessToken] = useSessionStorage("accessToken", null);
   const [shopInfo] = useLocalStorage("shopInfo", null);
+  const location = useLocation();
+  const [data, setData] = useState<JobResponse | null>(null);
+  const [initLoading, setInitLoading] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    try {
+      setInitLoading(true);
+      const id = location.state.jobId;
+      if (!id) {
+        navigate("/job");
+      }
+      axios({
+        method: "get",
+        baseURL: `http://${host}:${port}/api`,
+        url: `v1/job/${id}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then(({ data }) => {
+        setData(data);
+        setInitLoading(false);
+      });
+    } catch (error) {
+      alert("Something went wrong");
+      setTimeout(() => {
+        navigate("/job");
+      }, 3000);
+      console.log(error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSubmit = (values: JobRequest) => {
     const headers = {
       Authorization: "Bearer " + accessToken,
@@ -116,30 +148,19 @@ function CreatePostPage() {
     });
   };
 
-  const mapDate = (values: any): JobRequest => {
-    console.log(JSON.stringify(values, null, 2));
-    return {
-      id: 0,
-      shopId: shopInfo.id,
-      jobTypeId: values.jobTypeId,
-      title: values.title,
-      description: values.description,
-      skill: values.skill,
-      benefit: values.benefit,
-      salary: +values.salary,
-      expiredDate: values.expiredDate.toDate(),
-    };
-  };
-
-  return (
+  return initLoading ? (
+    <Center>
+      <CircularProgress></CircularProgress>
+    </Center>
+  ) : (
     <Container
       sx={{
         display: "flex",
         flexDirection: "column",
       }}>
       <Formik
-        initialValues={initValue}
-        onSubmit={(values) => handleSubmit(mapDate(values))}
+        initialValues={{ ...data, expiredDate: dayjs(data!.expiredDate!) }}
+        onSubmit={(values) => handleSubmit(mapDate(values, shopInfo.id))}
         validationSchema={validationSchema}>
         {({
           values,
@@ -196,7 +217,7 @@ function CreatePostPage() {
               <Grid container spacing={2}>
                 <Grid xs={12} md={6}>
                   <Typography variant="h5" sx={labelStyle}>
-                    Salary
+                    Salary per hour
                   </Typography>
                   <TextField
                     hiddenLabel
@@ -334,4 +355,4 @@ function CreatePostPage() {
   );
 }
 
-export default CreatePostPage;
+export default EditPost;

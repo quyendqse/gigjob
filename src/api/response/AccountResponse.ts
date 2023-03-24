@@ -8,4 +8,5 @@ export interface AccountResponse {
   locked: boolean;
   disable: boolean;
   role: string;
+  imageUrl: string;
 }

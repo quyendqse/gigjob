@@ -96,6 +96,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const loginGoogleBackend = async (user: User) => {
     const idToken = await user.getIdToken();
+    console.log(idToken);
     return await fetch(`http://${host}:${port}/api/v1/account/login/google`, {
       method: "POST",
       headers: {

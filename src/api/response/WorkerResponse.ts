@@ -1,3 +1,5 @@
+import { HistoryResponse } from "./HistoryResponse";
+
 export interface WorkerDetailResponse {
   id: string;
   firstName: string;
@@ -5,6 +7,7 @@ export interface WorkerDetailResponse {
   middleName?: string;
   education: string;
   birthday: Date;
+  history: Array<HistoryResponse>;
   email: string;
   phone: string;
   username: string;

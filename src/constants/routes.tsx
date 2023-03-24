@@ -14,9 +14,9 @@ import {
 } from "react-router-dom";
 import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "../routes/ProtectedRoute";
-import { NewProfile } from "../pages/Profiles/NewProfile";
 import Session from "../pages/Session/Session";
-import TopUp from "../pages/TopUp/TopUp";
+import EditPost from "../pages/PostManagement/UpdatePost";
+import { NewProfile } from "../pages/Profiles/NewProfile";
 
 export const publicRoutes = [
   {
@@ -36,12 +36,13 @@ export const routers = createBrowserRouter(
         <Route element={<Home />} path={"/"} />
         <Route element={<Schedule />} path={"/schedule"} />
         <Route element={<Session />} path={"/session"} />
-        <Route element={<TopUp />} path={"/topUp"} />
+        {/* <Route element={<TopUp />} path={"/topUp"} /> */}
         <Route element={<Profile />} path={"/profile"}>
           <Route element={<EditProfile />} path={"edit"} />
         </Route>
         <Route element={<JobManagement />} path={"/job"}>
           <Route element={<CreatePostPage />} path={"create"} />
+          <Route element={<EditPost />} path={"edit"} />
         </Route>
       </Route>
       <Route element={<PublicRoute />}>

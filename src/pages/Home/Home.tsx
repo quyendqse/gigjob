@@ -20,10 +20,11 @@ import {
 import { ApplicationResponse } from "../../api/response/ApplicationResponse";
 import { JobDetailResponse } from "../../api/response/JobDetailResponse";
 import { ShopResponse } from "../../api/response/ShopResponse";
-import { useAuth } from "../../context/AuthContext";
+import { WorkerDetailResponse } from "../../api/response/WorkerResponse";
 import { useLocalStorage } from "../../hook/useLocalStorage";
 import { useSessionStorage } from "../../hook/useSessionStorage";
 import { Card } from "../Profiles/Profile.style";
+import FadeMenu from "./FadeMenu";
 
 export interface ApplicationViewData {
   id: number;
@@ -40,6 +41,23 @@ function Home() {
   const [session] = useSessionStorage("accessToken", null);
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [workers, setWorkers] = useState<ApplicationViewData[]>([]);
+  const [workersDetail, setWorkerDetail] = useState<WorkerDetailResponse[]>([]);
+  const [selectedData, setSelectedData] = useState<WorkerDetailResponse>();
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = (worker: string) => {
+    const value = workersDetail.at(
+      workersDetail.findIndex((w) => w.id === worker)
+    );
+    setSelectedData(value);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setSelectedData(undefined);
+    setOpen(false);
+  };
+
   function createData(
     application: ApplicationResponse,
     index: number
@@ -65,10 +83,12 @@ function Home() {
     if (shop == null) {
     }
     getApplicationsOfShop(shop.id, session).then((ar) => {
+      setWorkerDetail(ar.map((a) => a.worker));
       setWorkers(ar.map((ar, index) => createData(ar, index)));
       setIsLoading(false);
     });
-  }, [session, shopInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAccept = (worker: ApplicationViewData) => {
     setIsLoading(true);
@@ -116,11 +136,9 @@ function Home() {
           <TableHead className="tableHeader">
             <TableRow>
               <TableCell>Name</TableCell>
-              {/* <TableCell>Phone</TableCell> */}
-              <TableCell>Job</TableCell>
-              {/* <TableCell>Birthday</TableCell> */}
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell align="center">Job</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -129,30 +147,34 @@ function Home() {
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell scope="row">{worker.name}</TableCell>
-                {/* <TableCell>{row.phone}</TableCell> */}
-                <TableCell>{worker.job.title}</TableCell>
-                {/* <TableCell>{row.}</TableCell> */}
-                <TableCell>
+                <TableCell align="center">{worker.job.title}</TableCell>
+                <TableCell align="center">
                   {isLoading && loadingId === worker.id ? (
                     <CircularProgress />
                   ) : (
                     worker.status
                   )}
                 </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleAccept(worker)}>
-                    Accept
-                  </Button>
-                  <Box sx={{ mx: "1rem", display: "inline" }}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleReject(worker)}>
-                      Reject
-                    </Button>
-                  </Box>
-                  <IconButton>
+                <TableCell align="center">
+                  {worker.status !== "ACCEPTED" && (
+                    <Box sx={{ mx: "0.5rem", display: "inline-block" }}>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleAccept(worker)}>
+                        Accept
+                      </Button>
+                    </Box>
+                  )}
+                  {worker.status !== "REJECTED" && (
+                    <Box sx={{ mx: "0.5rem", display: "inline-block" }}>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleReject(worker)}>
+                        Reject
+                      </Button>
+                    </Box>
+                  )}
+                  <IconButton onClick={() => handleClickOpen(worker.workerId)}>
                     <IoEllipsisVerticalCircle />
                   </IconButton>
                 </TableCell>
@@ -161,6 +183,7 @@ function Home() {
           </TableBody>
         </Table>
       </TableContainer>
+      <FadeMenu worker={selectedData} open={open} handleClose={handleClose} />
     </Box>
   );
 }

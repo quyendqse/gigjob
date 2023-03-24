@@ -22,11 +22,11 @@ export const menu = [
     icon: <IoBriefcase />,
     path: "/job",
   },
-  {
-    label: "Session",
-    icon: <IoWallet />,
-    path: "/session",
-  },
+  // {
+  //   label: "Session",
+  //   icon: <IoWallet />,
+  //   path: "/session",
+  // },
   {
     label: "Profile",
     icon: <IoStorefront />,

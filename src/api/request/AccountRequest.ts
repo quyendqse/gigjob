@@ -9,5 +9,7 @@ export interface AccountRequest {
   phone: string;
   imageUrl: string;
   name: string;
+  longitude?: number;
+  latitude?: number;
   description: string;
 }

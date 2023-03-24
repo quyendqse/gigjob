@@ -16,6 +16,7 @@ import { ShopRequest } from "../../api/request/ShopRequest";
 import Address from "../../model/Address";
 import * as Yup from "yup";
 import { Navigate, useNavigate } from "react-router-dom";
+import { geocode } from "../../api/data/query/geocode";
 
 const labelStyle = {
   marginTop: "1rem",
@@ -45,21 +46,29 @@ export const NewProfile = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (
-    values: ShopRequest,
+    request: ShopRequest,
     setSubmitting: (value: boolean) => void
   ) => {
     setLoadingNetwork(true);
-    createNewShopProfile(values).then(({ status, message }) => {
-      switch (status) {
-        case "success":
-          navigate("/", { replace: true });
-          break;
+    geocode(
+      request.address,
+      (data) => {
+        request.longitude = data.data.items[0].position.lng;
+        request.latitude = data.data.items[0].position.lat;
+        createNewShopProfile(request).then(({ status, message }) => {
+          switch (status) {
+            case "success":
+              navigate("/", { replace: true });
+              break;
 
-        default:
-          break;
-      }
-      setLoadingNetwork(false);
-    });
+            default:
+              break;
+          }
+          setLoadingNetwork(false);
+        });
+      },
+      (reason) => alert(reason)
+    );
   };
 
   return loading || loadingNetwork ? (

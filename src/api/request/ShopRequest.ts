@@ -9,5 +9,7 @@ export interface ShopRequest {
   password: string;
   imageUrl: string;
   phone: string;
+  longitude?: number;
+  latitude?: number;
   address: Address;
 }

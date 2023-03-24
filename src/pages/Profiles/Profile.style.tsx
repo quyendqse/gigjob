@@ -6,7 +6,7 @@ const Card = styled.div`
   padding: 16px;
   min-height: 100px;
   width: 100%;
-  border-radius: 24px;
+  border-radius: 12px;
 `;
 
 const FlexCenterContainer = styled.div`
