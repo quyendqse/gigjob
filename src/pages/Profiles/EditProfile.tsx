@@ -23,6 +23,7 @@ import axios from "axios";
 import { ShopResponse } from "../../api/response/ShopResponse";
 import { defaultImg } from "../../constants/defaultValues";
 import * as _ from "lodash";
+import { geocode } from "../../api/data/query/geocode";
 const labelStyle = {
   marginTop: "1rem",
   marginBottom: "-0.5rem",
@@ -49,7 +50,6 @@ export const EditProfile = () => {
   const [defaultAvatar, setDefaultAvatar] = useState<File>();
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [loadingImage, setLoadingImage] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setLoadingImage(true);
@@ -75,7 +75,9 @@ export const EditProfile = () => {
         }
         setLoadingImage(false);
       })
-      .catch((error) => alert("image not found"));
+      .catch((error) => {
+        setLoadingImage(false);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -96,53 +98,61 @@ export const EditProfile = () => {
     e.target.value = "";
   };
 
-  const handleSubmit = (values: ShopRequest) => {
+  const handleSubmit = (request: ShopRequest) => {
     setProcessing(true);
-    axios({
-      url: "/v1/shop/edit",
-      baseURL: `http://${host}:${port}/api`,
-      method: "post",
-      headers: {
-        Authorization: `Bearer ${session}`,
-      },
-      data: values,
-    })
-      .then((res) => {
-        const shop = res.data as ShopResponse;
-        setShopInfo(shop);
-        if (avatar) {
-          var formData = new FormData();
-          formData.append("file", avatar);
-          axios({
-            method: "post",
-            baseURL: `http://${host}:${port}/api`,
-            url: `/v1/account/${shopInfo.account.id}/image`,
-            headers: {
-              Authorization: `Bearer ${session}`,
-              "Content-Type": "multipart/form-data",
-              "Content-Length": `${avatar.size}`,
-            },
-            data: formData,
-          })
-            .then(({ data }) => {
-              var clone = { ...shopInfo };
-              clone.account.imageUrl = data;
-              setShopInfo(clone);
-              // navigate("/profile", { replace: true });
+    geocode(
+      request.address,
+      (data) => {
+        request.longitude = data.data.items[0].position.lng;
+        request.latitude = data.data.items[0].position.lat;
+        axios({
+          url: "/v1/shop/edit",
+          baseURL: `http://${host}:${port}/api`,
+          method: "post",
+          headers: {
+            Authorization: `Bearer ${session}`,
+          },
+          data: request,
+        })
+          .then((res) => {
+            const shop = res.data as ShopResponse;
+            setShopInfo(shop);
+            if (avatar) {
+              var formData = new FormData();
+              formData.append("file", avatar);
+              axios({
+                method: "post",
+                baseURL: `http://${host}:${port}/api`,
+                url: `/v1/account/${shopInfo.account.id}/image`,
+                headers: {
+                  Authorization: `Bearer ${session}`,
+                  "Content-Type": "multipart/form-data",
+                  "Content-Length": `${avatar.size}`,
+                },
+                data: formData,
+              })
+                .then(({ data }) => {
+                  var clone = { ...shop };
+                  clone.account.imageUrl = data;
+                  setShopInfo(clone);
+                  // navigate("/profile", { replace: true });
+                  window.location.href = "/profile";
+                })
+                .catch(() => {
+                  alert("Error when uploading file. Please try again later");
+                  setProcessing(false);
+                });
+            } else {
               window.location.href = "/profile";
-            })
-            .catch(() => {
-              alert("Error when uploading file. Please try again later");
-              setProcessing(false);
-            });
-        } else {
-          window.location.href = "/profile";
-          // navigate("/profile", { replace: true });
-        }
-      })
-      .catch((error) => {
-        setProcessing(false);
-      });
+              // navigate("/profile", { replace: true });
+            }
+          })
+          .catch((error) => {
+            setProcessing(false);
+          });
+      },
+      (reason) => alert(reason)
+    );
   };
 
   return processing ? (
