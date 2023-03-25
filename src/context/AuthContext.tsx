@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: any) => {
       if (res.status === 200) {
         const { accessToken } = await res.json();
         setSession(accessToken);
-        const shopInfo = await getShopByAccountId(result.user.uid);
+        const shopInfo = await getShopByAccountId(result.user.uid, accessToken);
         if (shopInfo) {
           setShopInfoLocal(shopInfo);
           setAuthLoading(false);
@@ -128,7 +128,7 @@ export const AuthProvider = ({ children }: any) => {
       if (res.status === 200) {
         var { accessToken } = await res.json();
         setSession(accessToken);
-        const shopInfo = await getShopByAccountId(user.uid);
+        const shopInfo = await getShopByAccountId(user.uid, accessToken);
         if (shopInfo) {
           setAuthLoading(false);
           setSession(accessToken);
