@@ -68,6 +68,10 @@ const JobManagement = () => {
           setJobs([...values.filter((date) => date.expiredDate > new Date())]);
           setDataview(jobs[0]);
           setInitLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setInitLoading(false);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -225,7 +225,8 @@ export const AuthProvider = ({ children }: any) => {
       if (user != null) {
         const res = await loginGoogleBackend(user);
         if (res.ok) {
-          setSession(await res.json());
+          const { accessToken } = await res.json();
+          setSession(accessToken);
           setShopInfoLocal(resShop);
           setAuthLoading(false);
           return {

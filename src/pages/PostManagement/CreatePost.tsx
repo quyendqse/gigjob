@@ -37,7 +37,7 @@ const initValue = {
   description: "",
   skill: "",
   benefit: "",
-  expiredDate: dayjs(new Date()),
+  expiredDate: dayjs(new Date()).add(1, "month"),
   salary: "",
 };
 
@@ -231,6 +231,7 @@ function CreatePostPage() {
                     dateFormats={{ keyboardDate: "DD/MM/YYYY" }}>
                     <DatePicker
                       value={values.expiredDate}
+                      disablePast
                       onChange={(value) =>
                         setFieldValue("expiredDate", value, true)
                       }
