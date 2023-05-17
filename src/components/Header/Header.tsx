@@ -39,8 +39,8 @@ function Header() {
       </HeaderName>
       <Avatar
         component={Button}
-        sx={{ width: "auto", height: "80%", p: 0 }}
-        src="/assets/logo2.png"
+        sx={{ width: "10%", height: "100%"}}
+        src="https://cdn2.iconfinder.com/data/icons/social-media-logos-linear-black/614/5315_-_Apple-512.png"
         onClick={handleClick}
       />
       <Menu

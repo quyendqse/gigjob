@@ -13,12 +13,12 @@ export const menu = [
     path: "/",
   },
   {
-    label: "Schedule",
+    label: "Customers",
     icon: <IoCalendar />,
     path: "/schedule",
   },
   {
-    label: "Job post",
+    label: "Products",
     icon: <IoBriefcase />,
     path: "/job",
   },

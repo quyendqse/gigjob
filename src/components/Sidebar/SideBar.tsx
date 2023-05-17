@@ -30,7 +30,7 @@ const drawerStyle = {
 };
 
 export default function SideBar() {
-  const logoAsset = "/assets/logo.png";
+  const logoAsset = "https://iweb.tatthanh.com.vn/pic/3/blog/images/logo-shop-dien-thoai-7.jpg";
   const location = useLocation();
   console.log(location.hash);
 

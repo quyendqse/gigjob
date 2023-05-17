@@ -1,6 +1,7 @@
 import { Payment } from "@mui/icons-material";
 import Home from "../pages/Home/Home";
 import PayMent from "../pages/Payment/PayMent";
+import { ProductsManagement } from "../pages/ProductsManagement.style.ts/ProductsManagement";
 import { EditProfile } from "../pages/Profiles/EditProfile";
 import Profile from "../pages/Profiles/Profile";
 import Schedule from "../pages/Schedule/Schedule";
@@ -18,7 +19,7 @@ export const routes = [
   {
     path: "/job",
     //TODO: replace
-    element: <div>Job post</div>,
+    element: <ProductsManagement/>,
   },
   {
     path: "/payment",

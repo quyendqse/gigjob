@@ -26,11 +26,11 @@ import { IoEllipsisVerticalCircle } from "react-icons/io5";
 function createData(account: Account, job: Job, session: Session) {
   const mntStart = moment(session.startShift);
   const mntEnd = mntStart.clone().add(session.duration, "hours");
-  var status: "Pending" | "Working" | "Done" | "Absent" = "Pending";
+  var status: "Pending" | "Paid" | "Done" | "Absent" = "Pending";
   const mntCurrent = moment();
   if (mntCurrent.isAfter(mntStart)) {
     if (mntCurrent.isBefore(mntEnd)) {
-      status = "Working";
+      status = "Paid";
     } else {
       status = "Done";
     }
@@ -81,7 +81,7 @@ function Schedule() {
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Phone</TableCell>
-              <TableCell>Job</TableCell>
+              <TableCell>Products</TableCell>
               <TableCell>Shift</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
@@ -98,10 +98,8 @@ function Schedule() {
                 <TableCell>{row.shift}</TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>
-                  <Button variant="contained">Check-in</Button>
-                  <Box sx={{ mx: "1rem", display: "inline" }}>
-                    <Button variant="outlined">Check-out</Button>
-                  </Box>
+                  <Button variant="contained">Accept</Button>
+                
                   <IconButton>
                     <IoEllipsisVerticalCircle />
                   </IconButton>
